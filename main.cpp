@@ -1,7 +1,12 @@
+#include <iostream>
 
+#include "Game.hpp"
+#include "Board.hpp"
+#include "Player.hpp"
+#include "Piece.hpp"
 
 int main(int argc, char const *argv[])
 {
-    /* code */
+    
     return 0;
 }
