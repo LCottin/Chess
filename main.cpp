@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "Game.hpp"
 #include "Board.hpp"

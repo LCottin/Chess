@@ -19,3 +19,4 @@ Board.o : Board.cpp Board.hpp
 
 clean:
 	rm -rf *.o
+	rm main
