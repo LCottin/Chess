@@ -4,7 +4,6 @@
 class Piece
     {
     private:
-
         int _X;
         int _Y;
         int _Type;          //Type of piece (fool, king ...)
