@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <SFML/Window.hpp>
 
 #include "Game.hpp"
@@ -9,6 +10,7 @@
 
 int main(int argc, char const *argv[])
 {
-    
+    Game* game = new Game("Thomas", "Léonard");
+    delete game;
     return 0;
 }

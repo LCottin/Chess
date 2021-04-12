@@ -5,6 +5,7 @@ Player::Player(const string name, const bool white)
 {
     _Pseudo = name;
     _IsWhite = white;
+    cout << "Init player " << _Pseudo << endl;
 }
 
 /**
@@ -18,4 +19,5 @@ int Player::getSize() const
 
 Player::~Player()
 {
+    cout << "Destroy player " << _Pseudo << endl;
 }

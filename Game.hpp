@@ -8,6 +8,8 @@
 #include "Player.hpp"
 #include "Board.hpp"
  
+using namespace std;
+
 class Game
 {
     private:
