@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <SFML/Window.hpp>
 
 #include "Game.hpp"
 #include "Board.hpp"

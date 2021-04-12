@@ -8,7 +8,7 @@ Player.o : Player.cpp Player.hpp
 	g++ -std=c++17 -Wall -c Player.cpp
 
 main.o : main.cpp
-	g++ -std=c++17 -Wall -c main.cpp
+	g++ -std=c++17 -lsfml-graphics -lsfml-system -lsfml-window -Wall -c main.cpp
 
 Piece.o : Piece.cpp Piece.hpp
 	g++ -std=c++17 -Wall -c Piece.cpp

@@ -1,8 +1,19 @@
 #include "Player.hpp"
 
 
-Player::Player()
+Player::Player(const string name, const bool white)
 {
+    _Pseudo = name;
+    _IsWhite = white;
+}
+
+/**
+ * Gives the number of piece still alive in player's set
+ * @returns Number of piece
+ */
+int Player::getSize() const
+{
+    return _Set.size();
 }
 
 Player::~Player()
