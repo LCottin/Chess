@@ -11,15 +11,15 @@
 class Game
 {
     private:
-        Board _Board; 
-        Player _White;
-        Player _Black;
+        Board*  _Board; //game board
+        Player* _White; //white player
+        Player* _Black; //black player
 
-        int _TurnCount; //how many turns have been playd
-        bool _WhiteTurn; //indicades who's turn it is
+        int     _TurnCount; //how many turns have been playd
+        bool    _WhiteTurn; //indicades who's turn it is
 
     public:
-        Game();
+        Game(const string name1, const string name2);
         ~Game();
 };
 
