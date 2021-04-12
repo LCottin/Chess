@@ -8,7 +8,7 @@ class Piece
         int _X;
         int _Y;
         enum _TYPE _Type;          //Type of piece (fool, king ...)
-        bool _Color;        //Color (True = Black, False = white)
+        bool _IsWhite;             //Color (True = White, False = black)
         bool _IsSelected; 
 
     public:
