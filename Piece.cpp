@@ -22,5 +22,6 @@ void Piece::move(int x, int y)
 
 Piece::~Piece()
 {
+    
 }
 
