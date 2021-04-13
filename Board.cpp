@@ -69,6 +69,15 @@ void Board::setPiece(const Piece &piece)
     _Board[piece.getX()][piece.getY()] = piece.getType();
 }
 
+/**
+ * Get a piece at a given position
+ * @param x,y Position 
+ * @returns The number of the piece
+ */
+int Board::getPiece(const int x, const int y) const
+{
+    return _Board[x][y];
+}
 
 Board::~Board()
 {

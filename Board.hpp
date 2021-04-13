@@ -21,6 +21,7 @@ class Board
         Board();
         void printBoard(const bool printInit) const;
         void setPiece(const Piece &piece);
+        int getPiece(const int x, const int y) const;
         ~Board();
 };
  
