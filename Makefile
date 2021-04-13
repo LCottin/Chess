@@ -16,7 +16,6 @@ Piece.o : Piece.cpp Piece.hpp
 Board.o : Board.cpp Board.hpp
 	g++ -std=c++17 -Wall -c Board.cpp
 
-
 clean:
 	rm -rf *.o
 	rm main
