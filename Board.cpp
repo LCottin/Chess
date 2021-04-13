@@ -3,9 +3,6 @@
 
 Board::Board()
 {
-    // _SizeX = 8;
-    // _SizeY = 8;
-
     _Board      = new int* [_SizeX];
     _InitBoard  = new int* [_SizeX];
 
