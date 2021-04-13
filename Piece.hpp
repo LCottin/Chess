@@ -5,19 +5,19 @@
 
 class Piece
 {
-    private:
+    protected:
         int _X;
         int _Y;
-        enum _TYPE _Type;          //Type of piece (fool, king ...)
+        enum TYPES _Type;
         bool _IsWhite;             //Color (True = White, False = black)
         bool _IsSelected; 
 
     public:
-        Piece();
+        Piece(const bool white);
         void move(const int x, const int y);
-        bool isMoveValid(const int x, const int y) const;
         int getX() const;
         int getY() const;
+        bool isMoveValid(const int x, const int y) const;
         int getType() const;
         ~Piece();
 };

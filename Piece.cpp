@@ -1,11 +1,10 @@
 #include "Piece.hpp"
 
-Piece::Piece()
+Piece::Piece(const bool white)
 {
     _X          = 0;
     _Y          = 0;
-    _Type       = B_PAWN;
-    _IsWhite    = false;
+    _IsWhite    = white;
     _IsSelected = false;
 } 
 
