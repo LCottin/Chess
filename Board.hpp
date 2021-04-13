@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "Piece.hpp"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ class Board
     public:
         Board();
         void printBoard(const bool printInit) const;
+        void setPiece(const Piece &piece);
         ~Board();
 };
  

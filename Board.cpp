@@ -59,6 +59,18 @@ void Board::printBoard(const bool printInit = 0) const
     cout << "-----------------------------------" << endl;
 }
 
+
+/**
+ * Set a piece at the piece coordinates
+ * @param piece Piece to place
+ */
+void Board::setPiece(const Piece &piece)
+{
+    int c_X = piece.getX();
+    int c_Y = piece.getY();
+}
+
+
 Board::~Board()
 {
     for (int i = 0; i < _SizeY; i++)
