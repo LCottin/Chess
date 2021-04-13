@@ -13,8 +13,11 @@ class Piece
 
     public:
         Piece();
-        void move(int x, int y);
-        bool isMoveValid(int x, int y);
+        void move(const int x, const int y);
+        bool isMoveValid(const int x, const int y) const;
+        int getX() const;
+        int getY() const;
+        int getType() const;
         ~Piece();
 };
 
