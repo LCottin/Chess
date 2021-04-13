@@ -1,5 +1,5 @@
 all : main.o Board.o Game.o Piece.o Player.o
-	g++ -std=c++17 -Wall -o main main.o Board.o Game.o Piece.o Player.o
+	g++ -std=c++17 -lsfml-graphics -lsfml-system -lsfml-window -Wall -o main main.o Board.o Game.o Piece.o Player.o
 
 Game.o : Game.cpp Game.hpp
 	g++ -std=c++17 -Wall -c Game.cpp

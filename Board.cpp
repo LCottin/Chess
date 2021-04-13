@@ -25,14 +25,38 @@ Board::Board()
             // if i XOR j then we change 
             if ((i%2 && !(j%2)) || (j%2 && !(i%2)))
             {
-                _InitBoard[i][j] = 1;
+                if (_IsTopLeftWhite) _InitBoard[i][j] = 1;
+                else                 _InitBoard[i][j] = 0;
             }
             else 
             {
-                _InitBoard[i][j] = 0;
+                if (_IsTopLeftWhite) _InitBoard[i][j] = 0;
+                else                 _InitBoard[i][j] = 1;
             }
         }   
     }
+}
+
+/**
+ * Prints a board
+ * @param printInit 1 to print initial board, 0 else
+ */
+void Board::printBoard(const bool printInit = 0) const 
+{
+    int** currentBoard;
+    if (printInit) currentBoard = _InitBoard;
+    else           currentBoard = _Board;
+    
+    for (int i = 0; i < _SizeX; i++)
+    {
+        cout << "-----------------------------------" << endl;
+        for (int j = 0; j < _SizeY; j++)
+        {
+            cout << " | " << currentBoard[i][j];
+        }
+        cout << " | " << endl;
+    }
+    cout << "-----------------------------------" << endl;
 }
 
 Board::~Board()
