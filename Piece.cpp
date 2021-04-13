@@ -4,7 +4,7 @@ Piece::Piece()
 {
     _X          = 0;
     _Y          = 0;
-    _Type       = PAWN;
+    _Type       = B_PAWN;
     _IsWhite    = false;
     _IsSelected = false;
 } 
