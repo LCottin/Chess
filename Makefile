@@ -11,11 +11,13 @@ main.o : main.cpp
 	g++ -std=c++17 -lsfml-graphics -lsfml-system -lsfml-window -Wall -c main.cpp
 
 Piece.o : Piece.cpp Piece.hpp
-	g++ -std=c++17 -Wall -c Piece.cpp
+	g++ -std=c++17 -Wall -c Piece.cpp -lm
 
 Board.o : Board.cpp Board.hpp
 	g++ -std=c++17 -Wall -c Board.cpp
 
+Pawn.o : Pieces/Pawn.cpp Pieces/Pawn.hpp
+	g++ -std=c++17 -Wall -c Pawn.cpp -lm
 
 clean:
 	rm -rf *.o
