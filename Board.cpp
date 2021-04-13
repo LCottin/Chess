@@ -66,8 +66,7 @@ void Board::printBoard(const bool printInit = 0) const
  */
 void Board::setPiece(const Piece &piece)
 {
-    int c_X = piece.getX();
-    int c_Y = piece.getY();
+    _Board[piece.getX()][piece.getY()] = piece.getType();
 }
 
 
