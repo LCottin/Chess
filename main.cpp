@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <time.h>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -14,9 +15,13 @@ int main(int argc, char* const argv[])
     Game* game = new Game("Thomas", "Léonard");
     delete game;
 
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RenderWindow window(sf::VideoMode(600, 600), "ChessGame");
+    
+    sf::Texture texture1;
+    texture1.loadFromFile("Textures/board.jpg");
+
+    sf::Sprite sprites(texture1);
+
 
     while (window.isOpen())
     {
@@ -28,7 +33,7 @@ int main(int argc, char* const argv[])
         }
 
         window.clear();
-        window.draw(shape);
+        window.draw(sprites);
         window.display();
     }
 
