@@ -12,7 +12,7 @@
 
 using namespace sf;
 
-Sprite pieces[32];
+   Sprite pieces[32];
 
 int board[8][8] = 
     {{-3,-4,-5,-2,-1,-5,-4,-3},
@@ -30,7 +30,7 @@ int main(int argc, char* const argv[])
     delete game;
 
     bool isDragged = false;
-    float dx = 0, dy = 0;
+    float dx = 0, dy = 0, oldPos_x = 0, oldPos_y = 0;
 
     RenderWindow window(VideoMode(550, 550), "ChessGame");
     
@@ -51,7 +51,7 @@ int main(int argc, char* const argv[])
 
     Sprite sprite_board(texture_board);
 
-    int k, n=0;
+    int k = 0, n = 0;
     int size = 55;
 
     for(int i=0;i<8;i++)
@@ -59,6 +59,7 @@ int main(int argc, char* const argv[])
         for(int j=0;j<8;j++)
         {
             int n = board[i][j];
+            if (n == 0) continue;
             switch (n)
             {
                 case -6:
@@ -94,11 +95,9 @@ int main(int argc, char* const argv[])
                 case 5:
                     pieces[k].setTexture(texture_wq);
                     break;
-                case 6:
+                default :
                     pieces[k].setTexture(texture_wk);
                     break;
-                default:
-                    continue;
             }
             pieces[k].setPosition(size*(j+1),size*(i+1));
             k++;
@@ -118,19 +117,51 @@ int main(int argc, char* const argv[])
             
             if (event.type == Event::MouseButtonPressed)
                 if (event.mouseButton.button == Mouse::Left)
-                    for (n=0; n<32; n++)
+                {
+                    for (k=0; k<32; k++)
                     {
-                        if (pieces[n].getGlobalBounds().contains(dx, dy))
+                        if (pieces[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
                         {
+                            n = k;
                             isDragged = true;
                             dx = mouse_pos.x - pieces[n].getPosition().x;
                             dy = mouse_pos.y - pieces[n].getPosition().y;
+
+                            oldPos_x = pieces[n].getPosition().x;
+                            oldPos_y = pieces[n].getPosition().y;
                         }
                     }
+                }
 
             if (event.type == Event::MouseButtonReleased)
                 if (event.mouseButton.button == Mouse::Left)
+                {
+                    Vector2f newPos = Vector2f(size*int(Vector2f (pieces[n].getPosition() + Vector2f(size/2, size/2)).x/size), size*int(Vector2f (pieces[n].getPosition() + Vector2f(size/2, size/2)).y/size));
+                    pieces[n].setPosition(newPos);
+                    board[int(newPos.y/55) - 1][int(newPos.x/55) - 1] = board[int(oldPos_y/55) - 1][int(oldPos_x/55) - 1];
+                    board[int(oldPos_y/55) - 1][int(oldPos_x/55) - 1] = 0;
+
+                    for(int i=0;i<8;i++)
+                    {
+                        std::cout << "[";
+                        for(int j=0;j<8;j++)
+                        {
+                            if (board[i][j] < 0)
+                                if (j < 7)
+                                    std::cout << board[i][j] <<"][";
+                                else
+                                    std::cout << board[i][j] <<"]";
+                            else
+                                if (j < 7)
+                                    std::cout << " "<< board[i][j] <<"][";
+                                else
+                                    std::cout << " "<< board[i][j] <<"]";
+                        }
+                        std::cout << std::endl;
+                    }
+                    std::cout << std::endl;
                     isDragged = false;
+                }
         }
 
         if (isDragged)
@@ -142,6 +173,7 @@ int main(int argc, char* const argv[])
         window.draw(sprite_board);
         for (int i=0; i<32; i++) window.draw(pieces[i]);;
         window.display();
+
     }
     return 0;
 }
