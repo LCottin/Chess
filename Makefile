@@ -16,7 +16,6 @@ Piece.o : Piece.cpp Piece.hpp
 Board.o : Board.cpp Board.hpp
 	g++ -std=c++17 -Wall -c Board.cpp
 
-<<<<<<< HEAD
 Pawn.o : Pieces/Pawn.cpp Pieces/Pawn.hpp
 	g++ -std=c++17 -Wall -c Pawn.cpp -lm
 
@@ -28,15 +27,13 @@ Bishop.o : Pieces/Bishop.cpp Pieces/Bishop.hpp
 
 Knight.o : Pieces/Knight.cpp Pieces/Knight.hpp
 	g++ -std=c++17 -Wall -c Knight.cpp -lm
-	
+
 King.o : Pieces/King.cpp Pieces/King.hpp
 	g++ -std=c++17 -Wall -c King.cpp -lm
 
 Queen.o : Pieces/Queen.cpp Pieces/Queen.hpp
 	g++ -std=c++17 -Wall -c Queen.cpp -lm
 
-=======
->>>>>>> Thomas
 clean:
 	rm -rf *.o
 	rm -rf Pieces/*.o
