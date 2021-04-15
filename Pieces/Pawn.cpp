@@ -17,7 +17,7 @@ bool Pawn::isMoveValid(const int x, const int y) const
     int dx = abs(_X - x);
     int dy = abs(_Y - y);
 
-    //check distance on X : only one tile
+    //check distance on X : only one tile forward is allowed
     if (dx  > 1) return false;
 
     //Y tile should not change
