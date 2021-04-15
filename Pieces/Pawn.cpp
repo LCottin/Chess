@@ -1,6 +1,5 @@
 #include "Pawn.hpp"
 
-
 Pawn::Pawn(const bool white) : Piece(white)
 {
     if (_IsWhite) _Type = W_PAWN;
@@ -17,6 +16,9 @@ bool Pawn::isMoveValid(const int x, const int y) const
     int dx = abs(_X - x);
     int dy = abs(_Y - y);
 
+    //if the piece doesn't move
+    if (dx == 0 && dy == 0) return true;
+    
     //check distance on X : only one tile forward is allowed
     if (dx  > 1) return false;
 
