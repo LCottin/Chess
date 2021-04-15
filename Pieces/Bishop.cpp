@@ -2,8 +2,8 @@
 
 Bishop::Bishop(const bool white) : Piece(white)
 {
-    if (_IsWhite) _Type = W_ROOK;
-    else          _Type = B_ROOK;
+    if (_IsWhite) _Type = W_BISHOP;
+    else          _Type = B_BISHOP;
 }
 
 /**
@@ -16,9 +16,17 @@ bool Bishop::isMoveValid(const int x, const int y) const
     int dx = abs(_X - x);
     int dy = abs(_Y - y);
 
+    //if the piece doesn't move
+    if (dx == 0 && dy == 0) return true;
+
     //x and y should change together with the same value
     if (dx != dy) return false;
 
     //default
     return true;
+}
+
+Bishop::~Bishop()
+{
+    
 }

@@ -1,6 +1,5 @@
 #include "Rook.hpp"
 
-
 Rook::Rook(const bool white) : Piece(white)
 {
     if (_IsWhite) _Type = W_ROOK;
@@ -17,6 +16,9 @@ bool Rook::isMoveValid(const int x, const int y) const
     int dx = abs(_X - x);
     int dy = abs(_Y - y);
 
+    //if the piece doesn't move
+    if (dx == 0 && dy == 0) return true;
+    
     //only x or y should change, not both
     if (dx != 0 && dy != 0) return false;
 
