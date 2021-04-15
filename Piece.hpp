@@ -17,7 +17,6 @@ class Piece
         void move(const int x, const int y);
         int getX() const;
         int getY() const;
-        bool isMoveValid(const int x, const int y) const;
         int getType() const;
         ~Piece();
 };
