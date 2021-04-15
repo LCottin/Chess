@@ -16,6 +16,7 @@ Piece.o : Piece.cpp Piece.hpp
 Board.o : Board.cpp Board.hpp
 	g++ -std=c++17 -Wall -c Board.cpp
 
+<<<<<<< HEAD
 Pawn.o : Pieces/Pawn.cpp Pieces/Pawn.hpp
 	g++ -std=c++17 -Wall -c Pawn.cpp -lm
 
@@ -34,6 +35,8 @@ King.o : Pieces/King.cpp Pieces/King.hpp
 Queen.o : Pieces/Queen.cpp Pieces/Queen.hpp
 	g++ -std=c++17 -Wall -c Queen.cpp -lm
 
+=======
+>>>>>>> Thomas
 clean:
 	rm -rf *.o
 	rm -rf Pieces/*.o
