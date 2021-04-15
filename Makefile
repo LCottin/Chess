@@ -1,5 +1,5 @@
-all : main.o Board.o Game.o Piece.o Player.o Pieces/Pawn.o Pieces/Rook.o
-	g++ main.o Board.o Game.o Piece.o Player.o -o main -std=c++17 -lsfml-graphics -lsfml-system -lsfml-window -Wall
+all : main.o Board.o Game.o Piece.o Player.o Pieces/Pawn.o Pieces/Rook.o Pieces/Bishop.o
+	g++ main.o Board.o Game.o Piece.o Player.o Pieces/Pawn.o Pieces/Rook.o Pieces/Bishop.o -o main -std=c++17 -lsfml-graphics -lsfml-system -lsfml-window -Wall
 
 Game.o : Game.cpp Game.hpp
 	g++ -std=c++17 -Wall -c Game.cpp
@@ -22,6 +22,10 @@ Pawn.o : Pieces/Pawn.cpp Pieces/Pawn.hpp
 Rook.o : Pieces/Rook.cpp Pieces/Rook.hpp
 	g++ -std=c++17 -Wall -c Rook.cpp -lm
 
+Bishop.o : Pieces/Bishop.cpp Pieces/Bishop.hpp
+	g++ -std=c++17 -Wall -c Bishop.cpp -lm
+
 clean:
 	rm -rf *.o
+	rm -rf Pieces/*.o
 	rm main
