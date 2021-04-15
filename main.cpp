@@ -10,14 +10,6 @@
 #include "Player.hpp"
 #include "Piece.hpp"
 
-<<<<<<< HEAD
-#include "Pieces/Pawn.hpp"
-#include "Pieces/Rook.hpp"
-#include "Pieces/Bishop.hpp"
-
-int main(int argc, char* const argv[])
-{
-=======
 using namespace sf;
 
    Sprite pieces[32];
@@ -183,6 +175,5 @@ int main(int argc, char* const argv[])
         window.display();
 
     }
->>>>>>> Thomas
     return 0;
 }
