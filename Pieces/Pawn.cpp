@@ -1,7 +1,7 @@
 #include "Pawn.hpp"
 
 
-Pawn::Pawn(const bool white = 1) : Piece(white)
+Pawn::Pawn(const bool white) : Piece(white)
 {
     if (_IsWhite) _Type = W_PAWN;
     else          _Type = B_PAWN;
@@ -22,6 +22,9 @@ bool Pawn::isMoveValid(const int x, const int y) const
 
     //Y tile should not change
     if (dy != 0) return false;
+
+    //default
+    return true;
 }
 
 Pawn::~Pawn()
