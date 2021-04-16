@@ -9,6 +9,12 @@
 #include "Board.hpp"
 #include "Player.hpp"
 #include "Piece.hpp"
+#include "Pieces/Bishop.hpp"
+#include "Pieces/King.hpp"
+#include "Pieces/Queen.hpp"
+#include "Pieces/Knight.hpp"
+#include "Pieces/Rook.hpp"
+#include "Pieces/Pawn.hpp"
 
 using namespace sf;
 using namespace std;
@@ -168,7 +174,7 @@ int main(int argc, char* const argv[])
                     // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
                     for(int i=0;i<8;i++)
                     {
-                        std::cout << "[";
+                        cout << "[";
                         for(int j=0;j<8;j++)
                         {
                             if (board[i][j] < 0)
