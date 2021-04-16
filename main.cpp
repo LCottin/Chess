@@ -11,6 +11,7 @@
 #include "Piece.hpp"
 
 using namespace sf;
+using namespace std;
 
 // Initialize array of 32 pieces (16 for each players)
 Sprite pieces[32];
@@ -172,18 +173,18 @@ int main(int argc, char* const argv[])
                         {
                             if (board[i][j] < 0)
                                 if (j < 7)
-                                    std::cout << board[i][j] <<"][";
+                                    cout << board[i][j] <<"][";
                                 else
-                                    std::cout << board[i][j] <<"]";
+                                    cout << board[i][j] <<"]";
                             else
                                 if (j < 7)
-                                    std::cout << " "<< board[i][j] <<"][";
+                                    cout << " "<< board[i][j] <<"][";
                                 else
-                                    std::cout << " "<< board[i][j] <<"]";
+                                    cout << " "<< board[i][j] <<"]";
                         }
-                        std::cout << std::endl;
+                        cout << endl;
                     }
-                    std::cout << std::endl;
+                    cout << endl;
                     isDragged = false;
                 }
         }
