@@ -77,9 +77,9 @@ int main(int argc, char* const argv[])
     int size = 55;
 
     // Scan through the board and load the 32 Sprites of both players with the right texture, accordingly with the values stored in the 2D matrix
-    for(int i=0;i<8;i++)
+    for(int i = 0; i < 8; i++)
     {
-        for(int j=0;j<8;j++)
+        for(int j = 0; j < 8; j++)
         {
             int n = board[i][j];
             if (n == 0) continue;
@@ -146,7 +146,7 @@ int main(int argc, char* const argv[])
             if (event.type == Event::MouseButtonPressed)
                 if (event.mouseButton.button == Mouse::Left)
                 {
-                    for (k=0; k<32; k++)
+                    for (k = 0; k < 32; k++)
                     {
                         if (pieces[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
                         {
@@ -172,10 +172,10 @@ int main(int argc, char* const argv[])
                     board[int(oldPos_y/55) - 1][int(oldPos_x/55) - 1] = 0;
 
                     // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
-                    for(int i=0;i<8;i++)
+                    for(int i = 0; i < 8; i++)
                     {
                         cout << "[";
-                        for(int j=0;j<8;j++)
+                        for(int j = 0; j < 8; j++)
                         {
                             if (board[i][j] < 0)
                                 if (j < 7)
@@ -209,7 +209,7 @@ int main(int argc, char* const argv[])
         window.draw(sprite_board);
 
         // Draws all the 32 pieces' sprites
-        for (int i=0; i<32; i++) window.draw(pieces[i]);;
+        for (int i = 0; i < 32; i++) window.draw(pieces[i]);;
 
         // Display on screen what has been rendered to the window
         window.display();
