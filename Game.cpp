@@ -28,7 +28,8 @@ void Game::playGame()
          * 0 : update counter
          * 1 : each player plays
          * 2 : check for check
-         * 3 : check for pat (in this case it's a draw)
+         * 3 : check for checkmate
+         * 4 : check for pat (in this case it's a draw)
          */
 
         /* 0 : update counter */
@@ -46,7 +47,16 @@ void Game::playGame()
             _WhiteTurn = true;
         }
         
-    
+        /* 2 : check for check */
+        //_Status = isCheck(); //looks for check and update game status
+        // if (_White->_Set) //white is checked
+        // {
+        //     _Status = CHECK;
+        // }
+        // else if (isCheck == -1) //black is chec
+        // {
+
+        // }
     }     
 }
 
