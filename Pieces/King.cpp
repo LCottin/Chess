@@ -5,6 +5,7 @@ King::King(const bool white) : Piece(white)
     if (_IsWhite) _Type = W_KING;
     else          _Type = B_KING;
 
+    _IsCheck     = false;
     _IsCheckmate = false;
 }
 
