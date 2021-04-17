@@ -1,6 +1,7 @@
 #ifndef __TYPES__
 #define __TYPES__
 
+//stores all the type of pieces
 enum TYPES 
 {
     B_PAWN = -6, B_BISHOP = -5, B_KNIGHT = -4, B_ROOK = -3, B_QUEEN = -2, B_KING = -1,
