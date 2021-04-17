@@ -8,6 +8,7 @@
 class King : public Piece
 {
     private:
+        bool _IsCheck;
         bool _IsCheckmate;
         
     public:
