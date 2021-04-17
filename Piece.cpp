@@ -4,6 +4,7 @@ Piece::Piece(const bool white)
 {
     _X          = 0;
     _Y          = 0;
+    _IsAlive    = true;
     _IsWhite    = white;
     _IsSelected = false;
 } 
@@ -17,6 +18,15 @@ void Piece::move(const int x, const int y)
 {
     _X = x;
     _Y = y;
+}
+
+/**
+ * Indicates if the piece is still alive
+ * @returns true if the piece is alive, else false
+ */
+bool Piece::isAlive() const
+{
+    return _IsAlive;
 }
 
 /**
