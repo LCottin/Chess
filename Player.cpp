@@ -43,7 +43,9 @@ Player::Player(const string name, const bool white)
  */
 int Player::getSize() const
 {
-    int nbPieces = _Rook.size() + _Bishop.size() + _Knight.size() + _Pawn.size();
+    int nbPieces = 1; //at least one piece : the king
+    
+    nbPieces += _Rook.size() + _Bishop.size() + _Knight.size() + _Pawn.size();
     if (_Queen->isAlive()) nbPieces++;
     
     return nbPieces;
