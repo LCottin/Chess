@@ -11,8 +11,8 @@ Player::Player(const string name, const bool white)
     _IsWhite    = white;
     _Ischeck    = false;
 
-    *_King  = new King(white); //init king
-    *_Queen = new Queen(white); //init queen
+    _King  = new King(white); //init king
+    _Queen = new Queen(white); //init queen
 
     //init pawns
     for (int i = 0; i < 6; i++)
