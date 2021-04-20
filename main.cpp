@@ -19,26 +19,25 @@
 using namespace sf;
 using namespace std;
 
-// Initialize array of 32 pieces (16 for each players)
-Sprite pieces[32];
-
-// Initialize 2D array (8x8) representing the chess board
-int board[8][8] = {                                          
-    {-3,-4,-5,-2,-1,-5,-4,-3},
-    {-6,-6,-6,-6,-6,-6,-6,-6},
-    { 0, 0, 0, 0, 0, 0, 0, 0},
-    { 0, 0, 0, 0, 0, 0, 0, 0},
-    { 0, 0, 0, 0, 0, 0, 0, 0},
-    { 0, 0, 0, 0, 0, 0, 0, 0},
-    { 1, 1, 1, 1, 1, 1, 1, 1},
-    { 4, 3 ,2 ,5, 6, 2, 3, 4}};
-
 int main(int argc, char* const argv[])
 {
     Game* game = new Game("Thomas", "Léonard");
     delete game;
 
+    // Initialize array of 32 pieces (16 for each players)
+    Sprite pieces[32];
 
+    // Initialize 2D array (8x8) representing the chess board
+    int board[8][8] = {                                          
+        {-3,-4,-5,-2,-1,-5,-4,-3},
+        {-6,-6,-6,-6,-6,-6,-6,-6},
+        { 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0},
+        { 1, 1, 1, 1, 1, 1, 1, 1},
+        { 4, 3 ,2 ,5, 6, 2, 3, 4}};
+        
     // This boolean variable is used for the drag'n'drop feature (True if a piece is being dragged)
     bool isDragged = false;                
 
@@ -70,7 +69,7 @@ int main(int argc, char* const argv[])
     // Create a sprite from the board texture
     Sprite sprite_board(texture_board);
 
-    // Those 2 variables are used in for
+    // Those 2 variables are used in for loops
     int k = 0, n = 0;
 
     // This variable represents the size of the pieces in the game (related to the size of each images 55x55 px²)
