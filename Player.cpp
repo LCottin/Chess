@@ -39,11 +39,11 @@ Player::Player(const string name, const bool white)
 
 /**
  * Gives the number of piece still alive in player's set
- * @returns Number of piece
+ * @returns Number of pieces
  */
 int Player::getSize() const
 {
-    int nbPieces = 1; //at least one piece : the king
+    int nbPieces = 1; //at least one piece is alive : the king
     
     nbPieces += _Rook.size() + _Bishop.size() + _Knight.size() + _Pawn.size();
     if (_Queen->isAlive()) nbPieces++;
