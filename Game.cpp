@@ -3,7 +3,7 @@
 
 Game::Game(const string name1, const string name2)
 {
-    cout << "Init Game" << endl;
+    cout << "Initing Game ... ";
     _White = new Player(name1, 1);
     _Black = new Player(name2, 0);
     _Board = new Board();
@@ -11,6 +11,7 @@ Game::Game(const string name1, const string name2)
     _TurnCount = 0;
     _WhiteTurn = true;
     _Status    = INIT;
+    cout << "Game ready !" << endl;
 } 
 
 /**
@@ -122,9 +123,10 @@ GAMESTATUS Game::isCheckMate() const
 
 Game::~Game()
 {
+    cout << "Destroying Game ... ";
     delete _White;
     delete _Black;
     delete _Board;
-    cout << "Destroy game" << endl;
+    cout << "Game destroyed" << endl;
 }
 
