@@ -21,8 +21,7 @@ using namespace std;
 
 int main(int argc, char* const argv[])
 {
-    Game* game = new Game("Thomas", "Léonard");
-    delete game;
+    /* TO MOVE TO CLASS BOARD.HPP AND BOARD.CPP ???? */
 
     // Initialize array of 32 pieces (16 for each players)
     Sprite pieces[32];
