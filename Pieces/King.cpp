@@ -30,6 +30,42 @@ bool King::isMoveValid(const int x, const int y) const
     return true;
 }
 
+/**
+ * Sets king's check status
+ * @param check new status
+ */
+void King::setCheck(const bool check)
+{
+    _IsCheck = check;
+}
+
+/**
+ * Sets king's checkmate status
+ * @param checkmate new status
+ */
+void King::setCheckMate(const bool checkmate)
+{
+    _IsCheckmate = checkmate;
+}
+
+/**
+ * Tells if the king is checked
+ * @returns true if it's checked, else false
+ */
+bool King::isCheck() const
+{
+    return _IsCheck;
+}
+
+/**
+ * Tells if the king is checkmated (needs to be check first)
+ * @returns true if it's checkmated, else false
+ */
+bool King::isCheckMate() const
+{
+    return _IsCheckmate && _IsCheck;
+}
+
 King::~King()
 {
 
