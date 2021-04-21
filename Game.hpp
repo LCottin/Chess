@@ -24,7 +24,9 @@ class Game
 
     public:
         Game(const string name1, const string name2);
-        void playGame();
+        void        playGame();
+        GAMESTATUS  isCheck() const;
+        GAMESTATUS  isCheckMate() const;
         ~Game();
 };
 
