@@ -9,7 +9,7 @@ Player::Player(const string name, const bool white)
 {
     _Pseudo     = name;
     _IsWhite    = white;
-    _Ischeck    = false;
+    _IsCheck    = false;
 
     _King  = new King(white); //init king
     _Queen = new Queen(white); //init queen
@@ -38,6 +38,15 @@ Player::Player(const string name, const bool white)
 }
 
 /**
+ * Gives the player's name
+ * @returns Player's pseudo
+ */
+string Player::getName() const
+{
+    return _Pseudo;
+}
+
+/**
  * Gives the number of piece still alive in player's set
  * @returns Number of pieces
  */
@@ -49,6 +58,24 @@ int Player::getSize() const
     if (_Queen->isAlive()) nbPieces++;
     
     return nbPieces;
+}
+
+/**
+ * INdicates if the player is cheched or not
+ * @returns true if check, else false
+ */
+bool Player::isCheck() const
+{
+    return _IsCheck;
+}
+
+/**
+ * Changes the player's status
+ * @param isCheck New player's status
+ */
+void Player::setCheck(const bool isCheck)
+{
+    _IsCheck = isCheck;
 }
 
 Player::~Player()

@@ -20,7 +20,7 @@ class Player
     private:
         string  _Pseudo;
         bool    _IsWhite;
-        bool    _Ischeck;
+        bool    _IsCheck;
 
         King*           _King;
         Queen*          _Queen;
@@ -31,8 +31,10 @@ class Player
 
     public:
         Player(const string name, const bool white);
-        int getSize() const;
-
+        int     getSize() const;
+        bool    isCheck() const;
+        void    setCheck(const bool isCheck);
+        string  getName() const;
         ~Player();
 };
 
