@@ -23,7 +23,7 @@ int main(int argc, char* const argv[])
 {
     /* TO MOVE TO CLASS BOARD.HPP AND BOARD.CPP ???? */
 
-// Initialize array of 32 pieces (16 for each players)
+    // Initialize array of 32 pieces (16 for each players)
 Sprite pieces[32];
 vector <Sprite> pieces2;
 
@@ -37,12 +37,6 @@ int board[8][8] = {
     { 0, 0, 0, 0, 0, 0, 0, 0},
     { 1, 1, 1, 1, 1, 1, 1, 1},
     { 4, 3 ,2 ,5, 6, 2, 3, 4}};
-
-int main(int argc, char* const argv[])
-{
-    Game* game = new Game("Thomas", "Léonard");
-    delete game;
-
 
     // This boolean variable is used for the drag'n'drop feature (True if a piece is being dragged)
     bool isDragged = false;                
