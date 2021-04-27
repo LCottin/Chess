@@ -24,11 +24,10 @@ int main(int argc, char* const argv[])
     /* TO MOVE TO CLASS BOARD.HPP AND BOARD.CPP ???? */
 
     // Initialize array of 32 pieces (16 for each players)
-Sprite pieces[32];
-vector <Sprite> pieces2;
+    vector <Sprite> pieces;
 
-// Initialize 2D array (8x8) representing the chess board
-int board[8][8] = {                                          
+    // Initialize 2D array (8x8) representing the chess board
+    int board[8][8] = {                                          
     {-3,-4,-5,-2,-1,-5,-4,-3},
     {-6,-6,-6,-6,-6,-6,-6,-6},
     { 0, 0, 0, 0, 0, 0, 0, 0},
@@ -98,52 +97,40 @@ int board[8][8] = {
             switch (n)
             {
                 case -6:
-                    pieces2.push_back(sprite_bp);
-                    pieces[k].setTexture(texture_bp);
+                    pieces.push_back(sprite_bp);
                     break;
                 case -5:
-                    pieces2.push_back(sprite_bb);
-                    pieces[k].setTexture(texture_bb);
+                    pieces.push_back(sprite_bb);
                     break;
                 case -4:
-                    pieces2.push_back(sprite_bkn);
-                    pieces[k].setTexture(texture_bkn);
+                    pieces.push_back(sprite_bkn);
                     break;
                 case -3:
-                    pieces2.push_back(sprite_br);
-                    pieces[k].setTexture(texture_br);
+                    pieces.push_back(sprite_br);
                     break;
                 case -2:
-                    pieces2.push_back(sprite_bq);
-                    pieces[k].setTexture(texture_bq);
+                    pieces.push_back(sprite_bq);
                     break;
                 case -1:
-                    pieces2.push_back(sprite_bk);
-                    pieces[k].setTexture(texture_bk);
+                    pieces.push_back(sprite_bk);
                     break;
                 case 1:
-                    pieces2.push_back(sprite_wp);
-                    pieces[k].setTexture(texture_wp);
+                    pieces.push_back(sprite_wp);
                     break;
                 case 2:
-                    pieces2.push_back(sprite_wb);
-                    pieces[k].setTexture(texture_wb);
+                    pieces.push_back(sprite_wb);
                     break;
                 case 3:
-                    pieces2.push_back(sprite_wkn);
-                    pieces[k].setTexture(texture_wkn);
+                    pieces.push_back(sprite_wkn);
                     break;
                 case 4:
-                    pieces2.push_back(sprite_wr);
-                    pieces[k].setTexture(texture_wr);
+                    pieces.push_back(sprite_wr);
                     break;
                 case 5:
-                    pieces2.push_back(sprite_wq);
-                    pieces[k].setTexture(texture_wq);
+                    pieces.push_back(sprite_wq);
                     break;
                 default :
-                    pieces2.push_back(sprite_wk);
-                    pieces[k].setTexture(texture_wk);
+                    pieces.push_back(sprite_wk);
                     break;
             }
             pieces[k].setPosition(size*(j+1),size*(i+1));
@@ -242,12 +229,21 @@ int board[8][8] = {
         window.draw(sprite_board);
 
         // Draws all the 32 pieces' sprites
-        for (int i = 0; i < 32; i++)
+        for (int i = 0; i < pieces.size(); i++)
         {
-            //if (Piece[i].isAlive())
-                window.draw(pieces[i]);
+            if (isDragged == false)
+                //if (Piece[i].isAlive())
+                    window.draw(pieces[i]);
+            else
+                if (i != n)
+                //if (Piece[i].isAlive())
+                    window.draw(pieces[i]);
         }
-
+        
+        // Draw the piece that is being dragged
+        if (isDragged == true)
+            window.draw(pieces[n]);
+            
         // Display on screen what has been rendered to the window
         window.display();
 
