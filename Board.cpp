@@ -83,6 +83,16 @@ void Board::setPiece(const Piece &piece)
 }
 
 /**
+ * Set a piece at the piece coordinates
+ * @param x,y Coordinates of the new piece
+ * @param value Piece to set
+ */
+void Board::setPiece(const int x, const int y, const int value)
+{
+    _Board[x][y] = value;
+}
+
+/**
  * Get a piece at a given position
  * @param x,y Position 
  * @returns The number of the piece
