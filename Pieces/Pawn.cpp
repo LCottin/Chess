@@ -4,6 +4,8 @@ Pawn::Pawn(const bool white) : Piece(white)
 {
     if (_IsWhite) _Type = W_PAWN;
     else          _Type = B_PAWN;
+
+    _FirstMove = true;
 }
 
 /**
@@ -19,7 +21,10 @@ bool Pawn::isMoveValid(const int x, const int y) const
     //if the piece doesn't move
     if (dx == 0 && dy == 0) return true;
     
-    //check distance on X : only one tile forward is allowed
+    //on first move, pawn can move two tiles forward
+    if (_FirstMove && dx > 2) return false;
+
+    //otherwise, only one tile forward is allowed
     if (dx  > 1) return false;
 
     //Y tile should not change

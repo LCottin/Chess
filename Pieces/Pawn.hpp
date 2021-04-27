@@ -8,6 +8,7 @@
 class Pawn : public Piece
 {
     private:
+        bool _FirstMove;
 
     public:
         Pawn(const bool white);
