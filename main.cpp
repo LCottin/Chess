@@ -166,9 +166,18 @@ int main(int argc, char* const argv[])
                 {
                     Vector2f newPos = Vector2f(size*int(Vector2f (pieces[n].getPosition() + Vector2f(size/2, size/2)).x/size), size*int(Vector2f (pieces[n].getPosition() + Vector2f(size/2, size/2)).y/size));
                     pieces[n].setPosition(newPos);
-                    board[int(newPos.y/55) - 1][int(newPos.x/55) - 1] = board[int(oldPos_y/55) - 1][int(oldPos_x/55) - 1];
-                    board[int(oldPos_y/55) - 1][int(oldPos_x/55) - 1] = 0;
 
+                    cout << int(newPos.x) << endl;
+                    cout << int(newPos.y)  << endl;
+                    cout << oldPos_x << endl;
+                    cout << oldPos_y << endl;
+
+                    if (int(newPos.x) != oldPos_x || int(newPos.y) != oldPos_y)
+                    {
+                        board[int(newPos.y/55) - 1][int(newPos.x/55) - 1] = board[int(oldPos_y/55) - 1][int(oldPos_x/55) - 1];
+                        board[int(oldPos_y/55) - 1][int(oldPos_x/55) - 1] = 0;
+                    }
+                    
                     // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
                     for(int i = 0; i < 8; i++)
                     {
@@ -207,7 +216,11 @@ int main(int argc, char* const argv[])
         window.draw(sprite_board);
 
         // Draws all the 32 pieces' sprites
-        for (int i = 0; i < 32; i++) window.draw(pieces[i]);;
+        for (int i = 0; i < 32; i++)
+        {
+            //if (Piece[i].isAlive())
+                window.draw(pieces[i]);
+        }
 
         // Display on screen what has been rendered to the window
         window.display();
