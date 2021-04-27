@@ -12,24 +12,40 @@ Board::Board()
         _InitBoard[i]   = new int [_SizeY];
     }
 
+    //init first line
+    _InitBoard[0][0] = -3;
+    _InitBoard[0][1] = -4;
+    _InitBoard[0][2] = -5;
+    _InitBoard[0][3] = -2;
+    _InitBoard[0][4] = -1;
+    _InitBoard[0][5] = -5;
+    _InitBoard[0][5] = -4;
+    _InitBoard[0][5] = -3;
+
+    //init second and second to last line
+    for (size_t i = 0; i < _SizeX; i++)
+    {
+        _InitBoard[1][i] = -6;
+        _InitBoard[6][i] =  1;
+    }
+
+    //init last line
+    _InitBoard[7][0] = 4;
+    _InitBoard[7][1] = 3;
+    _InitBoard[7][2] = 2;
+    _InitBoard[7][3] = 5;
+    _InitBoard[7][4] = 6;
+    _InitBoard[7][5] = 2;
+    _InitBoard[7][5] = 3;
+    _InitBoard[7][5] = 4;
+    
+    
     //fills both board
     for (int i = 0; i < _SizeX; i++)
     {
         for (int j = 0; j < _SizeY; j++)
         {
             _Board[i][j] = 0;
-
-            // if i XOR j then we change 
-            if ((i%2 && !(j%2)) || (j%2 && !(i%2)))
-            {
-                if (_IsTopLeftWhite) _InitBoard[i][j] = 1;
-                else                 _InitBoard[i][j] = 0;
-            }
-            else 
-            {
-                if (_IsTopLeftWhite) _InitBoard[i][j] = 0;
-                else                 _InitBoard[i][j] = 1;
-            }
         }   
     }
 }
