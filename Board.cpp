@@ -12,6 +12,16 @@ Board::Board()
         _InitBoard[i]   = new int [_SizeY];
     }
 
+     //fills both board
+    for (int i = 0; i < _SizeX; i++)
+    {
+        for (int j = 0; j < _SizeY; j++)
+        {
+            _Board[i][j]        = 0;
+            _InitBoard[i][j]    = 0;
+        }   
+    }
+
     //init first line
     _InitBoard[0][0] = -3;
     _InitBoard[0][1] = -4;
@@ -38,16 +48,6 @@ Board::Board()
     _InitBoard[7][5] = 2;
     _InitBoard[7][5] = 3;
     _InitBoard[7][5] = 4;
-    
-    
-    //fills both board
-    for (int i = 0; i < _SizeX; i++)
-    {
-        for (int j = 0; j < _SizeY; j++)
-        {
-            _Board[i][j] = 0;
-        }   
-    }
 }
 
 /**
