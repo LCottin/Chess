@@ -23,20 +23,27 @@ int main(int argc, char* const argv[])
 {
     /* TO MOVE TO CLASS BOARD.HPP AND BOARD.CPP ???? */
 
-    // Initialize array of 32 pieces (16 for each players)
-    Sprite pieces[32];
+// Initialize array of 32 pieces (16 for each players)
+Sprite pieces[32];
+vector <Sprite> pieces2;
 
-    // Initialize 2D array (8x8) representing the chess board
-    int board[8][8] = {                                          
-        {-3,-4,-5,-2,-1,-5,-4,-3},
-        {-6,-6,-6,-6,-6,-6,-6,-6},
-        { 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0},
-        { 1, 1, 1, 1, 1, 1, 1, 1},
-        { 4, 3 ,2 ,5, 6, 2, 3, 4}};
-        
+// Initialize 2D array (8x8) representing the chess board
+int board[8][8] = {                                          
+    {-3,-4,-5,-2,-1,-5,-4,-3},
+    {-6,-6,-6,-6,-6,-6,-6,-6},
+    { 0, 0, 0, 0, 0, 0, 0, 0},
+    { 0, 0, 0, 0, 0, 0, 0, 0},
+    { 0, 0, 0, 0, 0, 0, 0, 0},
+    { 0, 0, 0, 0, 0, 0, 0, 0},
+    { 1, 1, 1, 1, 1, 1, 1, 1},
+    { 4, 3 ,2 ,5, 6, 2, 3, 4}};
+
+int main(int argc, char* const argv[])
+{
+    Game* game = new Game("Thomas", "Léonard");
+    delete game;
+
+
     // This boolean variable is used for the drag'n'drop feature (True if a piece is being dragged)
     bool isDragged = false;                
 
@@ -67,56 +74,81 @@ int main(int argc, char* const argv[])
 
     // Create a sprite from the board texture
     Sprite sprite_board(texture_board);
+    Sprite sprite_bb(texture_bb);
+    Sprite sprite_bp(texture_bp);
+    Sprite sprite_bkn(texture_bkn);
+    Sprite sprite_br(texture_br);
+    Sprite sprite_bq(texture_bq);
+    Sprite sprite_bk(texture_bk);
+    Sprite sprite_wp(texture_wp);
+    Sprite sprite_wb(texture_wb);
+    Sprite sprite_wkn(texture_wkn);
+    Sprite sprite_wr(texture_wr);
+    Sprite sprite_wq(texture_wq);
+    Sprite sprite_wk(texture_wk);
 
-    // Those 2 variables are used in for loops
+
+    // Those 2 variables are used in for
     int k = 0, n = 0;
 
     // This variable represents the size of the pieces in the game (related to the size of each images 55x55 px²)
     int size = 55;
 
     // Scan through the board and load the 32 Sprites of both players with the right texture, accordingly with the values stored in the 2D matrix
-    for(int i = 0; i < 8; i++)
+    for(int i=0;i<8;i++)
     {
-        for(int j = 0; j < 8; j++)
+        for(int j=0;j<8;j++)
         {
             int n = board[i][j];
             if (n == 0) continue;
             switch (n)
             {
                 case -6:
+                    pieces2.push_back(sprite_bp);
                     pieces[k].setTexture(texture_bp);
                     break;
                 case -5:
+                    pieces2.push_back(sprite_bb);
                     pieces[k].setTexture(texture_bb);
                     break;
                 case -4:
+                    pieces2.push_back(sprite_bkn);
                     pieces[k].setTexture(texture_bkn);
                     break;
                 case -3:
+                    pieces2.push_back(sprite_br);
                     pieces[k].setTexture(texture_br);
                     break;
                 case -2:
+                    pieces2.push_back(sprite_bq);
                     pieces[k].setTexture(texture_bq);
                     break;
                 case -1:
+                    pieces2.push_back(sprite_bk);
                     pieces[k].setTexture(texture_bk);
                     break;
                 case 1:
+                    pieces2.push_back(sprite_wp);
                     pieces[k].setTexture(texture_wp);
                     break;
                 case 2:
+                    pieces2.push_back(sprite_wb);
                     pieces[k].setTexture(texture_wb);
                     break;
                 case 3:
+                    pieces2.push_back(sprite_wkn);
                     pieces[k].setTexture(texture_wkn);
                     break;
                 case 4:
+                    pieces2.push_back(sprite_wr);
                     pieces[k].setTexture(texture_wr);
                     break;
                 case 5:
+                    pieces2.push_back(sprite_wq);
                     pieces[k].setTexture(texture_wq);
                     break;
                 default :
+                    pieces2.push_back(sprite_wk);
                     pieces[k].setTexture(texture_wk);
                     break;
             }
