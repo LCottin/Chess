@@ -1,4 +1,4 @@
- #include <iostream>
+#include <iostream>
 #include <string>
 #include <vector>
 #include <time.h>
@@ -155,6 +155,7 @@ int main(int argc, char* const argv[])
             // If so, stores the actual index, the original position of the piece and the distance between 
             // the mouse and the top left angle of the piece at the moment of the click.
             if (event.type == Event::MouseButtonPressed)
+            {
                 if (event.mouseButton.button == Mouse::Left)
                 {
                     for (k = 0; k < 32; k++)
@@ -171,10 +172,12 @@ int main(int argc, char* const argv[])
                         }
                     }
                 }
+            }
 
             // If the mouse left button is released, converts the real position (in pixels) into a row/column position,
             // updates the 2D board matrix (puts a 0 at the old position and the piece's value at the arrival position)
             if (event.type == Event::MouseButtonReleased)
+            {
                 if (event.mouseButton.button == Mouse::Left)
                 {
                     Vector2f newPos = Vector2f(size*int(Vector2f (pieces[n].getPosition() + Vector2f(size/2, size/2)).x/size), size*int(Vector2f (pieces[n].getPosition() + Vector2f(size/2, size/2)).y/size));
@@ -213,6 +216,7 @@ int main(int argc, char* const argv[])
                     cout << endl;
                     isDragged = false;
                 }
+            }
         }
 
         // This is used during the whole movment (from left button pressed until left button released)
