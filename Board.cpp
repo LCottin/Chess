@@ -29,8 +29,8 @@ Board::Board()
     _InitBoard[0][3] = -2;
     _InitBoard[0][4] = -1;
     _InitBoard[0][5] = -5;
-    _InitBoard[0][5] = -4;
-    _InitBoard[0][5] = -3;
+    _InitBoard[0][6] = -4;
+    _InitBoard[0][7] = -3;
 
     //init second and second to last line
     for (size_t i = 0; i < _SizeX; i++)
@@ -46,8 +46,8 @@ Board::Board()
     _InitBoard[7][3] = 5;
     _InitBoard[7][4] = 6;
     _InitBoard[7][5] = 2;
-    _InitBoard[7][5] = 3;
-    _InitBoard[7][5] = 4;
+    _InitBoard[7][6] = 3;
+    _InitBoard[7][7] = 4;
 
     _Board = _InitBoard;
 }
