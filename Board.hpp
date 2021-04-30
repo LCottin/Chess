@@ -19,6 +19,7 @@ class Board
     public:
         Board();
         void printBoard(const bool printInit) const;
+        int getInitPiece(const int x, const int y) const;
         void setPiece(const Piece &piece);
         void setPiece(const int x, const int y, const int value);
         int getPiece(const int x, const int y) const;

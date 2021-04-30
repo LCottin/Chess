@@ -48,7 +48,10 @@ Board::Board()
     _InitBoard[7][5] = 2;
     _InitBoard[7][5] = 3;
     _InitBoard[7][5] = 4;
+
+    _Board = _InitBoard;
 }
+
 
 /**
  * Prints a board
@@ -90,6 +93,16 @@ void Board::setPiece(const Piece &piece)
 void Board::setPiece(const int x, const int y, const int value)
 {
     _Board[x][y] = value;
+}
+
+/**
+ * Get a piece at a given position from the init board
+ * @param x,y Position 
+ * @returns The number of the piece
+ */
+int Board::getInitPiece(const int x, const int y) const
+{
+    return _InitBoard[x][y];
 }
 
 /**
