@@ -13,7 +13,8 @@ SOURCES = 	main.cpp 			\
 			Pieces/King.cpp 	\
 			Pieces/Queen.cpp 	\
 			Pieces/Bishop.cpp 	\
-			Pieces/Knight.cpp 
+			Pieces/Knight.cpp   \
+			Display.cpp
 
 
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -21,6 +22,9 @@ OBJECTS = $(SOURCES:.cpp=.o)
 all : $(OBJECTS)
 	$(CC) $(FLAGS) $(SFML) $(OBJECTS) -o $(EXEC) 
 
+Display.o : Display.cpp
+	$(CC) $(FLAGS) -c $^
+	
 Game.o : Game.cpp 
 	$(CC) $(FLAGS) -c $^
 
