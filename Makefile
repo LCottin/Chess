@@ -1,40 +1,60 @@
-all : main.o Board.o Game.o Piece.o Player.o Pieces/Pawn.o Pieces/Rook.o Pieces/Bishop.o Pieces/King.o Pieces/Queen.o Pieces/Knight.o
-	g++ main.o Board.o Game.o Piece.o Player.o Pieces/Pawn.o Pieces/Rook.o Pieces/Bishop.o Pieces/King.o Pieces/Queen.o Pieces/Knight.o -o main -std=c++17 -lsfml-graphics -lsfml-system -lsfml-window -Wall
+CC = g++
+FLAGS = -std=c++17 -Wall
+SFML = -lsfml-graphics -lsfml-system -lsfml-window
+EXEC = main
 
-Game.o : Game.cpp Game.hpp
-	g++ -std=c++17 -Wall -c Game.cpp
+SOURCES = 	main.cpp 			\
+			Game.cpp 			\
+			Player.cpp 			\
+			Piece.cpp 			\
+			Board.cpp 			\
+			Pieces/Pawn.cpp 	\
+			Pieces/Rook.cpp 	\
+			Pieces/King.cpp 	\
+			Pieces/Queen.cpp 	\
+			Pieces/Bishop.cpp 	\
+			Pieces/Knight.cpp 
 
-Player.o : Player.cpp Player.hpp
-	g++ -std=c++17 -Wall -c Player.cpp
+
+OBJECTS = $(SOURCES:.cpp=.o)
+
+all : $(OBJECTS)
+	$(CC) $(FLAGS) $(SFML) $(OBJECTS) -o $(EXEC) 
+
+Game.o : Game.cpp 
+	$(CC) $(FLAGS) -c $^
+
+Player.o : Player.cpp 
+	$(CC) $(FLAGS) -c $^
 
 main.o : main.cpp
-	g++ -std=c++17 -Wall -c main.cpp
+	$(CC) $(FLAGS) -c $^
 
-Piece.o : Piece.cpp Piece.hpp
-	g++ -std=c++17 -Wall -c Piece.cpp
+Piece.o : Piece.cpp 
+	$(CC) $(FLAGS) -c $^
 
-Board.o : Board.cpp Board.hpp
-	g++ -std=c++17 -Wall -c Board.cpp
+Board.o : Board.cpp 
+	$(CC) $(FLAGS) -c $^
 
-Pawn.o : Pieces/Pawn.cpp Pieces/Pawn.hpp
-	g++ -std=c++17 -Wall -c Pawn.cpp -lm
+Pawn.o : Pieces/Pawn.cpp 
+	$(CC) $(FLAGS) -c $^ -lm
 
-Rook.o : Pieces/Rook.cpp Pieces/Rook.hpp
-	g++ -std=c++17 -Wall -c Rook.cpp -lm
+Rook.o : Pieces/Rook.cpp 
+	$(CC) $(FLAGS) -c $^ -lm
 
-Bishop.o : Pieces/Bishop.cpp Pieces/Bishop.hpp
-	g++ -std=c++17 -Wall -c Bishop.cpp -lm
+Bishop.o : Pieces/Bishop.cpp 
+	$(CC) $(FLAGS) -c $^ -lm
 
-Knight.o : Pieces/Knight.cpp Pieces/Knight.hpp
-	g++ -std=c++17 -Wall -c Knight.cpp -lm
+Knight.o : Pieces/Knight.cpp 
+	$(CC) $(FLAGS) -c $^ -lm
 
-King.o : Pieces/King.cpp Pieces/King.hpp
-	g++ -std=c++17 -Wall -c King.cpp -lm
+King.o : Pieces/King.cpp 
+	$(CC) $(FLAGS) -c $^ -lm
 
-Queen.o : Pieces/Queen.cpp Pieces/Queen.hpp
-	g++ -std=c++17 -Wall -c Queen.cpp -lm
+Queen.o : Pieces/Queen.cpp 
+	$(CC) $(FLAGS) -c $^ -lm
 
 clean:
 	rm -rf *.o
 	rm -rf Pieces/*.o
-	rm main
+	rm $(EXEC)
