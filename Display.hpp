@@ -20,6 +20,9 @@ class Display
         //new board 
         Board* _Board;
 
+        //title of the window
+        string _Title;
+
         //vector of pieces of each player
         vector <Sprite> _Pieces;
 
@@ -33,15 +36,15 @@ class Display
         float _Dx, _Dy;
 
         //Textures initialization
-        Texture texture_board, texture_bp, texture_bb, texture_bkn, texture_br, texture_bk, texture_bq, texture_wp, texture_wb, texture_wkn, texture_wr, texture_wq, texture_wk;
+        Texture _TextureBoard, _TextureBp, _TextureBb, _TextureBkn, _TextureBr, _TextureBk, _TextureBq, _TextureWp, _TextureWb, _TextureWkn, _TextureWr, _TextureWq, _TextureWk;
     
         //Sprites initializations
-        Sprite sprite_board, sprite_bb, sprite_bp, sprite_bkn, sprite_br, sprite_bq, sprite_bk, sprite_wp, sprite_wb, sprite_wkn, sprite_wr, sprite_wq, sprite_wk;
+        Sprite _SpriteBoard, _SpriteBb, _SpriteBp, _SpriteBkn, _SpriteBr, _SpriteBq, _SpriteBk, _SpriteWp, _SpriteWb, _SpriteWkn, _SpriteWr, _SpriteWq, _SpriteWk;
         int _Size;
         int k, n;
 
     public:
-        Display();
+        Display(const string title = "ChessGame");
         void show();
         ~Display();
 };

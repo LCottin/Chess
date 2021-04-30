@@ -1,10 +1,10 @@
 #include "Display.hpp"
 
 
-Display::Display()
+Display::Display(const string title)
 {
     _Board = new Board();
-
+    _Title = title;
 
     //Variables initialisation
     _IsDragged = false;   
@@ -17,80 +17,80 @@ Display::Display()
     n = 0;
 
     //textures initialisation
-    texture_bp.loadFromFile("Textures/bp.png");
-    texture_bb.loadFromFile("Textures/bb.png");
-    texture_bkn.loadFromFile("Textures/bkn.png");
-    texture_br.loadFromFile("Textures/br.png");
-    texture_bq.loadFromFile("Textures/bq.png");
-    texture_bk.loadFromFile("Textures/bk.png");
-    texture_wp.loadFromFile("Textures/wp.png");
-    texture_wb.loadFromFile("Textures/wb.png");
-    texture_wkn.loadFromFile("Textures/wkn.png");
-    texture_wr.loadFromFile("Textures/wr.png");
-    texture_wq.loadFromFile("Textures/wq.png");
-    texture_wk.loadFromFile("Textures/wk.png");
-    texture_board.loadFromFile("Textures/board.jpg");
+    _TextureBp.loadFromFile("Textures/bp.png");
+    _TextureBb.loadFromFile("Textures/bb.png");
+    _TextureBkn.loadFromFile("Textures/bkn.png");
+    _TextureBr.loadFromFile("Textures/br.png");
+    _TextureBq.loadFromFile("Textures/bq.png");
+    _TextureBk.loadFromFile("Textures/bk.png");
+    _TextureWp.loadFromFile("Textures/wp.png");
+    _TextureWb.loadFromFile("Textures/wb.png");
+    _TextureWkn.loadFromFile("Textures/wkn.png");
+    _TextureWr.loadFromFile("Textures/wr.png");
+    _TextureWq.loadFromFile("Textures/wq.png");
+    _TextureWk.loadFromFile("Textures/wk.png");
+    _TextureBoard.loadFromFile("Textures/board.jpg");
 
     //Sprites init
-    sprite_board.setTexture(texture_board);
-    sprite_bb.setTexture(texture_bb);
-    sprite_bp.setTexture(texture_bp);
-    sprite_bkn.setTexture(texture_bkn);
-    sprite_br.setTexture(texture_br);
-    sprite_bq.setTexture(texture_bq);
-    sprite_bk.setTexture(texture_bk);
-    sprite_wp.setTexture(texture_wp);
-    sprite_wb.setTexture(texture_wb);
-    sprite_wkn.setTexture(texture_wkn);
-    sprite_wr.setTexture(texture_wr);
-    sprite_wq.setTexture(texture_wq);
-    sprite_wk.setTexture(texture_wk);
+    _SpriteBoard.setTexture(_TextureBoard);
+    _SpriteBb.setTexture(_TextureBb);
+    _SpriteBp.setTexture(_TextureBp);
+    _SpriteBkn.setTexture(_TextureBkn);
+    _SpriteBr.setTexture(_TextureBr);
+    _SpriteBq.setTexture(_TextureBq);
+    _SpriteBk.setTexture(_TextureBk);
+    _SpriteWp.setTexture(_TextureWp);
+    _SpriteWb.setTexture(_TextureWb);
+    _SpriteWkn.setTexture(_TextureWkn);
+    _SpriteWr.setTexture(_TextureWr);
+    _SpriteWq.setTexture(_TextureWq);
+    _SpriteWk.setTexture(_TextureWk);
 
 
     // Scan through the board and load the 32 Sprites of both players with the right texture, accordingly with the values stored in the 2D matrix
-    for(int i=0;i<8;i++)
+    for(int i = 0; i < 8; i++)
     {
-        for(int j=0;j<8;j++)
+        for(int j = 0; j < 8; j++)
         {
             int n = _Board->getInitPiece(i, j);
             if (n == 0) continue;
             switch (n)
             {
                 case -6:
-                    _Pieces.push_back(sprite_bp);
+                    _Pieces.push_back(_SpriteBp);
                     break;
                 case -5:
-                    _Pieces.push_back(sprite_bb);
+                    _Pieces.push_back(_SpriteBb);
                     break;
                 case -4:
-                    _Pieces.push_back(sprite_bkn);
+                    _Pieces.push_back(_SpriteBkn);
                     break;
                 case -3:
-                    _Pieces.push_back(sprite_br);
+                    _Pieces.push_back(_SpriteBr);
                     break;
                 case -2:
-                    _Pieces.push_back(sprite_bq);
+                    _Pieces.push_back(_SpriteBq);
                     break;
                 case -1:
-                    _Pieces.push_back(sprite_bk);
+                    _Pieces.push_back(_SpriteBk);
                     break;
                 case 1:
-                    _Pieces.push_back(sprite_wp);
+                    _Pieces.push_back(_SpriteWp);
                     break;
                 case 2:
-                    _Pieces.push_back(sprite_wb);
+                    _Pieces.push_back(_SpriteWb);
                     break;
                 case 3:
-                    _Pieces.push_back(sprite_wkn);
+                    _Pieces.push_back(_SpriteWkn);
                     break;
                 case 4:
-                    _Pieces.push_back(sprite_wr);
+                    _Pieces.push_back(_SpriteWr);
                     break;
                 case 5:
-                    _Pieces.push_back(sprite_wq);
+                    _Pieces.push_back(_SpriteWq);
                     break;
                 default :
-                    _Pieces.push_back(sprite_wk);
+                    _Pieces.push_back(_SpriteWk);
                     break;
             }
             _Pieces[k].setPosition(_Size*(j+1),_Size*(i+1));
@@ -106,7 +106,7 @@ void Display::show()
 {
 
     // Set up the window resolution and the window title
-    RenderWindow window(VideoMode(550, 550), "ChessGame");
+    RenderWindow window(VideoMode(550, 550), _Title);
 
     // Loop until the window is closed by the user
     while (window.isOpen())
@@ -201,7 +201,7 @@ void Display::show()
         window.clear();
 
         // Draws the board srpite
-        window.draw(sprite_board);
+        window.draw(_SpriteBoard);
 
         // Draws all the 32 pieces' sprites
         for (int i = 0; i < _Pieces.size(); i++)
