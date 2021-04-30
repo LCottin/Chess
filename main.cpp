@@ -9,6 +9,7 @@
 #include "Board.hpp"
 #include "Player.hpp"
 #include "Piece.hpp"
+#include "Display.hpp"
 #include "Pieces/Bishop.hpp"
 #include "Pieces/King.hpp"
 #include "Pieces/Queen.hpp"
@@ -19,7 +20,7 @@
 using namespace sf;
 using namespace std;
 
-int main(int argc, char* const argv[])
+void display()
 {
     /* TO MOVE TO CLASS BOARD.HPP AND BOARD.CPP ???? */
 
@@ -48,7 +49,7 @@ int main(int argc, char* const argv[])
 
     // Set up the window resolution and the window title
     RenderWindow window(VideoMode(550, 550), "ChessGame");
-    
+
     // Texture initializations
     Texture texture_board, texture_bp, texture_bb, texture_bkn, texture_br, texture_bk, texture_bq, texture_wp, texture_wb, texture_wkn, texture_wr, texture_wq, texture_wk;
     texture_bp.loadFromFile("Textures/bp.png");
@@ -86,6 +87,7 @@ int main(int argc, char* const argv[])
 
     // This variable represents the size of the pieces in the game (related to the size of each images 55x55 px²)
     int size = 55;
+
 
     // Scan through the board and load the 32 Sprites of both players with the right texture, accordingly with the values stored in the 2D matrix
     for(int i=0;i<8;i++)
@@ -252,5 +254,12 @@ int main(int argc, char* const argv[])
         window.display();
 
     }
+}
+
+int main(int argc, char* const argv[])
+{
+    Display* _dis = new Display();
+    _dis->show();
+    delete _dis;
     return 0;
 }
