@@ -1,0 +1,3 @@
+Vérifier si le joueur dont c'est le tour pour ne déplacer que ses pièces
+Vérifier si le move est valide
+Si le move est valide, donner la main au prochain joueur
