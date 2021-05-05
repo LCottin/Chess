@@ -132,13 +132,16 @@ void Display::show()
                     {
                         if (_Pieces[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
                         {
-                            n = k;
-                            _IsDragged = true;
+                            // if(PIECE DRAGGED BELONGS TO THE PLAYER THAT IS CURRENTLY PLAYING)
+                            {
+                                n = k;
+                                _IsDragged = true;
 
-                            _OldPosX = _Pieces[n].getPosition().x;
-                            _OldPosY = _Pieces[n].getPosition().y;
-                            _Dx = mouse_pos.x - _OldPosX;
-                            _Dy = mouse_pos.y - _OldPosY;
+                                _OldPosX = _Pieces[n].getPosition().x;
+                                _OldPosY = _Pieces[n].getPosition().y;
+                                _Dx = mouse_pos.x - _OldPosX;
+                                _Dy = mouse_pos.y - _OldPosY;
+                            }
                         }
                     }
                 }
@@ -151,20 +154,26 @@ void Display::show()
                 if (event.mouseButton.button == Mouse::Left)
                 {
                     Vector2f newPos = Vector2f(_Size*int(Vector2f (_Pieces[n].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Pieces[n].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
-                    _Pieces[n].setPosition(newPos);
+                   
+                    if(((int(newPos.x) < 55) || (int(newPos.x) > 495)) || ((int(newPos.y) < 55) || (int(newPos.y) > 495)))
+                    {
+                        //if(TEST IF MOVE IS VALID)
+                        {
+                            newPos.x = _OldPosX;
+                            newPos.y = _OldPosY;
+                            // END PLAYER TURN
+                        }       
+                    }
 
-                    cout << int(newPos.x) << endl;
-                    cout << int(newPos.y)  << endl;
-                    cout << _OldPosX << endl;
-                    cout << _OldPosY << endl;
+                     _Pieces[n].setPosition(newPos);
 
-                    if (int(newPos.x) != _OldPosX || int(newPos.y) != _OldPosY)
+                    if ((int(newPos.x) != _OldPosX) || (int(newPos.y) != _OldPosY))
                     {
                         int temp = _Board->getPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1);
                         _Board->setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
                         _Board->setPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1, 0);
                     }
-                    
+
                     // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
                     for(int i = 0; i < 8; i++)
                     {
@@ -192,7 +201,10 @@ void Display::show()
 
         // This is used during the whole movment (from left button pressed until left button released)
         // It'll move the position of the sprite in real-time during the mouse movement.
-        if (_IsDragged)
+        
+        if(_IsDragged)
+        //if (_IsDragged && ((mouse_pos.x > 60) && (mouse_pos.x < 490)) && ((mouse_pos.y > 60) && (mouse_pos.y - _Dy < 490)))
+        //if (_IsDragged && (((mouse_pos.x - _Dx)> 54) && ((mouse_pos.x - _Dx) < 495)) && (((mouse_pos.y - _Dy) > 54) && ((mouse_pos.y - _Dy < 495))))
         {
             _Pieces[n].setPosition(mouse_pos.x - _Dx, mouse_pos.y - _Dy);
         }
@@ -221,7 +233,6 @@ void Display::show()
             
         // Display on screen what has been rendered to the window
         window.display();
-
     }
 }
 
