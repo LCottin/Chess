@@ -20,7 +20,7 @@ SOURCES = 	main.cpp 			\
 OBJECTS = $(SOURCES:.cpp=.o)
 
 all : $(OBJECTS)
-	$(CC) $(FLAGS) $(SFML) $(OBJECTS) -o $(EXEC) 
+	$(CC) $(OBJECTS) $(FLAGS) $(SFML) -o $(EXEC) 
 
 Display.o : Display.cpp
 	$(CC) $(FLAGS) -c $^
