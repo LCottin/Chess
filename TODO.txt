@@ -1,3 +1,7 @@
 Vérifier si le joueur dont c'est le tour pour ne déplacer que ses pièces
 Vérifier si le move est valide
 Si le move est valide, donner la main au prochain joueur
+
+Faire la fonction check
+Faire la fonction checkmate
+Faire la fonction qui actualise la board a chaque tour de joueur
