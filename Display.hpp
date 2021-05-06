@@ -7,8 +7,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "Game.hpp"
+#include "GameStatus.hpp"
 #include "Board.hpp"
+#include "Player.hpp"
 
 using namespace std;
 using namespace sf;
@@ -17,23 +18,12 @@ class Display
 {
     private:
         
-        //new board 
-        //extern Board _Board;
-
+    //Drawing variables
         //title of the window
         string _Title;
 
         //vector of pieces of each player
         vector <Sprite> _Pieces;
-
-        // This boolean variable is used for the drag'n'drop feature (True if a piece is being dragged)
-        bool _IsDragged;     
-
-        //Stores old position
-        float _OldPosX, _OldPosY;
-
-        //Stores dx and dy
-        float _Dx, _Dy;
 
         //Textures initialization
         Texture _TextureBoard, _TextureBp, _TextureBb, _TextureBkn, _TextureBr, _TextureBk, _TextureBq, _TextureWp, _TextureWb, _TextureWkn, _TextureWr, _TextureWq, _TextureWk;
@@ -41,11 +31,19 @@ class Display
         //Sprites initializations
         Sprite _SpriteBoard, _SpriteBb, _SpriteBp, _SpriteBkn, _SpriteBr, _SpriteBq, _SpriteBk, _SpriteWp, _SpriteWb, _SpriteWkn, _SpriteWr, _SpriteWq, _SpriteWk;
         int _Size;
-        int k, n;
+
+    //Game variables
+        Player*     _White;         //white player
+        Player*     _Black;         //black player
+        int         _TurnCount;     //how many turns have been played
+        bool        _IsWhiteTurn;   //indicates how's turn it is
+        GAMESTATUS  _Status;        //stores current status of the game     
 
     public:
-        Display(const string title = "ChessGame");
-        void show();
+        Display(const string name1, const string name2, const string title = "ChessGame");
+        void playGame();
+        GAMESTATUS isCheck() const;
+        GAMESTATUS isCheckMate() const;
         ~Display();
 };
 

@@ -1,19 +1,19 @@
 #include "Display.hpp"
 
 
-Display::Display(const string title)
+Display::Display(const string name1, const string name2, const string title)
 {
-    _Title = title;
-
     //Variables initialisation
-    _IsDragged = false;   
-    _Dx = 0;
-    _Dy = 0;
-    _OldPosX = 0;
-    _OldPosY = 0;
+    _Title = title;
     _Size = 55;
-    k = 0;
-    n = 0;
+
+    //Game initialisation
+    _White = new Player(name1, 1);
+    _Black = new Player(name2, 0);
+
+    _TurnCount      = 0;
+    _IsWhiteTurn    = true;
+    _Status         = INIT;
 
     //textures initialisation
     _TextureBp.loadFromFile("Textures/bp.png");
@@ -47,6 +47,7 @@ Display::Display(const string title)
 
 
     // Scan through the board and load the 32 Sprites of both players with the right texture, accordingly with the values stored in the 2D matrix
+    int k = 0;
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -99,131 +100,227 @@ Display::Display(const string title)
 }
 
 /**
- * Draw the board on the screen
+ * Starts a new game and follow this patern :
+ * 0 : update counter and next turn
+ * 1 : check for check
+ * 2 : check for checkmate
+ * 3 : check for pat (in this case it's a draw) : done later
+ * 4 : one player plays and window draws the board
+ * MORE DETAILS ARE WELCOME
  */
-void Display::show()
+void Display::playGame()
 {
 
+    //Variables initialization 
+    int n           = 0;
+    int k           = 0;
+    double _Dx      = 0;
+    double _Dy      = 0;
+    double _OldPosX = 0;
+    double _OldPosY = 0;
+    bool _IsDragged = false;  
+
+    _Status = ACTIVE; 
+
     // Set up the window resolution and the window title
-    RenderWindow window(VideoMode(550, 550), _Title);
+    RenderWindow window(VideoMode(_Size*10, _Size*10), _Title);
 
     // Loop until the window is closed by the user
     while (window.isOpen())
     {   
-        // Store the position of the mouse at any time in mouse_pos
-        Vector2i mouse_pos = Mouse::getPosition(window);
-
-        Event event;
-        while (window.pollEvent(event))
+        while (_Status == ACTIVE)
         {
-            // When the user click o the cross, it closes the window
-            if (event.type == Event::Closed)
-                window.close();
-            
-            // When the mouse left button is pressed, checks if the mouse is hovering one of the pieces.
-            // If so, stores the actual index, the original position of the piece and the distance between 
-            // the mouse and the top left angle of the piece at the moment of the click.
-            if (event.type == Event::MouseButtonPressed)
-            {
-                if (event.mouseButton.button == Mouse::Left)
-                {
-                    for (k = 0; k < 32; k++)
-                    {
-                        if (_Pieces[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
-                        {
-                            n = k;
-                            _IsDragged = true;
+            /* -------------------------------- */
+            /* 0 : update counter and next turn */
+            /* -------------------------------- */
+            _TurnCount++;
+            _IsWhiteTurn = !_IsWhiteTurn;
 
-                            _OldPosX = _Pieces[n].getPosition().x;
-                            _OldPosY = _Pieces[n].getPosition().y;
-                            _Dx = mouse_pos.x - _OldPosX;
-                            _Dy = mouse_pos.y - _OldPosY;
+            /* ------------------- */
+            /* 1 : check for check */
+            /* ------------------- */
+            _Status = isCheck(); //looks for check and update game status and players' status
+            if (_White->isCheck()) //if white is checked
+            {
+                // do something
+            }
+            else if (_Black->isCheck()) //else is black is checked
+            {
+                // do something
+            }
+
+            /* ----------------------- */
+            /* 2 : check for checkmate */
+            /* ----------------------- */
+            _Status = isCheckMate();
+            if (_Status == B_WINS || _Status == W_WINS)
+            {
+                //when someone won, stops the loop to print congrats
+                break;
+            }
+
+            /* ----------------- */
+            /* 3 : check for pat */
+            /* ----------------- */
+            //will be done later ...
+
+            /* ---------------------------------------------------------------------- */
+            /* 4 : one player plays according to the previous steps (including check) */
+            /* ---------------------------------------------------------------------- */
+            if (_IsWhiteTurn)
+            {
+                //_White->play();
+            }
+            else
+            {
+                //_Black->play();
+            }
+        
+            // Store the position of the mouse at any time in mouse_pos
+            Vector2i mouse_pos = Mouse::getPosition(window);
+
+            Event event;
+            while (window.pollEvent(event))
+            {
+                // When the user click o the cross, it closes the window
+                if (event.type == Event::Closed)
+                {
+                    _Status = STOP;
+                    window.close();
+                }
+
+                // When the mouse left button is pressed, checks if the mouse is hovering one of the pieces.
+                // If so, stores the actual index, the original position of the piece and the distance between 
+                // the mouse and the top left angle of the piece at the moment of the click.
+                if (event.type == Event::MouseButtonPressed)
+                {
+                    if (event.mouseButton.button == Mouse::Left)
+                    {
+                        for (k = 0; k < 32; k++)
+                        {
+                            if (_Pieces[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
+                            {
+                                n = k;
+                                _IsDragged = true;
+
+                                _OldPosX = _Pieces[n].getPosition().x;
+                                _OldPosY = _Pieces[n].getPosition().y;
+                                _Dx = mouse_pos.x - _OldPosX;
+                                _Dy = mouse_pos.y - _OldPosY;
+                            }
                         }
                     }
                 }
-            }
 
-            // If the mouse left button is released, converts the real position (in pixels) into a row/column position,
-            // updates the 2D board matrix (puts a 0 at the old position and the piece's value at the arrival position)
-            if (event.type == Event::MouseButtonReleased)
-            {
-                if (event.mouseButton.button == Mouse::Left)
+                // If the mouse left button is released, converts the real position (in pixels) into a row/column position,
+                // updates the 2D board matrix (puts a 0 at the old position and the piece's value at the arrival position)
+                if (event.type == Event::MouseButtonReleased)
                 {
-                    Vector2f newPos = Vector2f(_Size*int(Vector2f (_Pieces[n].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Pieces[n].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
-                    _Pieces[n].setPosition(newPos);
-
-                    cout << int(newPos.x) << endl;
-                    cout << int(newPos.y)  << endl;
-                    cout << _OldPosX << endl;
-                    cout << _OldPosY << endl;
-
-                    if (int(newPos.x) != _OldPosX || int(newPos.y) != _OldPosY)
+                    if (event.mouseButton.button == Mouse::Left)
                     {
-                        int temp = _Board.getPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1);
-                        _Board.setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
-                        _Board.setPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1, 0);
-                    }
-                    
-                    // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
-                    for(int i = 0; i < 8; i++)
-                    {
-                        cout << "[";
-                        for(int j = 0; j < 8; j++)
+                        Vector2f newPos = Vector2f(_Size*int(Vector2f (_Pieces[n].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Pieces[n].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
+                        _Pieces[n].setPosition(newPos);
+
+                        cout << int(newPos.x) << endl;
+                        cout << int(newPos.y)  << endl;
+                        cout << _OldPosX << endl;
+                        cout << _OldPosY << endl;
+
+                        if (int(newPos.x) != _OldPosX || int(newPos.y) != _OldPosY)
                         {
-                            if (_Board.getPiece(i, j) < 0)
-                                if (j < 7)
-                                    cout << _Board.getPiece(i, j) <<"][";
+                            int temp = _Board.getPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1);
+                            _Board.setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
+                            _Board.setPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1, 0);
+                        }
+                        
+                        // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
+                        for(int i = 0; i < 8; i++)
+                        {
+                            cout << "[";
+                            for(int j = 0; j < 8; j++)
+                            {
+                                if (_Board.getPiece(i, j) < 0)
+                                    if (j < 7)
+                                        cout << _Board.getPiece(i, j) <<"][";
+                                    else
+                                        cout << _Board.getPiece(i, j) <<"]";
                                 else
-                                    cout << _Board.getPiece(i, j) <<"]";
-                            else
-                                if (j < 7)
-                                    cout << " "<< _Board.getPiece(i, j) <<"][";
-                                else
-                                    cout << " "<< _Board.getPiece(i, j) <<"]";
+                                    if (j < 7)
+                                        cout << " "<< _Board.getPiece(i, j) <<"][";
+                                    else
+                                        cout << " "<< _Board.getPiece(i, j) <<"]";
+                            }
+                            cout << endl;
                         }
                         cout << endl;
+                        _IsDragged = false;
                     }
-                    cout << endl;
-                    _IsDragged = false;
                 }
             }
-        }
 
-        // This is used during the whole movment (from left button pressed until left button released)
-        // It'll move the position of the sprite in real-time during the mouse movement.
-        if (_IsDragged)
-        {
-            _Pieces[n].setPosition(mouse_pos.x - _Dx, mouse_pos.y - _Dy);
-        }
+            // This is used during the whole movment (from left button pressed until left button released)
+            // It'll move the position of the sprite in real-time during the mouse movement.
+            if (_IsDragged)
+            {
+                _Pieces[n].setPosition(mouse_pos.x - _Dx, mouse_pos.y - _Dy);
+            }
 
-        // Clears the window
-        window.clear();
+            // Clears the window
+            window.clear();
 
-        // Draws the board srpite
-        window.draw(_SpriteBoard);
+            // Draws the board srpite
+            window.draw(_SpriteBoard);
 
-        // Draws all the 32 pieces' sprites
-        for (int i = 0; i < _Pieces.size(); i++)
-        {
-            if (_IsDragged == false)
-                //if (Piece[i].isAlive())
-                    window.draw(_Pieces[i]);
-            else
-                if (i != n)
-                //if (Piece[i].isAlive())
-                    window.draw(_Pieces[i]);
-        }
-        
-        // Draw the piece that is being dragged
-        if (_IsDragged == true)
-            window.draw(_Pieces[n]);
+            // Draws all the 32 pieces' sprites
+            for (int i = 0; i < _Pieces.size(); i++)
+            {
+                if (_IsDragged == false)
+                    //if (Piece[i].isAlive())
+                        window.draw(_Pieces[i]);
+                else
+                    if (i != n)
+                    //if (Piece[i].isAlive())
+                        window.draw(_Pieces[i]);
+            }
             
-        // Display on screen what has been rendered to the window
-        window.display();
-
+            // Draw the piece that is being dragged
+            if (_IsDragged == true)
+                window.draw(_Pieces[n]);
+                
+            // Display on screen what has been rendered to the window
+            window.display();
+        }
     }
+}
+
+
+/**
+ * Tells if someone is in checked, changes games status and updates players' status
+ * @brief TODO !!
+ * @returns New game status (ACTIVE or CHECK)
+ */
+GAMESTATUS Display::isCheck() const
+{
+    /* Method to do */
+    return ACTIVE;
+}
+
+/**
+ * Tells if someone is checkmate and update game status
+ * @brief TODO !!
+ * @returns New game status (ACTIVE or B/W WINS)
+ */
+GAMESTATUS Display::isCheckMate() const
+{
+    //needs at least someone checked
+    if (_Status != CHECK) return _Status;
+
+    //default
+    return _Status;
 }
 
 Display::~Display()
 {
+    delete _White;
+    delete _Black;
 }
