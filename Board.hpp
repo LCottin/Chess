@@ -25,7 +25,7 @@ class Board
         int getPiece(const int x, const int y) const;
         ~Board();
 };
- 
 
+static Board* _Board = new Board();
 
 #endif

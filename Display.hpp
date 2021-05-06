@@ -18,7 +18,7 @@ class Display
     private:
         
         //new board 
-        Board* _Board;
+        //extern Board _Board;
 
         //title of the window
         string _Title;

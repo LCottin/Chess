@@ -3,7 +3,6 @@
 
 Display::Display(const string title)
 {
-    _Board = new Board();
     _Title = title;
 
     //Variables initialisation
