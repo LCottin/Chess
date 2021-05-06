@@ -21,8 +21,7 @@ class Player
         string  _Pseudo;
         bool    _IsWhite;
         bool    _IsCheck;
-
-        vector<Piece*> _Pieces;
+        vector  <Piece*> _Pieces;
 
     public:
         Player(const string name, const bool white);

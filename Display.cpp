@@ -57,43 +57,43 @@ Display::Display(const string name1, const string name2, const string title)
             switch (n)
             {
                 case -6:
-                    _Pieces.push_back(_SpriteBp);
+                    _Sprites.push_back(_SpriteBp);
                     break;
                 case -5:
-                    _Pieces.push_back(_SpriteBb);
+                    _Sprites.push_back(_SpriteBb);
                     break;
                 case -4:
-                    _Pieces.push_back(_SpriteBkn);
+                    _Sprites.push_back(_SpriteBkn);
                     break;
                 case -3:
-                    _Pieces.push_back(_SpriteBr);
+                    _Sprites.push_back(_SpriteBr);
                     break;
                 case -2:
-                    _Pieces.push_back(_SpriteBq);
+                    _Sprites.push_back(_SpriteBq);
                     break;
                 case -1:
-                    _Pieces.push_back(_SpriteBk);
+                    _Sprites.push_back(_SpriteBk);
                     break;
                 case 1:
-                    _Pieces.push_back(_SpriteWp);
+                    _Sprites.push_back(_SpriteWp);
                     break;
                 case 2:
-                    _Pieces.push_back(_SpriteWb);
+                    _Sprites.push_back(_SpriteWb);
                     break;
                 case 3:
-                    _Pieces.push_back(_SpriteWkn);
+                    _Sprites.push_back(_SpriteWkn);
                     break;
                 case 4:
-                    _Pieces.push_back(_SpriteWr);
+                    _Sprites.push_back(_SpriteWr);
                     break;
                 case 5:
-                    _Pieces.push_back(_SpriteWq);
+                    _Sprites.push_back(_SpriteWq);
                     break;
                 default :
-                    _Pieces.push_back(_SpriteWk);
+                    _Sprites.push_back(_SpriteWk);
                     break;
             }
-            _Pieces[k].setPosition(_Size*(j+1),_Size*(i+1));
+            _Sprites[k].setPosition(_Size*(j+1),_Size*(i+1));
             k++;
         }
     }
@@ -114,10 +114,8 @@ void Display::playGame()
     //Variables initialization 
     int n           = 0;
     int k           = 0;
-    double _Dx      = 0;
-    double _Dy      = 0;
-    double _OldPosX = 0;
-    double _OldPosY = 0;
+    Vector2f _DxDy;
+    Vector2f _OldPos;
     bool _IsDragged = false;  
 
     _Status = ACTIVE; 
@@ -198,15 +196,13 @@ void Display::playGame()
                     {
                         for (k = 0; k < 32; k++)
                         {
-                            if (_Pieces[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
+                            if (_Sprites[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
                             {
                                 n = k;
                                 _IsDragged = true;
 
-                                _OldPosX = _Pieces[n].getPosition().x;
-                                _OldPosY = _Pieces[n].getPosition().y;
-                                _Dx = mouse_pos.x - _OldPosX;
-                                _Dy = mouse_pos.y - _OldPosY;
+                                _OldPos = _Sprites[n].getPosition();
+                                _DxDy = Vector2f(mouse_pos) - _OldPos;
                             }
                         }
                     }
@@ -218,27 +214,34 @@ void Display::playGame()
                 {
                     if (event.mouseButton.button == Mouse::Left)
                     {
-                        Vector2f newPos = Vector2f(_Size*int(Vector2f (_Pieces[n].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Pieces[n].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
-                        _Pieces[n].setPosition(newPos);
-
-                        cout << int(newPos.x) << endl;
-                        cout << int(newPos.y)  << endl;
-                        cout << _OldPosX << endl;
-                        cout << _OldPosY << endl;
-
-                        if (int(newPos.x) != _OldPosX || int(newPos.y) != _OldPosY)
+                        Vector2f newPos = Vector2f(_Size*int(Vector2f (_Sprites[n].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Sprites[n].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
+                        
+                        if (newPos.x < 55.0 || newPos.x > 494 || newPos.y < 55.0 || newPos.y > 494)
                         {
-                            if (newPos.x > 55 && newPos.x < 495 && newPos.y > 55 && newPos.y < 495)
+                            /* TODO : IS MOVE VALID ???
+                            if(_IsWhiteTurn)
                             {
-                                int temp = _Board.getPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1);
-                                _Board.setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
-                                _Board.setPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1, 0);
+                                if(_White->_Pieces[]
                             }
                             else
                             {
-                                newPos.x = _OldPosX;
-                                newPos.y = _OldPosY;
-                            }
+
+                            }*/
+                            newPos = _OldPos;
+                        }
+
+                        _Sprites[n].setPosition(newPos);
+
+                        cout << newPos.x << endl;
+                        cout << newPos.y << endl;
+                        cout << _OldPos.x << endl;
+                        cout << _OldPos.y << endl;
+
+                        if (int(newPos.x) != _OldPos.x || int(newPos.y) != _OldPos.y)
+                        {
+                            int temp = _Board.getPiece(int(_OldPos.y/55) - 1, int(_OldPos.x/55) - 1);
+                            _Board.setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
+                            _Board.setPiece(int(_OldPos.y/55) - 1, int(_OldPos.x/55) - 1, 0);
                         }
                         
                         // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
@@ -270,7 +273,7 @@ void Display::playGame()
             // It'll move the position of the sprite in real-time during the mouse movement.
             if (_IsDragged)
             {
-                _Pieces[n].setPosition(mouse_pos.x - _Dx, mouse_pos.y - _Dy);
+                _Sprites[n].setPosition(Vector2f(mouse_pos) - _DxDy);
             }
 
             // Clears the window
@@ -280,20 +283,20 @@ void Display::playGame()
             window.draw(_SpriteBoard);
 
             // Draws all the 32 pieces' sprites
-            for (int i = 0; i < _Pieces.size(); i++)
+            for (int i = 0; i < _Sprites.size(); i++)
             {
                 if (_IsDragged == false)
                     //if (Piece[i].isAlive())
-                        window.draw(_Pieces[i]);
+                        window.draw(_Sprites[i]);
                 else
                     if (i != n)
                     //if (Piece[i].isAlive())
-                        window.draw(_Pieces[i]);
+                        window.draw(_Sprites[i]);
             }
             
             // Draw the piece that is being dragged
             if (_IsDragged == true)
-                window.draw(_Pieces[n]);
+                window.draw(_Sprites[n]);
                 
             // Display on screen what has been rendered to the window
             window.display();
