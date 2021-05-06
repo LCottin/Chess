@@ -4,7 +4,6 @@ SFML = -lsfml-graphics -lsfml-system -lsfml-window
 EXEC = main
 
 SOURCES = 	main.cpp 			\
-			Game.cpp 			\
 			Player.cpp 			\
 			Piece.cpp 			\
 			Board.cpp 			\
@@ -23,9 +22,6 @@ all : $(OBJECTS)
 	$(CC) $(OBJECTS) $(FLAGS) $(SFML) -o $(EXEC) 
 
 Display.o : Display.cpp
-	$(CC) $(FLAGS) -c $^
-	
-Game.o : Game.cpp 
 	$(CC) $(FLAGS) -c $^
 
 Player.o : Player.cpp 
