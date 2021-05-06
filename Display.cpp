@@ -228,9 +228,17 @@ void Display::playGame()
 
                         if (int(newPos.x) != _OldPosX || int(newPos.y) != _OldPosY)
                         {
-                            int temp = _Board.getPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1);
-                            _Board.setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
-                            _Board.setPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1, 0);
+                            if (newPos.x > 55 && newPos.x < 495 && newPos.y > 55 && newPos.y < 495)
+                            {
+                                int temp = _Board.getPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1);
+                                _Board.setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
+                                _Board.setPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1, 0);
+                            }
+                            else
+                            {
+                                newPos.x = _OldPosX;
+                                newPos.y = _OldPosY;
+                            }
                         }
                         
                         // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
