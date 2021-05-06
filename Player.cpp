@@ -11,29 +11,40 @@ Player::Player(const string name, const bool white)
     _IsWhite    = white;
     _IsCheck    = false;
 
-    _King  = new King(white); //init king
-    _Queen = new Queen(white); //init queen
+    //create and position king
+    _Pieces[0]  = new King(white);
+    _Pieces[0]->move(4, white?7:0);
 
-    //init pawns
-    for (int i = 0; i < 6; i++)
+    //create and position queen
+    _Pieces[1]  = new Queen(white);
+    _Pieces[1]->move(3, white?7:0);
+
+    //create and position pawns
+    for (int i = 2; i < 10; i++)
     {
-        Pawn* pawn = new Pawn(white);
-        _Pawn.push_back(pawn);
+        _Pieces[i] = new Pawn(white);
+        _Pieces[i]->move(i-2, white?6:1);
     }
     
-    //init rooks, knights and bishops
-    for (size_t i = 0; i < 2; i++)
-    {
-        Knight* knight = new Knight(white);
-        _Knight.push_back(knight);
+    //create and position rooks
+    _Pieces[10] = new Knight(white);
+    _Pieces[10]->move(0, white?7:0);
+    _Pieces[11] = new Knight(white);
+    _Pieces[11]->move(7, white?7:0);
 
-        Rook* rook = new Rook(white);
-        _Rook.push_back(rook);
 
-        Bishop* bishop = new Bishop(white);
-        _Bishop.push_back(bishop);
-    }
+    //create and position knights
+    _Pieces[12] = new Rook(white);
+    _Pieces[12]->move(1, white?7:0);
+    _Pieces[13] = new Rook(white);
+    _Pieces[13]->move(6, white?7:0);
     
+    //create and position bishops
+    _Pieces[14] = new Bishop(white);
+    _Pieces[14]->move(2, white?7:0);
+    _Pieces[15] = new Bishop(white);
+    _Pieces[15]->move(5, white?7:0);
+
     cout << "Init player " << _Pseudo << endl;
 }
 
@@ -52,12 +63,7 @@ string Player::getName() const
  */
 int Player::getSize() const
 {
-    int nbPieces = 1; //at least one piece is alive : the king
-    
-    nbPieces += _Rook.size() + _Bishop.size() + _Knight.size() + _Pawn.size();
-    if (_Queen->isAlive()) nbPieces++;
-    
-    return nbPieces;
+    return _Pieces.size();
 }
 
 /**
@@ -80,30 +86,9 @@ void Player::setCheck(const bool isCheck)
 
 Player::~Player()
 {
-    //remove every pieces
-    delete _King;
-    delete _Queen;
-
-    for (size_t i = 0; i < _Pawn.size(); i++)
+    for(int i = 0; i < _Pieces.size(); i++)
     {
-        delete _Pawn[i];
+        delete _Pieces[i];
     }
-    
-    for (size_t i = 0; i < _Rook.size(); i++)
-    {
-        delete _Rook[i];
-    }
-
-    for (size_t i = 0; i < _Knight.size(); i++)
-    {
-        delete _Knight[i];
-    }
-
-    for (size_t i = 0; i < _Bishop.size(); i++)
-    {
-        delete _Bishop[i];
-    }
-    
-
     cout << "Destroy player " << _Pseudo << endl;
 }
