@@ -1,8 +1,10 @@
 #include "Board.hpp"
 
+Board _Board;
 
 Board::Board()
 {
+    cout << "Creation of board " << this << " ...";
     _Board      = new int* [_SizeX];
     _InitBoard  = new int* [_SizeX];
 
@@ -50,6 +52,7 @@ Board::Board()
     _InitBoard[7][7] = 4;
 
     _Board = _InitBoard;
+    cout << "Board " << this << " created ! " << endl;
 }
 
 

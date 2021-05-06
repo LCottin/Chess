@@ -26,6 +26,6 @@ class Board
         ~Board();
 };
 
-static Board* _Board = new Board();
+extern Board _Board;
 
 #endif

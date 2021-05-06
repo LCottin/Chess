@@ -51,7 +51,7 @@ Display::Display(const string title)
     {
         for(int j = 0; j < 8; j++)
         {
-            int n = _Board->getInitPiece(i, j);
+            int n = _Board.getInitPiece(i, j);
             if (n == 0) continue;
             switch (n)
             {
@@ -159,9 +159,9 @@ void Display::show()
 
                     if (int(newPos.x) != _OldPosX || int(newPos.y) != _OldPosY)
                     {
-                        int temp = _Board->getPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1);
-                        _Board->setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
-                        _Board->setPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1, 0);
+                        int temp = _Board.getPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1);
+                        _Board.setPiece(int(newPos.y/55) - 1, int(newPos.x/55) - 1, temp);
+                        _Board.setPiece(int(_OldPosY/55) - 1, int(_OldPosX/55) - 1, 0);
                     }
                     
                     // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
@@ -170,16 +170,16 @@ void Display::show()
                         cout << "[";
                         for(int j = 0; j < 8; j++)
                         {
-                            if (_Board->getPiece(i, j) < 0)
+                            if (_Board.getPiece(i, j) < 0)
                                 if (j < 7)
-                                    cout << _Board->getPiece(i, j) <<"][";
+                                    cout << _Board.getPiece(i, j) <<"][";
                                 else
-                                    cout << _Board->getPiece(i, j) <<"]";
+                                    cout << _Board.getPiece(i, j) <<"]";
                             else
                                 if (j < 7)
-                                    cout << " "<< _Board->getPiece(i, j) <<"][";
+                                    cout << " "<< _Board.getPiece(i, j) <<"][";
                                 else
-                                    cout << " "<< _Board->getPiece(i, j) <<"]";
+                                    cout << " "<< _Board.getPiece(i, j) <<"]";
                         }
                         cout << endl;
                     }
