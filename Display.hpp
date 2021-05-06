@@ -23,7 +23,7 @@ class Display
         string _Title;
 
         //vector of pieces of each player
-        vector <Sprite> _Pieces;
+        vector <Sprite> _Sprites;
 
         //Textures initialization
         Texture _TextureBoard, _TextureBp, _TextureBb, _TextureBkn, _TextureBr, _TextureBk, _TextureBq, _TextureWp, _TextureWb, _TextureWkn, _TextureWr, _TextureWq, _TextureWk;
