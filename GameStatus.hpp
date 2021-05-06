@@ -10,7 +10,8 @@ enum GAMESTATUS
     B_WINS,
     W_WINS,
     CHECK,
-    STOP
+    STOP,
+    MOVE
 };
 
 #endif 
