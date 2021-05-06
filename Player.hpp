@@ -22,12 +22,7 @@ class Player
         bool    _IsWhite;
         bool    _IsCheck;
 
-        King*           _King;
-        Queen*          _Queen;
-        vector<Pawn*>   _Pawn;
-        vector<Rook*>   _Rook;
-        vector<Knight*> _Knight;
-        vector<Bishop*> _Bishop;
+        vector<Piece*> _Pieces;
 
     public:
         Player(const string name, const bool white);
