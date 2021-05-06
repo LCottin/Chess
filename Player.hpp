@@ -29,6 +29,7 @@ class Player
         bool    isCheck() const;
         void    setCheck(const bool isCheck);
         string  getName() const;
+        Piece*  getPiece(const int x, const int y) const;
         ~Player();
 };
 

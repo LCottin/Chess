@@ -103,6 +103,21 @@ int Player::getSize() const
 }
 
 /**
+ * Return the piece loacted at the given postion
+ * @param x,y current position
+ * @returns The piece at this position
+ */
+Piece* Player::getPiece(const int x, const int y) const
+{
+    for (int i = 0; i < _Pieces.size(); i++)
+    {
+        if (_Pieces[i]->getX() == x && _Pieces[i]->getY() == y)
+            return _Pieces[i];
+    }
+    return NULL;
+}
+
+/**
  * INdicates if the player is cheched or not
  * @returns true if check, else false
  */
