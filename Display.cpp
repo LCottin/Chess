@@ -216,7 +216,7 @@ void Display::playGame()
                     {
                         Vector2f newPos = Vector2f(_Size*int(Vector2f (_Sprites[n].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Sprites[n].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
                         
-                        if (newPos.x < 55.0 || newPos.x > 494 || newPos.y < 55.0 || newPos.y > 494)
+                        if (newPos.x < 54 || newPos.x > 494 || newPos.y < 54 || newPos.y > 494)
                         {
                             /* TODO : IS MOVE VALID ???
                             if(_IsWhiteTurn)
