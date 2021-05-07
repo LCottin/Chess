@@ -13,24 +13,40 @@ Pawn::Pawn(const bool white) : Piece(white)
  * @param x,y possible position
  * @returns true if the move is possible, else false
  */
-bool Pawn::isMoveValid(const int x, const int y) const
+bool Pawn::isMoveValid(const int x, const int y, const bool attacking)
 {
     int dx = abs(_X - x);
     int dy = abs(_Y - y);
 
     //if the piece doesn't move
-    if (dx == 0 && dy == 0) return true;
+    if (dx == 0 && dy == 0) return false;
     
-    //on first move, pawn can move two tiles forward
-    if (_FirstMove && dx > 2) return false;
+    //Pawn's special attack move
+    if(attacking)
+    {
+        if(_IsWhite)
+        {
+            if(((x - _X) != -1) || ((x - _X) != 1)) return false;
+            if((y - _Y) != -1) return false;
+        }
+        else
+        {
+            if(((x - _X) != -1) || ((x - _X) != 1)) return false;
+            if((y - _Y) != 1) return false;
+        }
+    }
+    else
+    {
+        //if it is his first move, only 2 tiles forward, otherwise, only one tile forward is allowed
+        if (dy  > _FirstMove?2:1) return false;
 
-    //otherwise, only one tile forward is allowed
-    if (dx  > 1) return false;
-
-    //Y tile should not change
-    if (dy != 0) return false;
+        //x tile should not change
+        if (dx != 0) return false;
+    }
 
     //default
+    if(_FirstMove)
+        !_FirstMove;
     return true;
 }
 

@@ -14,7 +14,7 @@ class King : public Piece
     public:
         King(const bool white);
         
-        bool isMoveValid(const int x, const int y) const;
+        bool isMoveValid(const int x, const int y, const bool attacking);
 
         void setCheck(const bool check);
         void setCheckMate(const bool checkmate);

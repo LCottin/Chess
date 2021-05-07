@@ -12,7 +12,7 @@ class Pawn : public Piece
 
     public:
         Pawn(const bool white);
-        bool isMoveValid(const int x, const int y) const;
+        bool isMoveValid(const int x, const int y, const bool attacking);
         ~Pawn();
 };
 
