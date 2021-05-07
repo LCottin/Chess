@@ -85,6 +85,20 @@ Player::Player(const string name, const bool white)
 }
 
 /**
+ * Gives the right to the player to confirm his move
+ * @param OldX Old x position
+ * @param OldY Old y position
+ * @param NewX New x position
+ * @param NewY New x position
+ * @param IsAttacking Is it an attack move ?
+ */
+void Player::play(const int oldX, const int oldY, const int newX, const int newY) const
+{
+    _Board.updateBoard(oldX, oldY, newX, newY, _IsWhite);
+    getPiece(oldX, oldY)->move(newX, newY);
+}
+
+/**
  * Gives the player's name
  * @returns Player's pseudo
  */

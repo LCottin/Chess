@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "Board.hpp"
 #include "Piece.hpp"
 #include "Pieces/Bishop.hpp"
 #include "Pieces/King.hpp"
@@ -29,6 +30,7 @@ class Player
         bool    isCheck() const;
         void    setCheck(const bool isCheck);
         string  getName() const;
+        void    play(const int oldX, const int oldY, const int nnewX, const int newY) const;
         Piece*  getPiece(const int x, const int y) const;
         ~Player();
 };
