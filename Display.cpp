@@ -53,7 +53,7 @@ Display::Display(const string name1, const string name2, const string title)
     {
         for(int j = 0; j < 8; j++)
         {
-            int n = _Board.getInitPiece(i, j);
+            int n = _Board.getPiece(i, j);
             if (n == 0) continue;
             switch (n)
             {

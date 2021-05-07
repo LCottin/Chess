@@ -6,53 +6,38 @@ Board::Board()
 {
     cout << "Creation of board " << this << " ...";
     _Board      = new int* [_SizeX];
-    _InitBoard  = new int* [_SizeX];
 
     for (int i = 0; i < _SizeX; i++)
     {
         _Board[i]       = new int [_SizeY];
-        _InitBoard[i]   = new int [_SizeY];
     }
 
-     //fills both board
+    //fills both board
     for (int i = 0; i < _SizeX; i++)
     {
         for (int j = 0; j < _SizeY; j++)
         {
-            _Board[i][j]        = 0;
-            _InitBoard[i][j]    = 0;
+            _Board[i][j] = 0;
         }   
     }
 
-    //init first line
-    _InitBoard[0][0] = -3;
-    _InitBoard[0][1] = -4;
-    _InitBoard[0][2] = -5;
-    _InitBoard[0][3] = -2;
-    _InitBoard[0][4] = -1;
-    _InitBoard[0][5] = -5;
-    _InitBoard[0][6] = -4;
-    _InitBoard[0][7] = -3;
-
-    //init second and second to last line
-    for (size_t i = 0; i < _SizeX; i++)
-    {
-        _InitBoard[1][i] = -6;
-        _InitBoard[6][i] =  1;
-    }
-
-    //init last line
-    _InitBoard[7][0] = 4;
-    _InitBoard[7][1] = 3;
-    _InitBoard[7][2] = 2;
-    _InitBoard[7][3] = 5;
-    _InitBoard[7][4] = 6;
-    _InitBoard[7][5] = 2;
-    _InitBoard[7][6] = 3;
-    _InitBoard[7][7] = 4;
-
-    _Board = _InitBoard;
     cout << "Board " << this << " created ! " << endl;
+}
+
+/**
+ * Update the board when a player attacks
+ * @param oldX,oldY Old piece position
+ * @param newX,newY New piece position
+ * @param whiteTurn Tells who's player it is
+ * @return Void
+ */
+void Board::updateBoard(const int oldX, const int oldY, const int newX, const int newY, const bool whiteTurn)
+{
+    //puts a 0 at the old position
+    _Board[oldX][oldY] = 0;
+
+    //puts the type of the piece at the given new position according to whiteTurn status
+    _Board[newX][newY] = (whiteTurn ? 1 : -1);
 }
 
 
@@ -60,18 +45,14 @@ Board::Board()
  * Prints a board
  * @param printInit 1 to print initial board, 0 else
  */
-void Board::printBoard(const bool printInit = 0) const 
+void Board::printBoard() const 
 {
-    int** currentBoard;
-    if (printInit) currentBoard = _InitBoard;
-    else           currentBoard = _Board;
-    
     for (int i = 0; i < _SizeX; i++)
     {
         cout << "-----------------------------------" << endl;
         for (int j = 0; j < _SizeY; j++)
         {
-            cout << " | " << currentBoard[i][j];
+            cout << " | " << _Board[i][j];
         }
         cout << " | " << endl;
     }
@@ -98,15 +79,6 @@ void Board::setPiece(const int x, const int y, const int value)
     _Board[x][y] = value;
 }
 
-/**
- * Get a piece at a given position from the init board
- * @param x,y Position 
- * @returns The number of the piece
- */
-int Board::getInitPiece(const int x, const int y) const
-{
-    return _InitBoard[x][y];
-}
 
 /**
  * Get a piece at a given position

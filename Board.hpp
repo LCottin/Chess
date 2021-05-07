@@ -14,12 +14,11 @@ class Board
         const int _SizeY = 8;
 
         int** _Board; //board to play
-        int** _InitBoard; //Initial board with black and white tiles
 
     public:
         Board();
-        void printBoard(const bool printInit) const;
-        int getInitPiece(const int x, const int y) const;
+        void printBoard() const;
+        void updateBoard(const int oldX, const int oldY, const int newX, const int newY, const bool whiteTurn);
         void setPiece(const Piece &piece);
         void setPiece(const int x, const int y, const int value);
         int getPiece(const int x, const int y) const;
