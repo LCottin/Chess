@@ -10,17 +10,20 @@ Board::Board()
     for (int i = 0; i < _SizeX; i++)
     {
         _Board[i]       = new int [_SizeY];
-    }
-
-    //fills both board
-    for (int i = 0; i < _SizeX; i++)
-    {
         for (int j = 0; j < _SizeY; j++)
         {
             _Board[i][j] = 0;
         }   
     }
 
+    //Init both sides
+    for (int i = 0; i < _SizeX; i++)
+    {
+        _Board[i][0] = -1;
+        _Board[i][1] = -1;
+        _Board[i][6] =  1;
+        _Board[i][7] =  1;
+    }
     cout << "Board " << this << " created ! " << endl;
 }
 
@@ -42,8 +45,7 @@ void Board::updateBoard(const int oldX, const int oldY, const int newX, const in
 
 
 /**
- * Prints a board
- * @param printInit 1 to print initial board, 0 else
+ * Prints the current board
  */
 void Board::printBoard() const 
 {
