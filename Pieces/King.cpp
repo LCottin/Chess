@@ -14,13 +14,13 @@ King::King(const bool white) : Piece(white)
  * @param x,y possible position
  * @returns true if the move is possible, else false
  */
-bool King::isMoveValid(const int x, const int y) const
+bool King::isMoveValid(const int x, const int y, const bool attacking)
 {
     int dx = abs(_X - x);
     int dy = abs(_Y - y);
 
     //if the piece doesn't move
-    if (dx == 0 && dy == 0) return true;
+    if (dx == 0 && dy == 0) return false;
 
     //king can move one tile in every direction
     if (dx > 1) return false;

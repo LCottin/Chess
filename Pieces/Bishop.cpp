@@ -11,13 +11,13 @@ Bishop::Bishop(const bool white) : Piece(white)
  * @param x,y possible position
  * @returns true if the move is possible, else false
  */
-bool Bishop::isMoveValid(const int x, const int y) const
+bool Bishop::isMoveValid(const int x, const int y, const bool attacking)
 {
     int dx = abs(_X - x);
     int dy = abs(_Y - y);
 
     //if the piece doesn't move
-    if (dx == 0 && dy == 0) return true;
+    if (dx == 0 && dy == 0) return false;
 
     //x and y should change together with the same value
     if (dx != dy) return false;
