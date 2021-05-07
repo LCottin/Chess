@@ -53,8 +53,12 @@ Display::Display(const string name1, const string name2, const string title)
     {
         for(int j = 0; j < 8; j++)
         {
-            int n = _Board.getPiece(i, j);
-            if (n == 0) continue;
+            if (j > 1 && j < 6) continue;
+            int n = 0;
+            if (_White->getPiece(i,j) != NULL)
+                n = _White->getPiece(i,j)->getType();
+            else
+                n = _Black->getPiece(i,j)->getType();
             switch (n)
             {
                 case -6:
@@ -94,7 +98,7 @@ Display::Display(const string name1, const string name2, const string title)
                     _Sprites.push_back(_SpriteWk);
                     break;
             }
-            _Sprites[k].setPosition(_Size*(j+1),_Size*(i+1));
+            _Sprites[k].setPosition(_Size*(i+1),_Size*(j+1));
             k++;
         }
     }
