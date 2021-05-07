@@ -248,12 +248,11 @@ void Display::playGame()
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    newPos = _OldPos;
+                                }
                             }
-                            else
-                            {
-                                newPos = _OldPos;
-                            }
-
                             _Sprites[n].setPosition(newPos);
 
                             cout << newPos.x << endl;
