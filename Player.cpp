@@ -85,6 +85,17 @@ Player::Player(const string name, const bool white)
 }
 
 /**
+ * Return the piece loacted at the given postion
+ * @param oldX, oldY current position
+ * @param newX, newY future position
+ */
+void Player::play(const int oldX, const int oldY, const int newX, const int newY) const
+{
+    _Board.updateBoard(oldX, oldX, newX, newY, _IsWhite);
+    getPiece(oldX, oldY)->move(newX, newY);
+}
+
+/**
  * Gives the player's name
  * @returns Player's pseudo
  */
