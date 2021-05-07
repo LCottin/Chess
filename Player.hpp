@@ -32,6 +32,7 @@ class Player
         string  getName() const;
         void    play(const int oldX, const int oldY, const int nnewX, const int newY) const;
         Piece*  getPiece(const int x, const int y) const;
+        void    play(const int oldX, const int oldY, const int newX, const int newY) const;
         ~Player();
 };
 

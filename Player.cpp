@@ -85,16 +85,13 @@ Player::Player(const string name, const bool white)
 }
 
 /**
- * Gives the right to the player to confirm his move
- * @param OldX Old x position
- * @param OldY Old y position
- * @param NewX New x position
- * @param NewY New x position
- * @param IsAttacking Is it an attack move ?
+ * Return the piece loacted at the given postion
+ * @param oldX, oldY current position
+ * @param newX, newY future position
  */
 void Player::play(const int oldX, const int oldY, const int newX, const int newY) const
 {
-    _Board.updateBoard(oldX, oldY, newX, newY, _IsWhite);
+    _Board.updateBoard(oldX, oldX, newX, newY, _IsWhite);
     getPiece(oldX, oldY)->move(newX, newY);
 }
 
