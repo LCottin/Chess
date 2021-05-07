@@ -58,20 +58,20 @@ Player::Player(const string name, const bool white)
     _Pieces.push_back(pawn8);
 
     //create and position rooks
-    Knight* knight1 = new Knight(white);
-    knight1->move(0, white?7:0);
-    _Pieces.push_back(knight1);
-    Knight* knight2 = new Knight(white);
-    knight2->move(7, white?7:0);
-    _Pieces.push_back(knight2);
-
-    //create and position knights
     Rook* rook1 = new Rook(white);
-    rook1->move(1, white?7:0);
+    rook1->move(0, white?7:0);
     _Pieces.push_back(rook1);
     Rook* rook2 = new Rook(white);
-    rook2->move(6, white?7:0);
+    rook2->move(7, white?7:0);
     _Pieces.push_back(rook2);
+
+    //create and position knights
+    Knight* knight1 = new Knight(white);
+    knight1->move(1, white?7:0);
+    _Pieces.push_back(knight1);
+    Knight* knight2 = new Knight(white);
+    knight2->move(6, white?7:0);
+    _Pieces.push_back(knight2);
 
     //create and position bishops
     Bishop* bishop = new Bishop(white);

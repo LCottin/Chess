@@ -19,10 +19,10 @@ Board::Board()
     //Init both sides
     for (int i = 0; i < _SizeX; i++)
     {
-        _Board[i][0] = -1;
-        _Board[i][1] = -1;
-        _Board[i][6] =  1;
-        _Board[i][7] =  1;
+        _Board[0][i] = -1;
+        _Board[1][i] = -1;
+        _Board[6][i] =  1;
+        _Board[7][i] =  1;
     }
     cout << "Board " << this << " created ! " << endl;
 }
