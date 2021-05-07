@@ -2,7 +2,7 @@
 
 King::King(const bool white) : Piece(white)
 {
-    if (_IsWhite) _Type = W_KING;
+    if(_IsWhite) _Type = W_KING;
     else          _Type = B_KING;
 
     _IsCheck     = false;
@@ -10,21 +10,21 @@ King::King(const bool white) : Piece(white)
 }
 
 /**
- * Indicates if moving to the given position is possible
+ * Indicates ifmoving to the given position is possible
  * @param x,y possible position
- * @returns true if the move is possible, else false
+ * @returns true ifthe move is possible, else false
  */
 bool King::isMoveValid(const int x, const int y, const bool attacking)
 {
-    int dx = abs(_X - x);
-    int dy = abs(_Y - y);
+    int dx = (x - _X);
+    int dy = (y - _Y);
 
-    //if the piece doesn't move
-    if (dx == 0 && dy == 0) return false;
+    //ifthe piece doesn't move
+    if(abs(dx) == 0 && abs(dy) == 0) return false;
 
     //king can move one tile in every direction
-    if (dx > 1) return false;
-    if (dy > 1) return false;
+    if(abs(dx) > 1) return false;
+    if(abs(dy) > 1) return false;
 
     //default
     return true;
@@ -49,8 +49,8 @@ void King::setCheckMate(const bool checkmate)
 }
 
 /**
- * Tells if the king is checked
- * @returns true if it's checked, else false
+ * Tells ifthe king is checked
+ * @returns true ifit's checked, else false
  */
 bool King::isCheck() const
 {
@@ -58,8 +58,8 @@ bool King::isCheck() const
 }
 
 /**
- * Tells if the king is checkmated (needs to be check first)
- * @returns true if it's checkmated, else false
+ * Tells ifthe king is checkmated (needs to be check first)
+ * @returns true ifit's checkmated, else false
  */
 bool King::isCheckMate() const
 {

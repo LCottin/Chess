@@ -19,16 +19,16 @@ Board::Board()
     //Init both sides
     for (int i = 0; i < _SizeX; i++)
     {
-        _Board[0][i] = -1;
-        _Board[1][i] = -1;
-        _Board[6][i] =  1;
-        _Board[7][i] =  1;
+        _Board[i][0] = -1;
+        _Board[i][1] = -1;
+        _Board[i][6] =  1;
+        _Board[i][7] =  1;
     }
     cout << "Board " << this << " created ! " << endl;
 }
 
 /**
- * Update the board when a player attacks
+ * Update the board when a player moves or attack
  * @param oldX,oldY Old piece position
  * @param newX,newY New piece position
  * @param whiteTurn Tells who's player it is
@@ -43,6 +43,154 @@ void Board::updateBoard(const int oldX, const int oldY, const int newX, const in
     _Board[newX][newY] = (whiteTurn ? 1 : -1);
 }
 
+
+/**
+ * Check if there are any collision on the desired path
+ * @param oldX,oldY Old piece position
+ * @param newX,newY New piece position
+ * @param IsAttacking Tells if player is targetting an enemy
+ * @return bool
+ */
+bool Board::CollisionCheck(const int oldX, const int oldY, const int newX, const int newY, const int type, const bool whiteTurn)
+{
+    int cursorX = 1;
+    int cursorY = 1;
+
+    switch(type)
+    {
+        /* Those case are already checked in the IsValidMove from Pawns because of the attackmove
+        case -6:
+        case  1:
+        */
+        case -5:
+        case  2:
+            cursorX = (((newX - oldX) > 0) ? 1 : -1);;
+            cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+            while((oldY + cursorY != newY) && (oldX + cursorX != newX))
+            {
+                cout << (getPiece((oldX + cursorX),(oldY + cursorY))) << endl;
+                if(getPiece((oldX + cursorX),(oldY + cursorY)) != 0)
+                    return false;
+
+                cursorX = cursorX + (((newX - oldX) > 0) ? 1 : -1);
+                cursorY = cursorY + (((newY - oldY) > 0) ? 1 : -1);
+            }
+            cout << (getPiece((oldX + cursorX),(oldY + cursorY))) << endl;
+            if(getPiece((oldX + cursorX),(oldY + cursorY)) == (whiteTurn ? 1 : -1))
+                return false;
+           
+            return true;
+        case -4:
+        case  3:
+            if(getPiece(newX,newY) == (whiteTurn ? 1 : -1))
+                return false;
+            return true;
+        case -3:
+        case  4:
+            cursorX = (((newX - oldX) > 0) ? 1 : -1);;
+            cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+            if(oldX == newX)
+            {
+                while(oldY + cursorY != newY)
+                {
+                    cout << (getPiece(oldX,(oldY + cursorY))) << endl;
+                    if(getPiece(oldX,(oldY + cursorY)) != 0)
+                        return false;
+
+                    cursorY = cursorY + (((newY - oldY) > 0) ? 1 : -1);
+                }
+                cout << (getPiece(oldX,(oldY + cursorY))) << endl;
+                if(getPiece(oldX,(oldY + cursorY)) == (whiteTurn ? 1 : -1))
+                    return false;
+            }
+            else
+            {
+                while(oldX + cursorX != newX)
+                {
+                    cout << (getPiece(oldX,(oldY + cursorY))) << endl;
+                    if(getPiece((oldX + cursorX),oldY) != 0)
+                        return false;
+
+                    cursorX = cursorX + (((newX - oldX) > 0) ? 1 : -1);
+                }
+                cout << (getPiece(oldX,(oldY + cursorY))) << endl;
+                if(getPiece((oldX + cursorX),oldY) == (whiteTurn ? 1 : -1))
+                    return false;
+            }
+            return true;
+        case -2:
+        case  5:
+            cursorX = (((newX - oldX) > 0) ? 1 : -1);;
+            cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+            if(oldX == newX)
+            {
+                while(oldY + cursorY != newY)
+                {
+                    cout << (getPiece(oldX,(oldY + cursorY))) << endl;
+                    if(getPiece(oldX,(oldY + cursorY)) != 0)
+                        return false;
+
+                    cursorY = cursorY + (((newY - oldY) > 0) ? 1 : -1);
+                }
+                cout << (getPiece(oldX,(oldY + cursorY))) << endl;
+                if(getPiece(oldX,(oldY + cursorY)) == (whiteTurn ? 1 : -1))
+                    return false;
+            }
+            else if(oldY == newY)
+            {
+                while(oldX + cursorX != newX)
+                {
+                    cout << (getPiece(oldX,(oldY + cursorY))) << endl;
+                    if(getPiece((oldX + cursorX),oldY) != 0)
+                        return false;
+
+                    cursorX = cursorX + (((newX - oldX) > 0) ? 1 : -1);
+                }
+                cout << (getPiece(oldX,(oldY + cursorY))) << endl;
+                if(getPiece((oldX + cursorX),oldY) == (whiteTurn ? 1 : -1))
+                    return false;
+            }
+            else
+            {
+                cursorX = (((newX - oldX) > 0) ? 1 : -1);;
+                cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+                while((oldY + cursorY != newY) && (oldX + cursorX != newX))
+                {
+                    cout << (getPiece((oldX + cursorX),(oldY + cursorY))) << endl;
+                    if(getPiece((oldX + cursorX),(oldY + cursorY)) != 0)
+                        return false;
+
+                    cursorX = cursorX + (((newX - oldX) > 0) ? 1 : -1);
+                    cursorY = cursorY + (((newY - oldY) > 0) ? 1 : -1);
+                }
+                cout << (getPiece((oldX + cursorX),(oldY + cursorY))) << endl;
+                if(getPiece((oldX + cursorX),(oldY + cursorY)) == (whiteTurn ? 1 : -1))
+                    return false;
+            }
+            return true;
+        case -1:
+        case  6:
+            cursorX = (((newX - oldX) > 0) ? 1 : -1);;
+            cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+            if(oldX == newX)
+            {
+                if(getPiece(oldX,(oldY + cursorY)) == (whiteTurn ? 1 : -1))
+                    return false;
+            }
+            else if(oldY == newY)
+            {
+                if(getPiece((oldX + cursorX),oldY) == (whiteTurn ? 1 : -1))
+                    return false;
+            }
+            else
+            {
+                if(getPiece((oldX + cursorX),(oldY + cursorY)) == (whiteTurn ? 1 : -1))
+                    return false;
+            }
+            return true;
+    }
+    return true;
+}
 
 /**
  * Prints the current board

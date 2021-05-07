@@ -91,7 +91,7 @@ Player::Player(const string name, const bool white)
  */
 void Player::play(const int oldX, const int oldY, const int newX, const int newY) const
 {
-    _Board.updateBoard(oldX, oldX, newX, newY, _IsWhite);
+    _Board.updateBoard(oldX, oldY, newX, newY, _IsWhite);
     getPiece(oldX, oldY)->move(newX, newY);
 }
 
@@ -120,9 +120,9 @@ int Player::getSize() const
  */
 Piece* Player::getPiece(const int x, const int y) const
 {
-    for (int i = 0; i < _Pieces.size(); i++)
+    for (long unsigned int i = 0; i < _Pieces.size(); i++)
     {
-        if (_Pieces[i]->getX() == x && _Pieces[i]->getY() == y)
+        if(_Pieces[i]->getX() == x && _Pieces[i]->getY() == y)
             return _Pieces[i];
     }
     return NULL;
