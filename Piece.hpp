@@ -20,6 +20,7 @@ class Piece
         int     getY() const;
         int     getType() const;
         bool    isAlive() const;
+        void    kill();
         virtual bool    isMoveValid(const int x, const int y, const bool attacking = 0) = 0;
         virtual ~Piece() = 0;
 };

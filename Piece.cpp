@@ -30,6 +30,15 @@ bool Piece::isAlive() const
 }
 
 /**
+ * Kills the piece
+ * @returns true if the piece is alive, else false
+ */
+void Piece::kill()
+{
+    _IsAlive = false;
+}
+
+/**
  * Get X
  * @returns X coordinate
  */
