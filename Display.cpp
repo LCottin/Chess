@@ -47,7 +47,7 @@ Display::Display(const string name1, const string name2, const string title)
     _SpriteWk.setTexture(_TextureWk);
 
 
-    // Scan through the board and load the 32 Sprites of both players with the right texture, accordingly with the values stored in the 2D matrix
+    // Scans through the board and load the 32 Sprites of both players with the right texture, accordingly with the values stored in the 2D matrix
     int k = 0;
     for(int i = 0; i < 8; i++)
     {
@@ -115,27 +115,26 @@ Display::Display(const string name1, const string name2, const string title)
  */
 void Display::playGame()
 {
-
     //Variables initialization 
     int n           = 0;
     int k           = 0;
+    bool _IsDragged = false;  
     Vector2f _DxDy;
     Vector2f _oldPos_Window;
     Vector2i _oldPos_Board;
-    bool _IsDragged = false;  
 
     _Status = ACTIVE; 
 
-    // Set up the window resolution and the window title
+    // Sets up the window resolution and the window title
     RenderWindow window(VideoMode(_Size*10, _Size*10), _Title);
 
-    // Loop until the window is closed by the user
+    // Loops until the window is closed by the user
     while (window.isOpen())
     {   
         while (_Status == ACTIVE)
         {
-            /* -------------------------------- */
-            /* 0 : update counter and next turn */
+            /* --------------------------------- */
+            /* 0 : updates counter and next turn */
             /* -------------------------------- */
             _TurnCount++;
             _IsWhiteTurn = !_IsWhiteTurn;
@@ -150,9 +149,9 @@ void Display::playGame()
                 cout << "Black" << endl;
             }
 
-            /* ------------------- */
-            /* 1 : check for check */
-            /* ------------------- */
+            /* -------------------- */
+            /* 1 : checks for check */
+            /* -------------------- */
             _Status = isCheck(); //looks for check and update game status and players' status
             if(_White->isCheck()) //ifwhite is checked
             {
@@ -163,9 +162,9 @@ void Display::playGame()
                 // do something
             }
 
-            /* ----------------------- */
-            /* 2 : check for checkmate */
-            /* ----------------------- */
+            /* ------------------------ */
+            /* 2 : checks for checkmate */
+            /* ------------------------ */
             _Status = isCheckMate();
             if(_Status == B_WINS || _Status == W_WINS)
             {
@@ -173,9 +172,9 @@ void Display::playGame()
                 break;
             }
 
-            /* ----------------- */
-            /* 3 : check for pat */
-            /* ----------------- */
+            /* ------------------ */
+            /* 3 : checks for pat */
+            /* ------------------ */
             //will be done later ...
 
             /* ---------------------------------------------------------------------- */
@@ -187,7 +186,7 @@ void Display::playGame()
             Event event;
             while (_Status == MOVE)
             {
-                // Store the position of the mouse at any time in mouse_pos
+                // Stores the position of the mouse at any time in mouse_pos
                 Vector2i mouse_pos = Mouse::getPosition(window);
 
                 while (window.pollEvent(event))
@@ -236,6 +235,7 @@ void Display::playGame()
                             Vector2i _newPos_Board = Vector2i(_newPos_Window);
                             _newPos_Board.x = _newPos_Board.x / 55 - 1;
                             _newPos_Board.y = _newPos_Board.y / 55 - 1;
+                           
                             if(int(_newPos_Window.x) != _oldPos_Window.x || int(_newPos_Window.y) != _oldPos_Window.y)
                             {
                                 //if the active piece has been dropped on the playfield
@@ -245,10 +245,9 @@ void Display::playGame()
                                     Piece* temp = _ActivePlayer->getPiece(_oldPos_Board.x, _oldPos_Board.y);
                                     if(temp != NULL)
                                     {
-                                        cout << "La" << endl;
-
                                         bool moveIsValid = false;
-                                        if((temp->getType() == (_IsWhiteTurn ? 1 :-6)) && (_Board.getPiece(_newPos_Board.x, _newPos_Board.y) == -(_Board.getPiece(_oldPos_Board.x, _oldPos_Board.y))))
+                                        //Tells if the pawn is attacking or not
+                                        if((temp->getType() == (_IsWhiteTurn ? 1 : -6)) && (_Board.getPiece(_newPos_Board.x, _newPos_Board.y) == -(_Board.getPiece(_oldPos_Board.x, _oldPos_Board.y))))
                                         {
                                             cout << "This is an attacking pawn" << endl;
                                             moveIsValid = temp->isMoveValid(_newPos_Board.x, _newPos_Board.y, true);
@@ -258,12 +257,12 @@ void Display::playGame()
                                             cout << "This is not an attacking pawn" << endl;
                                             moveIsValid = temp->isMoveValid(_newPos_Board.x, _newPos_Board.y);
                                         }
+
                                         if(moveIsValid)
                                         {   
-                                            cout << "Ici" << endl;
                                             if(_Board.collisionCheck(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y, temp->getType(), _IsWhiteTurn))
                                             {
-                                                cout << "Here" << endl;
+                                                //If the move is valid and the tile is not empty, kills the piece at this spot
                                                 if(_IsWhiteTurn)
                                                 {
                                                     if(_Black->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
@@ -291,7 +290,7 @@ void Display::playGame()
                                     }
                                     else
                                     {
-                                        cout << "Not player's piece" << endl;
+                                        cout << "Not a player's piece" << endl;
                                         _newPos_Window = _oldPos_Window;
                                     }
                                 }
@@ -357,13 +356,13 @@ void Display::playGame()
                 }
             }
             
-            // Draw the piece that is being dragged
+            // Draws the piece that is being dragged
             if(_IsDragged == true)
             {
                 window.draw(_Sprites[n]);
             }
 
-            // Display on screen what has been rendered to the window
+            // Displays on screen what has been rendered to the window
             window.display();
             }
         }
