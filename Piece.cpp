@@ -6,7 +6,6 @@ Piece::Piece(const bool white)
     _Y          = 0;
     _IsAlive    = true;
     _IsWhite    = white;
-    _IsSelected = false;
 } 
 
 /**
@@ -29,14 +28,6 @@ bool Piece::isAlive() const
     return _IsAlive;
 }
 
-/**
- * Sets new status of the piece
- * @param selected Tells wheter a piece selected or not
- */
-void Piece::setStatus(const bool selected)
-{
-    _IsSelected = selected;
-}
 
 /**
  * Kills the piece

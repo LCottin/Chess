@@ -11,7 +11,6 @@ class Piece
         enum TYPES  _Type;
         bool        _IsAlive;
         bool        _IsWhite;   //Color (True = White, False = black)
-        bool        _IsSelected; 
 
     public:
         Piece(const bool white);
@@ -20,7 +19,6 @@ class Piece
         int             getY() const;
         int             getType() const;
         bool            isAlive() const;
-        void            setStatus(const bool selected);
         void            kill();
         virtual bool    isMoveValid(const int x, const int y, const bool attacking = 0) = 0;
         virtual ~Piece() = 0;
