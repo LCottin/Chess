@@ -19,10 +19,10 @@ class Board
         Board();
         void printBoard() const;
         void updateBoard(const int oldX, const int oldY, const int newX, const int newY, const bool whiteTurn);
-        void setPiece(const Piece &piece);
-        void setPiece(const int x, const int y, const int value);
-        bool CollisionCheck(const int oldX, const int oldY, const int newX, const int newY, const int type, const bool whiteTurn);
-        int getPiece(const int x, const int y) const;
+        //void setPiece(const Piece &piece);
+        //void setPiece(const int x, const int y, const int value);
+        bool collisionCheck(const int oldX, const int oldY, const int newX, const int newY, const int type, const bool whiteTurn) const;
+        int  getPiece(const int x, const int y) const;
         ~Board();
 };
 

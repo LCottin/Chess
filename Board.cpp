@@ -28,7 +28,7 @@ Board::Board()
 }
 
 /**
- * Update the board when a player moves or attack
+ * Updates the board when a player moves or attacks
  * @param oldX,oldY Old piece position
  * @param newX,newY New piece position
  * @param whiteTurn Tells who's player it is
@@ -45,16 +45,17 @@ void Board::updateBoard(const int oldX, const int oldY, const int newX, const in
 
 
 /**
- * Check if there are any collision on the desired path
+ * Checks if there are any collision on the desired path
  * @param oldX,oldY Old piece position
  * @param newX,newY New piece position
  * @param IsAttacking Tells if player is targetting an enemy
- * @return bool
+ * @return false if there is collision, else true
  */
-bool Board::CollisionCheck(const int oldX, const int oldY, const int newX, const int newY, const int type, const bool whiteTurn)
+bool Board::collisionCheck(const int oldX, const int oldY, const int newX, const int newY, const int type, const bool whiteTurn) const
 {
-    int cursorX = 1;
-    int cursorY = 1;
+    //cursors on X and Y axis to check every tile between old pos and new pos
+    int cursorX = (((newX - oldX) > 0) ? 1 : -1);
+    int cursorY = (((newY - oldY) > 0) ? 1 : -1);
 
     switch(type)
     {
@@ -62,33 +63,40 @@ bool Board::CollisionCheck(const int oldX, const int oldY, const int newX, const
         case -6:
         case  1:
         */
+
+        //When it's a bishop
         case -5:
         case  2:
-            cursorX = (((newX - oldX) > 0) ? 1 : -1);;
-            cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+
+            //move along the board until while oldPos and newPOs are different
             while((oldY + cursorY != newY) && (oldX + cursorX != newX))
             {
-                cout << (getPiece((oldX + cursorX),(oldY + cursorY))) << endl;
-                if(getPiece((oldX + cursorX),(oldY + cursorY)) != 0)
+                cout << (getPiece((oldX + cursorX), (oldY + cursorY))) << endl;
+                if(getPiece((oldX + cursorX), (oldY + cursorY)) != 0)
                     return false;
 
-                cursorX = cursorX + (((newX - oldX) > 0) ? 1 : -1);
-                cursorY = cursorY + (((newY - oldY) > 0) ? 1 : -1);
+                //update cursors
+                cursorY += (((newY - oldY) > 0) ? 1 : -1);
+                cursorX += (((newX - oldX) > 0) ? 1 : -1);
             }
+
+            //checks if the piece color at the new position is the same than the piece that moves
             cout << (getPiece((oldX + cursorX),(oldY + cursorY))) << endl;
             if(getPiece((oldX + cursorX),(oldY + cursorY)) == (whiteTurn ? 1 : -1))
                 return false;
-           
             return true;
+
+        //checks when it's a knight
         case -4:
         case  3:
             if(getPiece(newX,newY) == (whiteTurn ? 1 : -1))
                 return false;
             return true;
+
+        //when it's a rook
         case -3:
         case  4:
-            cursorX = (((newX - oldX) > 0) ? 1 : -1);;
-            cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+            //moves on the same column
             if(oldX == newX)
             {
                 while(oldY + cursorY != newY)
@@ -97,12 +105,13 @@ bool Board::CollisionCheck(const int oldX, const int oldY, const int newX, const
                     if(getPiece(oldX,(oldY + cursorY)) != 0)
                         return false;
 
-                    cursorY = cursorY + (((newY - oldY) > 0) ? 1 : -1);
+                    cursorY += (((newY - oldY) > 0) ? 1 : -1);
                 }
                 cout << (getPiece(oldX,(oldY + cursorY))) << endl;
                 if(getPiece(oldX,(oldY + cursorY)) == (whiteTurn ? 1 : -1))
                     return false;
             }
+            //moves on the same line
             else
             {
                 while(oldX + cursorX != newX)
@@ -111,17 +120,18 @@ bool Board::CollisionCheck(const int oldX, const int oldY, const int newX, const
                     if(getPiece((oldX + cursorX),oldY) != 0)
                         return false;
 
-                    cursorX = cursorX + (((newX - oldX) > 0) ? 1 : -1);
+                    cursorX += (((newX - oldX) > 0) ? 1 : -1);
                 }
                 cout << (getPiece(oldX,(oldY + cursorY))) << endl;
                 if(getPiece((oldX + cursorX),oldY) == (whiteTurn ? 1 : -1))
                     return false;
             }
             return true;
+
+        //when it's a queen
         case -2:
         case  5:
-            cursorX = (((newX - oldX) > 0) ? 1 : -1);;
-            cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+            //moves on the same column
             if(oldX == newX)
             {
                 while(oldY + cursorY != newY)
@@ -130,12 +140,13 @@ bool Board::CollisionCheck(const int oldX, const int oldY, const int newX, const
                     if(getPiece(oldX,(oldY + cursorY)) != 0)
                         return false;
 
-                    cursorY = cursorY + (((newY - oldY) > 0) ? 1 : -1);
+                    cursorY += (((newY - oldY) > 0) ? 1 : -1);
                 }
                 cout << (getPiece(oldX,(oldY + cursorY))) << endl;
                 if(getPiece(oldX,(oldY + cursorY)) == (whiteTurn ? 1 : -1))
                     return false;
             }
+            //moves on the same line
             else if(oldY == newY)
             {
                 while(oldX + cursorX != newX)
@@ -144,44 +155,49 @@ bool Board::CollisionCheck(const int oldX, const int oldY, const int newX, const
                     if(getPiece((oldX + cursorX),oldY) != 0)
                         return false;
 
-                    cursorX = cursorX + (((newX - oldX) > 0) ? 1 : -1);
+                    cursorX += (((newX - oldX) > 0) ? 1 : -1);
                 }
                 cout << (getPiece(oldX,(oldY + cursorY))) << endl;
                 if(getPiece((oldX + cursorX),oldY) == (whiteTurn ? 1 : -1))
                     return false;
             }
+            //moves on a diagonal
             else
             {
-                cursorX = (((newX - oldX) > 0) ? 1 : -1);;
-                cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+                
                 while((oldY + cursorY != newY) && (oldX + cursorX != newX))
                 {
                     cout << (getPiece((oldX + cursorX),(oldY + cursorY))) << endl;
                     if(getPiece((oldX + cursorX),(oldY + cursorY)) != 0)
                         return false;
 
-                    cursorX = cursorX + (((newX - oldX) > 0) ? 1 : -1);
-                    cursorY = cursorY + (((newY - oldY) > 0) ? 1 : -1);
+                    cursorX += (((newX - oldX) > 0) ? 1 : -1);
+                    cursorY += (((newY - oldY) > 0) ? 1 : -1);
                 }
                 cout << (getPiece((oldX + cursorX),(oldY + cursorY))) << endl;
                 if(getPiece((oldX + cursorX),(oldY + cursorY)) == (whiteTurn ? 1 : -1))
                     return false;
             }
             return true;
+
+        //when it's a king
         case -1:
         case  6:
-            cursorX = (((newX - oldX) > 0) ? 1 : -1);;
-            cursorY = (((newY - oldY) > 0) ? 1 : -1);;
+            //moves on the same column
             if(oldX == newX)
             {
                 if(getPiece(oldX,(oldY + cursorY)) == (whiteTurn ? 1 : -1))
                     return false;
             }
+
+            //moves on the same line
             else if(oldY == newY)
             {
                 if(getPiece((oldX + cursorX),oldY) == (whiteTurn ? 1 : -1))
                     return false;
             }
+
+            //moves on diagonal
             else
             {
                 if(getPiece((oldX + cursorX),(oldY + cursorY)) == (whiteTurn ? 1 : -1))
@@ -210,28 +226,28 @@ void Board::printBoard() const
 }
 
 
-/**
- * Set a piece at the piece coordinates
- * @param piece Piece to place
- */
-void Board::setPiece(const Piece &piece)
-{
-    _Board[piece.getX()][piece.getY()] = piece.getType();
-}
+// /**
+//  * Sets a piece at the piece coordinates
+//  * @param piece Piece to place
+//  */
+// void Board::setPiece(const Piece &piece)
+// {
+//     _Board[piece.getX()][piece.getY()] = piece.getType();
+// }
+
+// /**
+//  * Sets a piece at the piece coordinates
+//  * @param x,y Coordinates of the new piece
+//  * @param value Piece to set
+//  */
+// void Board::setPiece(const int x, const int y, const int value)
+// {
+//     _Board[x][y] = value;
+// }
+
 
 /**
- * Set a piece at the piece coordinates
- * @param x,y Coordinates of the new piece
- * @param value Piece to set
- */
-void Board::setPiece(const int x, const int y, const int value)
-{
-    _Board[x][y] = value;
-}
-
-
-/**
- * Get a piece at a given position
+ * Gets a piece at a given position
  * @param x,y Position 
  * @returns The number of the piece
  */

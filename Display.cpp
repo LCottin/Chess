@@ -261,7 +261,7 @@ void Display::playGame()
                                         if(moveIsValid)
                                         {   
                                             cout << "Ici" << endl;
-                                            if(_Board.CollisionCheck(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y, temp->getType(), _IsWhiteTurn))
+                                            if(_Board.collisionCheck(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y, temp->getType(), _IsWhiteTurn))
                                             {
                                                 cout << "Here" << endl;
                                                 if(_IsWhiteTurn)
