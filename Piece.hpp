@@ -15,12 +15,13 @@ class Piece
 
     public:
         Piece(const bool white);
-        void    move(const int x, const int y);
-        int     getX() const;
-        int     getY() const;
-        int     getType() const;
-        bool    isAlive() const;
-        void    kill();
+        void            move(const int x, const int y);
+        int             getX() const;
+        int             getY() const;
+        int             getType() const;
+        bool            isAlive() const;
+        void            setStatus(const bool selected);
+        void            kill();
         virtual bool    isMoveValid(const int x, const int y, const bool attacking = 0) = 0;
         virtual ~Piece() = 0;
 };

@@ -10,7 +10,7 @@ Piece::Piece(const bool white)
 } 
 
 /**
- * Change the position of the piece
+ * Changes the position of the piece
  * @param x New X
  * @param y New Y
  */
@@ -30,8 +30,16 @@ bool Piece::isAlive() const
 }
 
 /**
+ * Sets new status of the piece
+ * @param selected Tells wheter a piece selected or not
+ */
+void Piece::setStatus(const bool selected)
+{
+    _IsSelected = selected;
+}
+
+/**
  * Kills the piece
- * @returns true if the piece is alive, else false
  */
 void Piece::kill()
 {
@@ -39,7 +47,7 @@ void Piece::kill()
 }
 
 /**
- * Get X
+ * Gets X
  * @returns X coordinate
  */
 int Piece::getX() const 
@@ -48,7 +56,7 @@ int Piece::getX() const
 }
 
 /**
- * Get Y
+ * Gets Y
  * @returns Y coordinate
  */
 int Piece::getY() const 
@@ -57,8 +65,8 @@ int Piece::getY() const
 }
 
 /**
- * Get the piece type
- * @returns Type (a number between 0 and 5)
+ * Gets the piece type
+ * @returns Type (a number between -6 and 6)
  */
 int Piece::getType() const 
 {
