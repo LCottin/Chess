@@ -120,6 +120,15 @@ bool Player::isCheck() const
 }
 
 /**
+ * Tells how many piece a player has
+ * @returns Number of piece
+ */
+int Player::getSize() const
+{
+    return _Pieces.size();
+}
+
+/**
  * Changes the player's status
  * @param isCheck New player's status
  */
