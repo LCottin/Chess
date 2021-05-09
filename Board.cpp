@@ -32,7 +32,6 @@ Board::Board()
  * @param oldX,oldY Old piece position
  * @param newX,newY New piece position
  * @param whiteTurn Tells who's player it is
- * @return Void
  */
 void Board::updateBoard(const int oldX, const int oldY, const int newX, const int newY, const bool whiteTurn)
 {
@@ -226,30 +225,10 @@ void Board::printBoard() const
 }
 
 
-// /**
-//  * Sets a piece at the piece coordinates
-//  * @param piece Piece to place
-//  */
-// void Board::setPiece(const Piece &piece)
-// {
-//     _Board[piece.getX()][piece.getY()] = piece.getType();
-// }
-
-// /**
-//  * Sets a piece at the piece coordinates
-//  * @param x,y Coordinates of the new piece
-//  * @param value Piece to set
-//  */
-// void Board::setPiece(const int x, const int y, const int value)
-// {
-//     _Board[x][y] = value;
-// }
-
-
 /**
  * Gets a piece at a given position
  * @param x,y Position 
- * @returns The number of the piece
+ * @returns The type of the piece
  */
 int Board::getPiece(const int x, const int y) const
 {
