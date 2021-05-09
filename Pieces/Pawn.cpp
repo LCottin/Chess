@@ -6,20 +6,20 @@ using namespace std;
 Pawn::Pawn(const bool white) : Piece(white)
 {
     if(_IsWhite) _Type = W_PAWN;
-    else          _Type = B_PAWN;
+    else         _Type = B_PAWN;
 
     _FirstMove = true;
 }
 
 /**
- * Indicates ifmoving to the given position is possible
+ * Indicates if moving to the given position is possible
  * @param x,y possible position
- * @returns true ifthe move is possible, else false
+ * @returns true if the move is possible, else false
  */
 bool Pawn::isMoveValid(const int x, const int y, const bool attacking)
 {
-    int dx = (x - _X);
-    int dy = (y - _Y);
+    int dx = x - _X;
+    int dy = y - _Y;
 
     //if the piece doesn't move
     if(dx == 0 && dy == 0) return false;
@@ -71,10 +71,10 @@ bool Pawn::isMoveValid(const int x, const int y, const bool attacking)
         if(abs(dx) != 0) return false;
     }
 
+    //default
     if(_FirstMove)
         _FirstMove = false;
 
-    //default
     return true;
 }
 
