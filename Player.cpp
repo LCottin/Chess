@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
 /**
- * Init a player with a name and a color
+ * Inits a player with a name and a color
  * @param name Name of the player
  * @param white white = 1, black = 0
  */
@@ -11,12 +11,12 @@ Player::Player(const string name, const bool white)
     _IsWhite    = white;
     _IsCheck    = false;
 
-    //create and position king
+    //creates and positions king
     King* king = new King(white);
     king->move(4, white?7:0);
     _Pieces.push_back(king);
 
-    //create and position queen
+    //creates and positions queen
     Queen* queen  = new Queen(white);
     queen->move(3, white?7:0);
     _Pieces.push_back(queen);
@@ -31,7 +31,7 @@ Player::Player(const string name, const bool white)
         }
     */
 
-    //create and position pawns
+    //creates and positions pawns
     Pawn* pawn1 = new Pawn(white);
     pawn1->move(0, white?6:1);
     _Pieces.push_back(pawn1);
@@ -57,7 +57,7 @@ Player::Player(const string name, const bool white)
     pawn8->move(7, white?6:1);
     _Pieces.push_back(pawn8);
 
-    //create and position rooks
+    //creates and positions rooks
     Rook* rook1 = new Rook(white);
     rook1->move(0, white?7:0);
     _Pieces.push_back(rook1);
@@ -65,7 +65,7 @@ Player::Player(const string name, const bool white)
     rook2->move(7, white?7:0);
     _Pieces.push_back(rook2);
 
-    //create and position knights
+    //creates and positions knights
     Knight* knight1 = new Knight(white);
     knight1->move(1, white?7:0);
     _Pieces.push_back(knight1);
@@ -73,7 +73,7 @@ Player::Player(const string name, const bool white)
     knight2->move(6, white?7:0);
     _Pieces.push_back(knight2);
 
-    //create and position bishops
+    //creates and positions bishops
     Bishop* bishop = new Bishop(white);
     bishop->move(2, white?7:0);
     _Pieces.push_back(bishop);
@@ -85,7 +85,7 @@ Player::Player(const string name, const bool white)
 }
 
 /**
- * Return the piece loacted at the given postion
+ * Makes the player plays : update Board and moves the piece
  * @param oldX, oldY current position
  * @param newX, newY future position
  */
@@ -96,31 +96,13 @@ void Player::play(const int oldX, const int oldY, const int newX, const int newY
 }
 
 /**
- * Gives the player's name
- * @returns Player's pseudo
- */
-string Player::getName() const
-{
-    return _Pseudo;
-}
-
-/**
- * Gives the number of piece still alive in player's set
- * @returns Number of pieces
- */
-int Player::getSize() const
-{
-    return _Pieces.size();
-}
-
-/**
  * Return the piece loacted at the given postion
  * @param x,y current position
  * @returns The piece at this position
  */
 Piece* Player::getPiece(const int x, const int y) const
 {
-    for (long unsigned int i = 0; i < _Pieces.size(); i++)
+    for (int i = 0; i < _Pieces.size(); i++)
     {
         if(_Pieces[i]->getX() == x && _Pieces[i]->getY() == y)
             return _Pieces[i];
@@ -148,7 +130,7 @@ void Player::setCheck(const bool isCheck)
 
 Player::~Player()
 {
-    for(long unsigned int i = 0; i < _Pieces.size(); i++)
+    for(int i = 0; i < _Pieces.size(); i++)
     {
         delete _Pieces[i];
     }
