@@ -153,7 +153,7 @@ void Display::playGame()
             /* 1 : checks for check */
             /* -------------------- */
             _Status = isCheck(); //looks for check and update game status and players' status
-            if(_White->isCheck()) //ifwhite is checked
+            if(_White->isCheck()) //if white is checked
             {
                 // do something
             }
@@ -378,6 +378,52 @@ void Display::playGame()
 GAMESTATUS Display::isCheck() const
 {
     /* Method to do */
+
+    //Stores king's position
+    int bKing_x, bKing_y;
+    int wKing_x, wKing_y;
+    int currentPiece;
+
+    //looks for both king's position
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if (_Board.getPiece(i, j) == B_KING)
+            {
+                bKing_x = i;
+                bKing_y = j;
+            }
+            if (_Board.getPiece(i, j) == W_KING)
+            {
+                wKing_x = i;
+                wKing_y = j;
+            }
+        }
+    }
+    
+    //checks if one of the piece puts a player in check
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            //stores the piece at this position (i, j) and makes sur it's not a king
+            currentPiece = _Board.getPiece(i, j);
+            if (currentPiece == W_KING || currentPiece == B_KING)   
+                continue;
+
+            //checks if the piece can reach the opposite king
+            //if the piece is negative, it has to reach white king
+            if (currentPiece < 0)
+            {
+                
+            }
+        }
+        
+    }
+    
+
+    //default
     return ACTIVE;
 }
 
