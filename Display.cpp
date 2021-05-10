@@ -400,7 +400,6 @@ void Display::isCheck()
             }
             if ((whitePiece != NULL) && (whitePiece->getType() == W_KING))
             {
-            cout << "seg fault here" << endl;
                 wKing_x = i;
                 wKing_y = j;
             }
