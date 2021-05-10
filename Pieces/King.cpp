@@ -31,6 +31,15 @@ bool King::isMoveValid(const int x, const int y, const bool attacking)
 }
 
 /**
+ * Gets the piece type
+ * @returns Type (a number between -6 and 6)
+ */
+int King::getType() const 
+{
+    return _Type;
+}
+
+/**
  * Sets king's check status
  * @param check new status
  */

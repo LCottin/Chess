@@ -12,6 +12,7 @@ class Bishop : public Piece
     public:
         Bishop(const bool white);
         bool isMoveValid(const int x, const int y, const bool attacking);
+        int  getType() const;
         ~Bishop();
 };
 

@@ -12,6 +12,7 @@ class Rook : public Piece
     public:
         Rook(const bool white);
         bool isMoveValid(const int x, const int y, const bool attacking);
+        int  getType() const;
         ~Rook();
 };
 

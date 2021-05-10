@@ -78,6 +78,15 @@ bool Pawn::isMoveValid(const int x, const int y, const bool attacking)
     return true;
 }
 
+/**
+ * Gets the piece type
+ * @returns Type (a number between -6 and 6)
+ */
+int Pawn::getType() const 
+{
+    return _Type;
+}
+
 Pawn::~Pawn()
 {
 

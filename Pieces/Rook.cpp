@@ -26,6 +26,15 @@ bool Rook::isMoveValid(const int x, const int y, const bool attacking)
     return true;
 }
 
+/**
+ * Gets the piece type
+ * @returns Type (a number between -6 and 6)
+ */
+int Rook::getType() const 
+{
+    return _Type;
+}
+
 Rook::~Rook()
 {
     

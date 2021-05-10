@@ -26,6 +26,15 @@ bool Bishop::isMoveValid(const int x, const int y, const bool attacking)
     return true;
 }
 
+/**
+ * Gets the piece type
+ * @returns Type (a number between -6 and 6)
+ */
+int Bishop::getType() const 
+{
+    return _Type;
+}
+
 Bishop::~Bishop()
 {
     

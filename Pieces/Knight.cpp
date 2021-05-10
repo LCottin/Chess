@@ -28,6 +28,15 @@ bool Knight::isMoveValid(const int x, const int y, const bool attacking)
     return true;
 }
 
+/**
+ * Gets the piece type
+ * @returns Type (a number between -6 and 6)
+ */
+int Knight::getType() const 
+{
+    return _Type;
+}
+
 Knight::~Knight()
 {
     
