@@ -152,7 +152,8 @@ void Display::playGame()
             /* -------------------- */
             /* 1 : checks for check */
             /* -------------------- */
-            _Status = isCheck(); //looks for check and update game status and players' status
+            isCheck(); //looks for check and update game status and players' status
+
             if(_White->isCheck()) //if white is checked
             {
                 cout << "White is check" << endl;
@@ -375,67 +376,67 @@ void Display::playGame()
  * @brief TODO !!
  * @returns New game status (ACTIVE or CHECK)
  */
-GAMESTATUS Display::isCheck()
+void Display::isCheck()
 {
-    /* Method to do */
+    //Stores current pieces
+    Piece* whitePiece;
+    Piece* blackPiece;
 
-    //Stores king's position
+    //Stores kings' position
     int bKing_x, bKing_y;
     int wKing_x, wKing_y;
-    GAMESTATUS currentStatus = _Status;
 
-    //looks for both kings and stores their position
+    //first, looks for both kings and stores their position
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
-            if (_Board.getPiece(i, j) == B_KING)
+            whitePiece = _White->getPiece(i, j);
+            blackPiece = _Black->getPiece(i, j);
+            if ((blackPiece != NULL) && (blackPiece->getType() == B_KING))
             {
                 bKing_x = i;
                 bKing_y = j;
             }
-            if (_Board.getPiece(i, j) == W_KING)
+            if ((whitePiece != NULL) && (whitePiece->getType() == W_KING))
             {
+            cout << "seg fault here" << endl;
                 wKing_x = i;
                 wKing_y = j;
             }
         }
     }
-    
-    //checks if one of the piece puts a player in check
+
+    //then checks if one of the piece puts a player in check
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
             // takes the piece
-            Piece* whitePiece = _White->getPiece(i, j);
-            Piece* blackPiece = _Black->getPiece(i, j);
+            whitePiece = _White->getPiece(i, j);
+            blackPiece = _Black->getPiece(i, j);
 
             //makes sure it's not a king
-            if (whitePiece->getType() != W_KING)
+            if ((whitePiece != NULL) && (whitePiece->getType() != W_KING))
             {
                 //if the piece can reach the king, there is check
                 if (whitePiece->isMoveValid(bKing_x, bKing_y)) 
                 { 
                     _Black->setCheck(true);
-                    currentStatus = CHECK;
+                    _Status = CHECK;
                 }
             }
 
-            if (blackPiece->getType() != B_KING)
+            if ((blackPiece != NULL) && (blackPiece->getType() != B_KING))
             {
                 if (blackPiece->isMoveValid(wKing_x, wKing_y))
                 {
                     _White->setCheck(true);
-                    currentStatus = CHECK;
+                    _Status = CHECK;
                 }   
             }
-            if (currentStatus == CHECK)
-                return currentStatus;
         }
     }
-    //default
-    return ACTIVE;
 }
 
 /**
