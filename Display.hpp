@@ -44,7 +44,7 @@ class Display
         Display(const string name1, const string name2, const string title = "ChessGame");
         void playGame();
         void isCheck();
-        GAMESTATUS isCheckMate();
+        void isCheckMate();
         ~Display();
 };
 

@@ -166,7 +166,7 @@ void Display::playGame()
             /* ------------------------ */
             /* 2 : checks for checkmate */
             /* ------------------------ */
-            _Status = isCheckMate();
+            isCheckMate();
             if(_Status == B_WINS || _Status == W_WINS)
             {
                 //when someone won, stops the loop to print congrats
@@ -220,7 +220,6 @@ void Display::playGame()
                                     {
                                         _IsDragged = true;
                                     }
-                                        
                                 }
                             }
                         }
@@ -373,8 +372,6 @@ void Display::playGame()
 
 /**
  * Tells if someone is in checked, changes games status and updates players' status
- * @brief TODO !!
- * @returns New game status (ACTIVE or CHECK)
  */
 void Display::isCheck()
 {
@@ -440,16 +437,144 @@ void Display::isCheck()
 
 /**
  * Tells if someone is checkmate and update game status
- * @brief TODO !!
- * @returns New game status (ACTIVE or B/W WINS)
  */
-GAMESTATUS Display::isCheckMate()
+void Display::isCheckMate()
 {
     //needs at least someone checked
-    if (_Status != CHECK) return _Status;
+    if (_Status != CHECK) return;
 
-    //default
-    return _Status;
+    //Stores current pieces
+    Piece* whitePiece;
+    Piece* blackPiece;
+    King* bKing;
+    King* wKing;
+
+    //Stores kings' position
+    int bKing_x, bKing_y;
+    int wKing_x, wKing_y;
+
+    //stores current position of the king
+    int curPos_x, curPos_y;
+
+    //stores players status
+    bool blackSafe = true;
+    bool whiteSafe = true;
+    int blackPossibleMoves = 8;
+    int whitePossibleMoves = 8;
+
+    //first, looks for both kings and stores their position
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            whitePiece = _White->getPiece(i, j);
+            blackPiece = _Black->getPiece(i, j);
+            if ((blackPiece != NULL) && (blackPiece->getType() == B_KING))
+            {
+                bKing_x = i;
+                bKing_y = j;
+            }
+            if ((whitePiece != NULL) && (whitePiece->getType() == W_KING))
+            {
+                wKing_x = i;
+                wKing_y = j;
+            }
+        }
+    }
+
+    //both players can't be checkmated at the same time 
+    //moves the king one tile in every direction and check if there is somewhere 
+    //where it is no longer checked
+
+    //checks if black king is checkmated
+    bKing = (King*)_Black->getPiece(bKing_x, bKing_y);
+    for (int i = -1; i < 2; i++)
+    {
+        for (int j = -1; j < 2; j++)
+        {
+            //no need to check the same spot
+            if (i == 0 && j == 0) continue;
+            
+            //next position of the king : moves virtually but stays on the board
+            curPos_x = (wKing_x + i >= 0 ? wKing_x + i : wKing_x);
+            curPos_y = (wKing_y + j >= 0 ? wKing_y + j : wKing_y);
+            
+            //checks if any of the piece can reach the king at its new position
+            for (int k = 0; blackSafe == true && k < 8; k++)
+            {
+                for (int l = 0; blackSafe == true && l < 8; l++)
+                {
+                    //gets a piece
+                    whitePiece = _White->getPiece(k, l);
+                    if (whitePiece != NULL)
+                    {
+                        //if the move is possible ...
+                        if (whitePiece->isMoveValid(curPos_x, curPos_y))
+                        {
+                            //...and if it can reach the king
+                            if (_Board.collisionCheck(whitePiece->getX(), whitePiece->getY(), curPos_x, curPos_y, whitePiece->getType(), true) == false)
+                            {
+                                //tile is not safe and this move is not good
+                                blackSafe = false;
+                                blackPossibleMoves--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //if the king can't move then it's checkmate
+    if (blackPossibleMoves <= 0)
+    {
+        _Status = W_WINS;
+        return;
+    }
+    
+    //checks if white king is checkmated
+    wKing = (King*)_White->getPiece(wKing_x, wKing_y);
+    for (int i = -1; i < 2; i++)
+    {
+        for (int j = -1; j < 2; j++)
+        {
+            //no need to check the same spot
+            if (i == 0 && j == 0) continue;
+            
+            //next position of the king : moves virtually but stays on the board
+            curPos_x = (bKing_x + i >= 0 ? bKing_x + i : bKing_x);
+            curPos_y = (bKing_y + j >= 0 ? bKing_y + j : bKing_y);
+            
+            //checks if any of the piece can reach the king at its new position
+            for (int k = 0; whiteSafe == true && k < 8; k++)
+            {
+                for (int l = 0; whiteSafe == true && l < 8; l++)
+                {
+                    //gets a piece
+                    blackPiece = _White->getPiece(k, l);
+                    if (blackPiece != NULL)
+                    {
+                        //if the move is possible ...
+                        if (blackPiece->isMoveValid(curPos_x, curPos_y))
+                        {
+                            //...and if it can reach the king
+                            if (_Board.collisionCheck(blackPiece->getX(), blackPiece->getY(), curPos_x, curPos_y, blackPiece->getType(), true) == false)
+                            {
+                                //tile is not safe and this move is not good
+                                whiteSafe = false;
+                                whitePossibleMoves--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //if the king can't move then it's checkmate
+    if (whiteSafe <= 0)
+    {
+        _Status = B_WINS;
+        return;
+    }
 }
 
 Display::~Display()
