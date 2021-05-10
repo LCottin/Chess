@@ -155,11 +155,11 @@ void Display::playGame()
             _Status = isCheck(); //looks for check and update game status and players' status
             if(_White->isCheck()) //if white is checked
             {
-                // do something
+                cout << "White is check" << endl;
             }
             else if(_Black->isCheck()) //else is black is checked
             {
-                // do something
+                cout << "Black is check" << endl;
             }
 
             /* ------------------------ */
@@ -375,16 +375,16 @@ void Display::playGame()
  * @brief TODO !!
  * @returns New game status (ACTIVE or CHECK)
  */
-GAMESTATUS Display::isCheck() const
+GAMESTATUS Display::isCheck()
 {
     /* Method to do */
 
     //Stores king's position
     int bKing_x, bKing_y;
     int wKing_x, wKing_y;
-    int currentPiece;
+    GAMESTATUS currentStatus = _Status;
 
-    //looks for both king's position
+    //looks for both kings and stores their position
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
@@ -407,22 +407,33 @@ GAMESTATUS Display::isCheck() const
     {
         for (int j = 0; j < 8; j++)
         {
-            //stores the piece at this position (i, j) and makes sur it's not a king
-            currentPiece = _Board.getPiece(i, j);
-            if (currentPiece == W_KING || currentPiece == B_KING)   
-                continue;
+            // takes the piece
+            Piece* whitePiece = _White->getPiece(i, j);
+            Piece* blackPiece = _Black->getPiece(i, j);
 
-            //checks if the piece can reach the opposite king
-            //if the piece is negative, it has to reach white king
-            if (currentPiece < 0)
+            //makes sure it's not a king
+            if (whitePiece->getType() != W_KING)
             {
-                
+                //if the piece can reach the king, there is check
+                if (whitePiece->isMoveValid(bKing_x, bKing_y)) 
+                { 
+                    _Black->setCheck(true);
+                    currentStatus = CHECK;
+                }
             }
-        }
-        
-    }
-    
 
+            if (blackPiece->getType() != B_KING)
+            {
+                if (blackPiece->isMoveValid(wKing_x, wKing_y))
+                {
+                    _White->setCheck(true);
+                    currentStatus = CHECK;
+                }   
+            }
+            if (currentStatus == CHECK)
+                return currentStatus;
+        }
+    }
     //default
     return ACTIVE;
 }
@@ -432,7 +443,7 @@ GAMESTATUS Display::isCheck() const
  * @brief TODO !!
  * @returns New game status (ACTIVE or B/W WINS)
  */
-GAMESTATUS Display::isCheckMate() const
+GAMESTATUS Display::isCheckMate()
 {
     //needs at least someone checked
     if (_Status != CHECK) return _Status;

@@ -43,8 +43,8 @@ class Display
     public:
         Display(const string name1, const string name2, const string title = "ChessGame");
         void playGame();
-        GAMESTATUS isCheck() const;
-        GAMESTATUS isCheckMate() const;
+        GAMESTATUS isCheck();
+        GAMESTATUS isCheckMate();
         ~Display();
 };
 
