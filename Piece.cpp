@@ -55,14 +55,6 @@ int Piece::getY() const
     return _Y;
 }
 
-/**
- * Gets the piece type
- * @returns Type (a number between -6 and 6)
- */
-int Piece::getType() const 
-{
-    return _Type;
-}
 
 Piece::~Piece()
 {
