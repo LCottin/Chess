@@ -5,11 +5,12 @@ Board _Board;
 Board::Board()
 {
     cout << "Creation of board " << this << " ...";
-    _Board      = new int* [_SizeX];
+    _Board = new int* [_SizeX];
 
+    //fills board with 0
     for (int i = 0; i < _SizeX; i++)
     {
-        _Board[i]       = new int [_SizeY];
+        _Board[i] = new int [_SizeY];
         for (int j = 0; j < _SizeY; j++)
         {
             _Board[i][j] = 0;
@@ -47,6 +48,7 @@ void Board::updateBoard(const int oldX, const int oldY, const int newX, const in
  * Checks if there are any collision on the desired path
  * @param oldX,oldY Old piece position
  * @param newX,newY New piece position
+ * @param type Type of the piece that moves
  * @param IsAttacking Tells if player is targetting an enemy
  * @return false if there is collision, else true
  */
