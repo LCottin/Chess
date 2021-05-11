@@ -469,9 +469,12 @@ void Display::isCheck()
             {
                 //if the piece can reach the king, there is check
                 if (whitePiece->isMoveValid(bKing_x, bKing_y)) 
-                { 
-                    _Black->setCheck(true);
-                    _Status = CHECK;
+                {
+                    if(_Board.collisionCheck(whitePiece->getX(), whitePiece->getY(), bKing_x, bKing_y, whitePiece->getType(), true))
+                    {
+                        _Black->setCheck(true);
+                        _Status = CHECK;
+                    }
                 }
             }
 
@@ -479,8 +482,11 @@ void Display::isCheck()
             {
                 if (blackPiece->isMoveValid(wKing_x, wKing_y))
                 {
-                    _White->setCheck(true);
-                    _Status = CHECK;
+                    if(_Board.collisionCheck(blackPiece->getX(), blackPiece->getY(), wKing_x, wKing_y, blackPiece->getType(), false))
+                    {
+                        _White->setCheck(true);
+                        _Status = CHECK;
+                    }
                 }   
             }
         }
