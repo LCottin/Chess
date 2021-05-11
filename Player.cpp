@@ -104,7 +104,7 @@ Piece* Player::getPiece(const int x, const int y) const
 {
     for (int i = 0; i < _Pieces.size(); i++)
     {
-        if(_Pieces[i]->getX() == x && _Pieces[i]->getY() == y)
+        if((_Pieces[i]->getX() == x && _Pieces[i]->getY() == y) && (_Pieces[i]->isAlive()))
             return _Pieces[i];
     }
     return NULL;

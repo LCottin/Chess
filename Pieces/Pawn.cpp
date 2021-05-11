@@ -27,19 +27,15 @@ bool Pawn::isMoveValid(const int x, const int y, const bool attacking)
     //if the piece doesn't move in the right direction
     if(_IsWhite)
     {
-        cout << "white pawn played" << endl;
         if(dy > 0)
         {
-            cout << "going in wrong direction" << endl;
             return false;
         } 
     }
     else
     {
-        cout << "black pawn played" << endl;
         if(dy < 0)
         {
-            cout << "going in wrong direction" << endl;
             return false;
         } 
     }

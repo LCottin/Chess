@@ -35,6 +35,7 @@ bool Piece::isAlive() const
 void Piece::kill()
 {
     _IsAlive = false;
+    _Type = EMPTY;
 }
 
 /**

@@ -135,7 +135,7 @@ void Display::playGame()
         {
             /* --------------------------------- */
             /* 0 : updates counter and next turn */
-            /* -------------------------------- */
+            /* --------------------------------- */
             _TurnCount++;
             _IsWhiteTurn = !_IsWhiteTurn;
             if(_IsWhiteTurn)
@@ -146,7 +146,7 @@ void Display::playGame()
             else
             {
                 _ActivePlayer = _Black;
-                cout << "Black" << endl;
+                cout << "Black turn" << endl;
             }
 
             /* -------------------- */
@@ -169,7 +169,6 @@ void Display::playGame()
             isCheckMate();
             if(_Status == B_WINS || _Status == W_WINS)
             {
-                //when someone won, stops the loop to print congrats
                 break;
             }
 
@@ -213,12 +212,15 @@ void Display::playGame()
                                     n = k;
                                     _oldPos_Window = _Sprites[n].getPosition();
                                     _oldPos_Board = Vector2i(_oldPos_Window);
-                                    _oldPos_Board.x = _oldPos_Board.x / 55 - 1;
-                                    _oldPos_Board.y = _oldPos_Board.y / 55 - 1;
+                                    _oldPos_Board.x = _oldPos_Board.x / _Size - 1;
+                                    _oldPos_Board.y = _oldPos_Board.y / _Size - 1;
                                     _DxDy = Vector2f(mouse_pos) - _oldPos_Window;
                                     if(_ActivePlayer->getPiece(_oldPos_Board.x, _oldPos_Board.y) != NULL)
                                     {
-                                        _IsDragged = true;
+                                        if(_ActivePlayer->getPiece(_oldPos_Board.x, _oldPos_Board.y)->isAlive())
+                                        {
+                                            _IsDragged = true;
+                                        }
                                     }
                                 }
                             }
@@ -227,21 +229,27 @@ void Display::playGame()
 
                     // If the mouse left button is released, converts the real position (in pixels) into a row/column position,
                     // updates the 2D board matrix (puts a 0 at the old position and the piece's value at the arrival position)
-                    if(event.type == Event::MouseButtonReleased)
+                    if((event.type == Event::MouseButtonReleased) && (_IsDragged == true))
                     {
-                        if(event.mouseButton.button == Mouse::Left)
+                        cout << "_oldPos_Window.x : " << _oldPos_Window.x << endl;
+                        cout << "_oldPos_Window.y : " << _oldPos_Window.y << endl;
+
+                        if((event.mouseButton.button == Mouse::Left) && (!(_oldPos_Window.x < 54 || _oldPos_Window.x > 494 || _oldPos_Window.y < 54 || _oldPos_Window.y > 494)))
                         {
                             Vector2f _newPos_Window = Vector2f(_Size*int(Vector2f (_Sprites[n].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Sprites[n].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
                             Vector2i _newPos_Board = Vector2i(_newPos_Window);
-                            _newPos_Board.x = _newPos_Board.x / 55 - 1;
-                            _newPos_Board.y = _newPos_Board.y / 55 - 1;
+                            _newPos_Board.x = _newPos_Board.x / _Size - 1;
+                            _newPos_Board.y = _newPos_Board.y / _Size - 1;
+
+                            cout << "_newPos_Window.x : " << _newPos_Window.x << endl;
+                            cout << "_newPos_Window.y : " << _newPos_Window.y << endl;
                            
                             if(int(_newPos_Window.x) != _oldPos_Window.x || int(_newPos_Window.y) != _oldPos_Window.y)
                             {
                                 //if the active piece has been dropped on the playfield
                                 if(!(_newPos_Window.x < 54 || _newPos_Window.x > 494 || _newPos_Window.y < 54 || _newPos_Window.y > 494))
                                 {
-                                    cout << "Piece dragged is dropped in the playfield" << endl;
+                                    //cout << "Piece dragged is dropped in the playfield" << endl;
                                     Piece* temp = _ActivePlayer->getPiece(_oldPos_Board.x, _oldPos_Board.y);
                                     if(temp != NULL)
                                     {
@@ -249,12 +257,12 @@ void Display::playGame()
                                         //Tells if the pawn is attacking or not
                                         if((temp->getType() == (_IsWhiteTurn ? 1 : -6)) && (_Board.getPiece(_newPos_Board.x, _newPos_Board.y) == -(_Board.getPiece(_oldPos_Board.x, _oldPos_Board.y))))
                                         {
-                                            cout << "This is an attacking pawn" << endl;
+                                            //cout << "This is an attacking pawn" << endl;
                                             moveIsValid = temp->isMoveValid(_newPos_Board.x, _newPos_Board.y, true);
                                         }
                                         else
                                         {
-                                            cout << "This is not an attacking pawn" << endl;
+                                            //cout << "This is not an attacking pawn" << endl;
                                             moveIsValid = temp->isMoveValid(_newPos_Board.x, _newPos_Board.y);
                                         }
 
@@ -262,47 +270,67 @@ void Display::playGame()
                                         {   
                                             if(_Board.collisionCheck(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y, temp->getType(), _IsWhiteTurn))
                                             {
+                                                _Sprites[n].setPosition(5555,5555);
+
                                                 //If the move is valid and the tile is not empty, kills the piece at this spot
                                                 if(_IsWhiteTurn)
                                                 {
                                                     if(_Black->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
+                                                    {
                                                         _Black->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
+                                                        for(long unsigned int i = 0; i < _Sprites.size(); i++)
+                                                        {
+                                                            if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
+                                                            {
+                                                                _Sprites[i].setPosition(9999, 9999);
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 else
                                                 {
                                                     if(_White->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
+                                                    {
                                                         _White->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
+                                                         for(long unsigned int i = 0; i < _Sprites.size(); i++)
+                                                        {
+                                                            if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
+                                                            {
+                                                                _Sprites[i].setPosition(9999, 9999);
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 _ActivePlayer->play(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y);
                                                 _Status = ACTIVE;
                                             }
                                             else
                                             {
-                                                cout << "Collision, move aborted" << endl;
+                                                //cout << "Collision, move aborted" << endl;
                                                 _newPos_Window = _oldPos_Window;
                                             }
                                         }                          
                                         else
                                         {
-                                            cout << "Move is not valid" << endl;
+                                            //cout << "Move is not valid" << endl;
                                             _newPos_Window = _oldPos_Window;
                                         }
                                     }
                                     else
                                     {
-                                        cout << "Not a player's piece" << endl;
+                                        //cout << "Not a player's piece" << endl;
                                         _newPos_Window = _oldPos_Window;
                                     }
                                 }
                                 else
                                 {
-                                    cout << "Not in Playfield" << endl;
+                                    //cout << "Not in Playfield" << endl;
                                     _newPos_Window = _oldPos_Window;
                                 }
                             }
                             _Sprites[n].setPosition(_newPos_Window);
                             
-                            // This is for debugging purpose only (each time a piece is moved, output the 2D Matrix)
+                            // This is for debugging purpose only
                             for(int j = 0; j < 8; j++)
                             {
                                 cout << "[";
@@ -319,9 +347,33 @@ void Display::playGame()
                                         else
                                             cout << " "<< _Board.getPiece(i, j) <<"]";
                                 }
+                                cout << "    ";
+                                cout << "[";
+                                for(int i = 0; i < 8; i++)
+                                {
+                                    if(i < 7)
+                                    {
+                                        if((_Black->getPiece(i, j) != NULL) && (_Black->getPiece(i, j)->isAlive()))
+                                            cout << _Black->getPiece(i, j)->getType() << "][";
+                                        else if(_White->getPiece(i, j) && (_White->getPiece(i, j)->isAlive()))
+                                            cout << " " << _White->getPiece(i, j)->getType() << "][";
+                                        else
+                                            cout << " 0][";
+                                    }
+                                    else
+                                    {
+                                        if((_Black->getPiece(i, j) != NULL) && (_Black->getPiece(i, j)->isAlive()))
+                                            cout << _Black->getPiece(i, j)->getType() << "]";
+                                        else if((_White->getPiece(i, j) != NULL) && (_White->getPiece(i, j)->isAlive()))
+                                            cout << " " << _White->getPiece(i, j)->getType() << "]";
+                                        else
+                                            cout << " 0]";
+                                    }
+                                }
                                 cout << endl;
                             }
-                            cout << endl;
+                            cout << "           COLLISIONS                            PIECES"<< endl;
+
                             _IsDragged = false;
                         }
                     }
