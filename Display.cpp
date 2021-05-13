@@ -6,6 +6,7 @@ Display::Display(const string name1, const string name2, const string title)
     //Variables initialisation
     _Title = title;
     _Size = 55;
+    _Window.create(VideoMode(_Size*10, _Size*10), _Title);
 
     //Game initialisation
     _White = new Player(name1, 1);
@@ -126,10 +127,10 @@ void Display::playGame()
     _Status = ACTIVE; 
 
     // Sets up the window resolution and the window title
-    RenderWindow window(VideoMode(_Size*10, _Size*10), _Title);
+    //RenderWindow window(VideoMode(_Size*10, _Size*10), _Title);
 
     // Loops until the window is closed by the user
-    while (window.isOpen())
+    while (_Window.isOpen())
     {   
         while (_Status == ACTIVE)
         {
@@ -187,15 +188,15 @@ void Display::playGame()
             while (_Status == MOVE)
             {
                 // Stores the position of the mouse at any time in mouse_pos
-                Vector2i mouse_pos = Mouse::getPosition(window);
+                Vector2i mouse_pos = Mouse::getPosition(_Window);
 
-                while (window.pollEvent(event))
+                while (_Window.pollEvent(event))
                 {
                     // When the user click o the cross, it closes the window
                     if(event.type == Event::Closed)
                     {
                         _Status = STOP;
-                        window.close();
+                        _Window.close();
                     }
 
                     // When the mouse left button is pressed, checks if the mouse is hovering one of the pieces.
@@ -329,98 +330,110 @@ void Display::playGame()
                                 }
                             }
                             _Sprites[n].setPosition(_newPos_Window);
-                            
-                            // This is for debugging purpose only
-                            for(int j = 0; j < 8; j++)
-                            {
-                                cout << "[";
-                                for(int i = 0; i < 8; i++)
-                                {
-                                    if(_Board.getPiece(i, j) < 0)
-                                        if(i < 7)
-                                            cout << _Board.getPiece(i, j) <<"][";
-                                        else
-                                            cout << _Board.getPiece(i, j) <<"]";
-                                    else
-                                        if(i < 7)
-                                            cout << " "<< _Board.getPiece(i, j) <<"][";
-                                        else
-                                            cout << " "<< _Board.getPiece(i, j) <<"]";
-                                }
-                                cout << "    ";
-                                cout << "[";
-                                for(int i = 0; i < 8; i++)
-                                {
-                                    if(i < 7)
-                                    {
-                                        if((_Black->getPiece(i, j) != NULL) && (_Black->getPiece(i, j)->isAlive()))
-                                            cout << _Black->getPiece(i, j)->getType() << "][";
-                                        else if(_White->getPiece(i, j) && (_White->getPiece(i, j)->isAlive()))
-                                            cout << " " << _White->getPiece(i, j)->getType() << "][";
-                                        else
-                                            cout << " 0][";
-                                    }
-                                    else
-                                    {
-                                        if((_Black->getPiece(i, j) != NULL) && (_Black->getPiece(i, j)->isAlive()))
-                                            cout << _Black->getPiece(i, j)->getType() << "]";
-                                        else if((_White->getPiece(i, j) != NULL) && (_White->getPiece(i, j)->isAlive()))
-                                            cout << " " << _White->getPiece(i, j)->getType() << "]";
-                                        else
-                                            cout << " 0]";
-                                    }
-                                }
-                                cout << endl;
-                            }
-                            cout << "           COLLISIONS                            PIECES"<< endl;
-
                             _IsDragged = false;
+                            debug();
                         }
                     }
                 }
 
-            // This is used during the whole movment (from left button pressed until left button released)
-            // It'll move the position of the sprite in real-time during the mouse movement.
-            if(_IsDragged)
-            {
-                _Sprites[n].setPosition(Vector2f(mouse_pos) - _DxDy);
-            }
-
-            // Clears the window
-            window.clear();
-
-            // Draws the board srpite
-            window.draw(_SpriteBoard);
-            
-            // Draws all the 32 pieces' sprites
-            for (int i = 0; i < (int)_Sprites.size(); i++)
-            {
-                if(_IsDragged == false)
+                // This is used during the whole movment (from left button pressed until left button released)
+                // It'll move the position of the sprite in real-time during the mouse movement.
+                if(_IsDragged)
                 {
-                    window.draw(_Sprites[i]);
+                    _Sprites[n].setPosition(Vector2f(mouse_pos) - _DxDy);
                 }
-                else
-                {
-                    if(i != n)
-                    {
-                        window.draw(_Sprites[i]);
-                    }
-                }
-            }
-            
-            // Draws the piece that is being dragged
-            if(_IsDragged == true)
-            {
-                window.draw(_Sprites[n]);
-            }
-
-            // Displays on screen what has been rendered to the window
-            window.display();
+                show(n, _IsDragged);
             }
         }
     }
 }
 
+/**
+ * Displays all the sprites
+ */
+void Display::show(const int n, const bool _IsDragged)
+{
+    // Clears the window
+    _Window.clear();
+
+    // Draws the board srpite
+    _Window.draw(_SpriteBoard);
+    
+    // Draws all the 32 pieces' sprites
+    for (int i = 0; i < (int)_Sprites.size(); i++)
+    {
+        if(_IsDragged == false)
+        {
+            _Window.draw(_Sprites[i]);
+        }
+        else
+        {
+            if(i != n)
+            {
+                _Window.draw(_Sprites[i]);
+            }
+        }
+    }
+    
+    // Draws the piece that is being dragged
+    if(_IsDragged == true)
+    {
+        _Window.draw(_Sprites[n]);
+    }
+
+    // Displays on screen what has been rendered to the window
+    _Window.display();
+}
+
+/**
+ * Debugging purpose only, prints collisions board and pieces board
+ */
+void Display::debug() const
+{
+    // This is for debugging purpose only
+    for(int j = 0; j < 8; j++)
+    {
+        cout << "[";
+        for(int i = 0; i < 8; i++)
+        {
+            if(_Board.getPiece(i, j) < 0)
+                if(i < 7)
+                    cout << _Board.getPiece(i, j) <<"][";
+                else
+                    cout << _Board.getPiece(i, j) <<"]";
+            else
+                if(i < 7)
+                    cout << " "<< _Board.getPiece(i, j) <<"][";
+                else
+                    cout << " "<< _Board.getPiece(i, j) <<"]";
+        }
+        cout << "    ";
+        cout << "[";
+        for(int i = 0; i < 8; i++)
+        {
+            if(i < 7)
+            {
+                if((_Black->getPiece(i, j) != NULL) && (_Black->getPiece(i, j)->isAlive()))
+                    cout << _Black->getPiece(i, j)->getType() << "][";
+                else if(_White->getPiece(i, j) && (_White->getPiece(i, j)->isAlive()))
+                    cout << " " << _White->getPiece(i, j)->getType() << "][";
+                else
+                    cout << " 0][";
+            }
+            else
+            {
+                if((_Black->getPiece(i, j) != NULL) && (_Black->getPiece(i, j)->isAlive()))
+                    cout << _Black->getPiece(i, j)->getType() << "]";
+                else if((_White->getPiece(i, j) != NULL) && (_White->getPiece(i, j)->isAlive()))
+                    cout << " " << _White->getPiece(i, j)->getType() << "]";
+                else
+                    cout << " 0]";
+            }
+        }
+        cout << endl;
+    }
+    cout << "           COLLISIONS                            PIECES"<< endl;
+}
 
 /**
  * Tells if someone is in checked, changes games status and updates players' status

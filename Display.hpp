@@ -21,6 +21,7 @@ class Display
     //Drawing variables
         //title of the window
         string _Title;
+        RenderWindow _Window;
 
         //vector of pieces of each player
         vector <Sprite> _Sprites;
@@ -45,6 +46,8 @@ class Display
         void playGame();
         void isCheck();
         void isCheckMate();
+        void debug() const;
+        void show(const int n, const bool _IsDragged);
         ~Display();
 };
 
