@@ -44,7 +44,7 @@ class Display
     public:
         Display(const string name1, const string name2, const string title = "ChessGame");
         void playGame();
-        void isCheck();
+        bool isCheck();
         void isCheckMate();
         void debug() const;
         void show(const int draggedPiece, const bool _IsDragged);

@@ -437,9 +437,12 @@ void Display::debug() const
 
 /**
  * Tells if someone is in checked, changes games status and updates players' status
+ * @returns true if someon eis checked, else false
  */
-void Display::isCheck()
+bool Display::isCheck()
 {
+    bool check = false;
+
     //Stores current pieces
     Piece* whitePiece;
     Piece* blackPiece;
@@ -487,6 +490,7 @@ void Display::isCheck()
                     {
                         _Black->setCheck(true);
                         _Status = CHECK;
+                        check = true;
                     }
                 }
             }
@@ -499,11 +503,13 @@ void Display::isCheck()
                     {
                         _White->setCheck(true);
                         _Status = CHECK;
+                        check = true;
                     }
                 }   
             }
         }
     }
+    return check;
 }
 
 /**
