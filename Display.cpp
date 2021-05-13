@@ -120,6 +120,7 @@ void Display::playGame()
     int _DraggedPiece   = 0;
     int k               = 0;
     bool _IsDragged     = false;  
+    bool check          = false;
     Vector2f _DxDy;
     Vector2f _oldPos_Window;
     Vector2i _oldPos_Board;
@@ -153,7 +154,7 @@ void Display::playGame()
             /* -------------------- */
             /* 1 : checks for check */
             /* -------------------- */
-            isCheck(); //looks for check and update game status and players' status
+            check = isCheck(); //looks for check and update game status and players' status
 
             if(_White->isCheck()) //if white is checked
             {
@@ -271,39 +272,105 @@ void Display::playGame()
                                         {   
                                             if(_Board.collisionCheck(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y, temp->getType(), _IsWhiteTurn))
                                             {
-                                                _Sprites[_DraggedPiece].setPosition(5555,5555);
+                                                //if there is no check currently ....
+                                                if (check == false)
+                                                {
+                                                    _ActivePlayer->play(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y);
+                                                    check = isCheck();
+                                                    // and if the move doesn't but the player in check, moves normally
+                                                    if (check == false)
+                                                    {
+                                                        _Status = ACTIVE;
+                                                        _Sprites[_DraggedPiece].setPosition(5555,5555);
+                                                        //If the move is valid and the tile is not empty, kills the piece at this spot
+                                                        if(_IsWhiteTurn)
+                                                        {
+                                                            if(_Black->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
+                                                            {
+                                                                _Black->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
+                                                                for(int i = 0; i < (int)_Sprites.size(); i++)
+                                                                {
+                                                                    if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
+                                                                    {
+                                                                        _Sprites[i].setPosition(9999, 9999);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if(_White->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
+                                                            {
+                                                                _White->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
+                                                                for(int i = 0; i < (int)_Sprites.size(); i++)
+                                                                {
+                                                                    if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
+                                                                    {
+                                                                        _Sprites[i].setPosition(9999, 9999);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    //if the move puts the player in check, moves backward
+                                                    else
+                                                    {
+                                                        _ActivePlayer->play(_newPos_Board.x, _newPos_Board.y, _oldPos_Board.x, _oldPos_Board.y);
+                                                        _newPos_Window = _oldPos_Window;
+                                                    }
+                                                }
 
-                                                //If the move is valid and the tile is not empty, kills the piece at this spot
-                                                if(_IsWhiteTurn)
+                                                //else if active player is check
+                                                else if (_ActivePlayer->isCheck())
                                                 {
-                                                    if(_Black->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
+                                                    cout << "Active player checked" << endl;
+                                                    _ActivePlayer->play(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y);
+        
+                                                    check = isCheck();
+
+                                                    //if after his move he is no longer checked, moves normally
+                                                    if (check == false) 
                                                     {
-                                                        _Black->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
-                                                        for(int i = 0; i < (int)_Sprites.size(); i++)
+                                                        _Status = ACTIVE;
+                                                        _Sprites[_DraggedPiece].setPosition(5555,5555);
+                                                        if(_IsWhiteTurn)
                                                         {
-                                                            if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
+                                                            if(_Black->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
                                                             {
-                                                                _Sprites[i].setPosition(9999, 9999);
+                                                                _Black->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
+                                                                for(int i = 0; i < (int)_Sprites.size(); i++)
+                                                                {
+                                                                    if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
+                                                                    {
+                                                                        _Sprites[i].setPosition(9999, 9999);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if(_White->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
+                                                            {
+                                                                _White->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
+                                                                for(int i = 0; i < (int)_Sprites.size(); i++)
+                                                                {
+                                                                    if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
+                                                                    {
+                                                                        _Sprites[i].setPosition(9999, 9999);
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    if(_White->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
-                                                    {
-                                                        _White->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
-                                                         for(int i = 0; i < (int)_Sprites.size(); i++)
-                                                        {
-                                                            if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
-                                                            {
-                                                                _Sprites[i].setPosition(9999, 9999);
-                                                            }
-                                                        }
+
+                                                    //if he is still checked after his move, backwards the move
+                                                    else
+                                                    {                
+                                                        _Status = MOVE;
+                                                        _ActivePlayer->play(_newPos_Board.x, _newPos_Board.y, _oldPos_Board.x, _oldPos_Board.y);
+                                                        _newPos_Window = _oldPos_Window;
                                                     }
                                                 }
-                                                _ActivePlayer->play(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y);
-                                                _Status = ACTIVE;
                                             }
                                             else
                                             {
@@ -489,7 +556,7 @@ bool Display::isCheck()
                     if(_Board.collisionCheck(whitePiece->getX(), whitePiece->getY(), bKing_x, bKing_y, whitePiece->getType(), true))
                     {
                         _Black->setCheck(true);
-                        _Status = CHECK;
+                        //_Status = CHECK;
                         check = true;
                     }
                 }
@@ -502,7 +569,7 @@ bool Display::isCheck()
                     if(_Board.collisionCheck(blackPiece->getX(), blackPiece->getY(), wKing_x, wKing_y, blackPiece->getType(), false))
                     {
                         _White->setCheck(true);
-                        _Status = CHECK;
+                        //_Status = CHECK;
                         check = true;
                     }
                 }   
