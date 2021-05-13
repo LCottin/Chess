@@ -86,13 +86,14 @@ Player::Player(const string name, const bool white)
 
 /**
  * Makes the player plays : update Board and moves the piece
- * @param oldX, oldY current position
- * @param newX, newY future position
+ * @param oldX,oldY current position
+ * @param newX,newY future position
  */
-void Player::play(const int oldX, const int oldY, const int newX, const int newY) const
+void Player::play(const int oldX, const int oldY, const int newX, const int newY)
 {
     _Board.updateBoard(oldX, oldY, newX, newY, _IsWhite);
     getPiece(oldX, oldY)->move(newX, newY);
+    _IsCheck = false;
 }
 
 /**

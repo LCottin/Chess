@@ -30,7 +30,7 @@ class Player
         int     getSize() const;
         void    setCheck(const bool isCheck);
         Piece*  getPiece(const int x, const int y) const;
-        void    play(const int oldX, const int oldY, const int newX, const int newY) const;
+        void    play(const int oldX, const int oldY, const int newX, const int newY);
         ~Player();
 };
 
