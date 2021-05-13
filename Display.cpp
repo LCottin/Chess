@@ -517,8 +517,6 @@ void Display::isCheckMate()
     //Stores current pieces
     Piece* whitePiece;
     Piece* blackPiece;
-    King* bKing;
-    King* wKing;
 
     //Stores kings' position
     int bKing_x, bKing_y;
@@ -558,7 +556,6 @@ void Display::isCheckMate()
     //where it is no longer checked
 
     //checks if black king is checkmated
-    bKing = (King*)_Black->getPiece(bKing_x, bKing_y);
     for (int i = -1; i < 2; i++)
     {
         for (int j = -1; j < 2; j++)
@@ -603,7 +600,6 @@ void Display::isCheckMate()
     }
     
     //checks if white king is checkmated
-    wKing = (King*)_White->getPiece(wKing_x, wKing_y);
     for (int i = -1; i < 2; i++)
     {
         for (int j = -1; j < 2; j++)
