@@ -117,9 +117,9 @@ Display::Display(const string name1, const string name2, const string title)
 void Display::playGame()
 {
     //Variables initialization 
-    int n           = 0;
-    int k           = 0;
-    bool _IsDragged = false;  
+    int _DraggedPiece   = 0;
+    int k               = 0;
+    bool _IsDragged     = false;  
     Vector2f _DxDy;
     Vector2f _oldPos_Window;
     Vector2i _oldPos_Board;
@@ -210,8 +210,8 @@ void Display::playGame()
                             {
                                 if(_Sprites[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
                                 {
-                                    n = k;
-                                    _oldPos_Window = _Sprites[n].getPosition();
+                                    _DraggedPiece = k;
+                                    _oldPos_Window = _Sprites[_DraggedPiece].getPosition();
                                     _oldPos_Board = Vector2i(_oldPos_Window);
                                     _oldPos_Board.x = _oldPos_Board.x / _Size - 1;
                                     _oldPos_Board.y = _oldPos_Board.y / _Size - 1;
@@ -237,7 +237,7 @@ void Display::playGame()
 
                         if((event.mouseButton.button == Mouse::Left) && (!(_oldPos_Window.x < 54 || _oldPos_Window.x > 494 || _oldPos_Window.y < 54 || _oldPos_Window.y > 494)))
                         {
-                            Vector2f _newPos_Window = Vector2f(_Size*int(Vector2f (_Sprites[n].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Sprites[n].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
+                            Vector2f _newPos_Window = Vector2f(_Size*int(Vector2f (_Sprites[_DraggedPiece].getPosition() + Vector2f(_Size/2, _Size/2)).x/_Size), _Size*int(Vector2f (_Sprites[_DraggedPiece].getPosition() + Vector2f(_Size/2, _Size/2)).y/_Size));
                             Vector2i _newPos_Board = Vector2i(_newPos_Window);
                             _newPos_Board.x = _newPos_Board.x / _Size - 1;
                             _newPos_Board.y = _newPos_Board.y / _Size - 1;
@@ -271,7 +271,7 @@ void Display::playGame()
                                         {   
                                             if(_Board.collisionCheck(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y, temp->getType(), _IsWhiteTurn))
                                             {
-                                                _Sprites[n].setPosition(5555,5555);
+                                                _Sprites[_DraggedPiece].setPosition(5555,5555);
 
                                                 //If the move is valid and the tile is not empty, kills the piece at this spot
                                                 if(_IsWhiteTurn)
@@ -279,7 +279,7 @@ void Display::playGame()
                                                     if(_Black->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
                                                     {
                                                         _Black->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
-                                                        for(long unsigned int i = 0; i < _Sprites.size(); i++)
+                                                        for(int i = 0; i < (int)_Sprites.size(); i++)
                                                         {
                                                             if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
                                                             {
@@ -293,7 +293,7 @@ void Display::playGame()
                                                     if(_White->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
                                                     {
                                                         _White->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
-                                                         for(long unsigned int i = 0; i < _Sprites.size(); i++)
+                                                         for(int i = 0; i < (int)_Sprites.size(); i++)
                                                         {
                                                             if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
                                                             {
@@ -329,7 +329,7 @@ void Display::playGame()
                                     _newPos_Window = _oldPos_Window;
                                 }
                             }
-                            _Sprites[n].setPosition(_newPos_Window);
+                            _Sprites[_DraggedPiece].setPosition(_newPos_Window);
                             _IsDragged = false;
                             debug();
                         }
@@ -340,9 +340,9 @@ void Display::playGame()
                 // It'll move the position of the sprite in real-time during the mouse movement.
                 if(_IsDragged)
                 {
-                    _Sprites[n].setPosition(Vector2f(mouse_pos) - _DxDy);
+                    _Sprites[_DraggedPiece].setPosition(Vector2f(mouse_pos) - _DxDy);
                 }
-                show(n, _IsDragged);
+                show(_DraggedPiece, _IsDragged);
             }
         }
     }
@@ -351,7 +351,7 @@ void Display::playGame()
 /**
  * Displays all the sprites
  */
-void Display::show(const int n, const bool _IsDragged)
+void Display::show(const int draggedPiece, const bool _IsDragged)
 {
     // Clears the window
     _Window.clear();
@@ -368,7 +368,7 @@ void Display::show(const int n, const bool _IsDragged)
         }
         else
         {
-            if(i != n)
+            if(i != draggedPiece)
             {
                 _Window.draw(_Sprites[i]);
             }
@@ -378,7 +378,7 @@ void Display::show(const int n, const bool _IsDragged)
     // Draws the piece that is being dragged
     if(_IsDragged == true)
     {
-        _Window.draw(_Sprites[n]);
+        _Window.draw(_Sprites[draggedPiece]);
     }
 
     // Displays on screen what has been rendered to the window

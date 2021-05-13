@@ -47,7 +47,7 @@ class Display
         void isCheck();
         void isCheckMate();
         void debug() const;
-        void show(const int n, const bool _IsDragged);
+        void show(const int draggedPiece, const bool _IsDragged);
         ~Display();
 };
 
