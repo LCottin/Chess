@@ -27,10 +27,13 @@ class Display
         vector <Sprite> _Sprites;
 
         //Textures initialization
-        Texture _TextureBoard, _TextureBp, _TextureBb, _TextureBkn, _TextureBr, _TextureBk, _TextureBq, _TextureWp, _TextureWb, _TextureWkn, _TextureWr, _TextureWq, _TextureWk;
+        Texture _TextureBoard, _TextureWhitePlays, _TextureBlackPlays, _TextureWhiteWins, _TextureBlackWins;
+        Texture _TextureBp, _TextureBb, _TextureBkn, _TextureBr, _TextureBk, _TextureBq, _TextureWp, _TextureWb, _TextureWkn, _TextureWr, _TextureWq, _TextureWk;
     
         //Sprites initializations
-        Sprite _SpriteBoard, _SpriteBb, _SpriteBp, _SpriteBkn, _SpriteBr, _SpriteBq, _SpriteBk, _SpriteWp, _SpriteWb, _SpriteWkn, _SpriteWr, _SpriteWq, _SpriteWk;
+        Sprite _SpriteBoard, _SpriteWhitePlays, _SpriteBlackPlays, _SpriteWhiteWins, _SpriteBlackWins; 
+        Sprite _SpriteBb, _SpriteBp, _SpriteBkn, _SpriteBr, _SpriteBq, _SpriteBk, _SpriteWp, _SpriteWb, _SpriteWkn, _SpriteWr, _SpriteWq, _SpriteWk;
+        
         int _Size;
 
     //Game variables
@@ -44,10 +47,10 @@ class Display
     public:
         Display(const string name1, const string name2, const string title = "ChessGame");
         void playGame();
-        bool isCheck();
+        void isCheck();
         void isCheckMate();
         void debug() const;
-        void show(const int draggedPiece, const bool _IsDragged);
+        void show(const int draggedPiece, const bool _IsDragged, const bool endGame);
         ~Display();
 };
 
