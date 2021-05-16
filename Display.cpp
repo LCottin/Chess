@@ -150,29 +150,14 @@ void Display::playGame()
             _TurnCount++;
             _IsWhiteTurn = !_IsWhiteTurn;
             if(_IsWhiteTurn)
-            {
                 _ActivePlayer = _White;
-                cout << "White turn" << endl;
-            }
             else
-            {
                 _ActivePlayer = _Black;
-                cout << "Black turn" << endl;
-            }
 
             /* -------------------- */
             /* 1 : checks for check */
             /* -------------------- */
             isCheck(); //looks for check and update game status and players' status
-
-            if(_White->isCheck()) //if white is checked
-            {
-                cout << "White is check" << endl;
-            }
-            else if(_Black->isCheck()) //else is black is checked
-            {
-                cout << "Black is check" << endl;
-            }
 
             /* ------------------------ */
             /* 2 : checks for checkmate */
@@ -187,16 +172,17 @@ void Display::playGame()
                     {
                         _Status = STOP;
                         _Window.close();
-                        cout << "Window closed" << endl;
                     }                   
                 }
             }
 
             if (_Window.isOpen())
-            {
-                cout << "Game is still going ..." << endl;
                 _Status = MOVE;
-            }
+
+
+            /* ------------------------ */
+            /* 3 : White/Black playing  */
+            /* ------------------------ */
             while(_Status == MOVE)
             {
                 // Stores the position of the mouse at any time in mouse_pos
@@ -292,7 +278,6 @@ void Display::playGame()
                                                     // and if the move doesn't but the player in check, moves normally
                                                     if (!_ActivePlayer->isCheck())
                                                     {
-                                                        cout << "Active player not checked" << endl;
                                                         _Status = ACTIVE;
                                                         _Sprites[_DraggedPiece].setPosition(5555,5555);
                                                         //If the move is valid and the tile is not empty, kills the piece at this spot
@@ -328,16 +313,13 @@ void Display::playGame()
                                                     //if the move puts the player in check, moves backward
                                                     else
                                                     {
-                                                        cout << "Active player is now checked" << endl;
                                                         _ActivePlayer->play(_newPos_Board.x, _newPos_Board.y, _oldPos_Board.x, _oldPos_Board.y);
                                                         _newPos_Window = _oldPos_Window;
                                                     }
                                                 }
-
                                                 //else if active player is check
                                                 else
                                                 {
-                                                    cout << "Active player checked" << endl;
                                                     _ActivePlayer->play(_oldPos_Board.x, _oldPos_Board.y, _newPos_Board.x, _newPos_Board.y);
         
                                                     isCheck();
@@ -345,7 +327,6 @@ void Display::playGame()
                                                     //if after his move he is no longer checked, moves normally
                                                     if (_ActivePlayer->isCheck() == false) 
                                                     {
-                                                        cout << "Active player no more checked" << endl;
                                                         _Status = ACTIVE;
                                                         _Sprites[_DraggedPiece].setPosition(5555,5555);
                                                         if(_IsWhiteTurn)
@@ -381,7 +362,6 @@ void Display::playGame()
                                                     //if he is still checked after his move, backwards the move
                                                     else
                                                     {        
-                                                        cout << "Active player still checked" << endl;        
                                                         _Status = MOVE;
                                                         _ActivePlayer->play(_newPos_Board.x, _newPos_Board.y, _oldPos_Board.x, _oldPos_Board.y);
                                                         _newPos_Window = _oldPos_Window;
@@ -414,7 +394,7 @@ void Display::playGame()
                             }
                             _Sprites[_DraggedPiece].setPosition(_newPos_Window);
                             _IsDragged = false;
-                            debug();
+                            //debug();
                         }
                     }
                 }
@@ -601,7 +581,7 @@ void Display::isCheck()
                     if(_Board.collisionCheck(blackPiece->getX(), blackPiece->getY(), wKing_x, wKing_y, blackPiece->getType(), false))
                     {
                         _White->setCheck(true);
-                        //_Status = CHECK;                    }
+                        //_Status = CHECK;
                     }   
                 }
             }
@@ -617,16 +597,15 @@ void Display::isCheckMate()
     //needs at least someone checked
     if ((_White->isCheck() == false) && (_Black->isCheck() == false)) return;
 
-    cout << "looking for checkmate" << endl;
     //Stores current pieces
     Piece* whitePiece;
     Piece* blackPiece;
 
-    King* whiteKing;
-    King* blackKing;
+    Vector2i blackKing, whiteKing;
 
     //stores current position of the king
-    int curPos_x, curPos_y;
+    int curPos_x = 0;
+    int curPos_y = 0;
 
     //stores players status
     int blackPossibleMoves = 8;
@@ -641,11 +620,13 @@ void Display::isCheckMate()
             blackPiece = _Black->getPiece(i, j);
             if ((blackPiece != NULL) && (blackPiece->getType() == B_KING))
             {
-                blackKing = (King*)_Black->getPiece(i, j);
+                blackKing.x = i;
+                blackKing.y = j;
             }
             if ((whitePiece != NULL) && (whitePiece->getType() == W_KING))
             {
-                whiteKing = (King*)_White->getPiece(i, j);
+                whiteKing.x = i;
+                whiteKing.y = j;
             }
         }
     }
@@ -663,16 +644,15 @@ void Display::isCheckMate()
             if (i == 0 && j == 0) continue;
             
             //next position of the king : moves virtually but stays on the board
-            if(((blackKing->getX() + i) >= 0) && ((blackKing->getX() + i) <= 7) && blackKing->isMoveValid((blackKing->getX() + i), blackKing->getY() , false))
-            {
-                curPos_x = blackKing->getX() + i;
-            }
-            if(((blackKing->getY() + i) >= 0) && ((blackKing->getY() + i) <= 7) && blackKing->isMoveValid(blackKing->getX(), (blackKing->getY() + i) , false))
-            {
-                curPos_y = blackKing->getY() + i;
-            }            
-            
-            cout << "curPos_x = " << curPos_x << " curPos_y = " << curPos_y << endl;
+            if(((blackKing.x + i) >= 0) && ((blackKing.x + i) <= 7) && (_Board.getPiece((blackKing.x + i), blackKing.y) == 0))
+                curPos_x = blackKing.x + i;
+            else
+                curPos_x = blackKing.x;
+
+            if(((blackKing.y + j) >= 0) && ((blackKing.y + j) <= 7) && (_Board.getPiece(blackKing.x, (blackKing.y + j)) == 0))
+                curPos_y = blackKing.y + j;
+            else
+                curPos_y = blackKing.y;
 
             //checks if any of the piece can reach the king at its new position
             for (int k = 0; k < 8; k++)
@@ -690,8 +670,6 @@ void Display::isCheckMate()
                             if (_Board.collisionCheck(whitePiece->getX(), whitePiece->getY(), curPos_x, curPos_y, whitePiece->getType(), true))
                             {
                                 //tile is not safe and this move is not good
-                                cout << _White->getPiece(k, l)->getType() << " could reach the black king located in x = " << curPos_x << " and y = " << curPos_y << endl;
-                                cout << "blackPossibleMoves = " << blackPossibleMoves << endl;
                                 blackPossibleMoves--;
                             }
                         }
@@ -704,12 +682,10 @@ void Display::isCheckMate()
     if (blackPossibleMoves <= 0)
     {
         _Status = W_WINS;
-        cout << "BLACK PLAYER IS CHECKED AND MATED" << endl;
         return;
     }
 
     cout << endl << endl;
-    
     //checks if white king is checkmated
     for (int i = -1; i < 2; i++)
     {
@@ -718,17 +694,15 @@ void Display::isCheckMate()
             //no need to check the same spot
             if (i == 0 && j == 0) continue;
             
-            //next position of the king : moves virtually but stays on the board
-            if(((whiteKing->getX() + i) >= 0) && ((whiteKing->getX() + i) <= 7) && whiteKing->isMoveValid((whiteKing->getX() + i), whiteKing->getY() , false))
-            {
-                curPos_x = whiteKing->getX() + i;
-            }
-            if(((whiteKing->getY() + i) >= 0) && ((whiteKing->getY() + i) <= 7) && whiteKing->isMoveValid(whiteKing->getX(), (whiteKing->getY() + i) , false))
-            {
-                curPos_y = whiteKing->getY() + i;
-            }  
-            
-            cout << "curPos_x = " << curPos_x << " curPos_y = " << curPos_y << endl;
+            if(((whiteKing.x + i) >= 0) && ((whiteKing.x + i) <= 7) && (_Board.getPiece((whiteKing.x + i), whiteKing.y) == 0))
+                curPos_x = whiteKing.x + i;
+            else
+                curPos_x = whiteKing.x;
+
+            if(((whiteKing.y + j) >= 0) && ((whiteKing.y + j) <= 7) && (_Board.getPiece(whiteKing.x, (whiteKing.y + j)) == 0))
+                curPos_y = whiteKing.y + j;
+            else
+                curPos_y = whiteKing.y;
 
             //checks if any of the piece can reach the king at its new position
             for (int k = 0; k < 8; k++)
@@ -746,8 +720,6 @@ void Display::isCheckMate()
                             if (_Board.collisionCheck(blackPiece->getX(), blackPiece->getY(), curPos_x, curPos_y, blackPiece->getType(), false))
                             {
                                 //tile is not safe and this move is not good
-                                cout << _Black->getPiece(k, l)->getType() << " could reach the virtual white king located in x = " << curPos_x << " and y = " << curPos_y << endl;
-                                cout << "whitePossibleMoves = " << whitePossibleMoves << endl;
                                 whitePossibleMoves--;
                             }
                         }
@@ -760,7 +732,6 @@ void Display::isCheckMate()
     if (whitePossibleMoves <= 0)
     {
         _Status = B_WINS;
-        cout << "WHITE PLAYER IS CHECKED AND MATED" << endl;
         return;
     }
 }

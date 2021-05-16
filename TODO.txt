@@ -1,11 +1,13 @@
-Vérifier si le move est valide et donner la main au prochain joueur
+Fonctionnel :
+    Faire la fonction pat
+    Faire le castle move
+    Faire la promotion
+    Faire en passant
 
-Faire la fonction check
-Faire la fonction checkmate
-Faire la fonction pat
-Faire la fonction qui actualise la board a chaque tour de joueur
+Optimisation :
+    Epurer code : ajouter WaitingPlayer
 
-Epurer code
-Compléter la FSM
-Rendre fonctionnelles toutes les méthodes IsMoveValid de toutes les pièces
-Implémenter méchanique de pièces vaincues
+Esthétique :
+    Texture white_plays.png et white_wins.png à modifier
+    Menu ?
+    Stats des joueurs ?
