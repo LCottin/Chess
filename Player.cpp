@@ -103,7 +103,7 @@ void Player::play(const int oldX, const int oldY, const int newX, const int newY
  */
 Piece* Player::getPiece(const int x, const int y) const
 {
-    for (int i = 0; i < _Pieces.size(); i++)
+    for (int i = 0; i < (int)_Pieces.size(); i++)
     {
         if((_Pieces[i]->getX() == x && _Pieces[i]->getY() == y) && (_Pieces[i]->isAlive()))
             return _Pieces[i];
@@ -140,7 +140,7 @@ void Player::setCheck(const bool isCheck)
 
 Player::~Player()
 {
-    for(int i = 0; i < _Pieces.size(); i++)
+    for(int i = 0; i < (int)_Pieces.size(); i++)
     {
         delete _Pieces[i];
     }
