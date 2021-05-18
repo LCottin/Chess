@@ -40,6 +40,7 @@ class Display
         Player*     _White;         //white player
         Player*     _Black;         //black player
         Player*     _ActivePlayer;  //active player
+        Player*     _WaitingPlayer;  //waiting player
         int         _TurnCount;     //how many turns have been played
         bool        _IsWhiteTurn;   //indicates who's turn it is
         GAMESTATUS  _Status;        //stores current status of the game     
