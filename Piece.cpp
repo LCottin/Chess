@@ -123,6 +123,6 @@ Sprite* Piece::getSprite()
 
 Piece::~Piece()
 {
-
+    
 }
 

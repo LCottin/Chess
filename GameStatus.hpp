@@ -11,6 +11,7 @@ enum GAMESTATUS
     W_WINS,
     CHECK,
     STOP,
+    PROMOTION,
     MOVE
 };
 

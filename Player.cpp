@@ -168,44 +168,32 @@ void Player::promotion(Piece* promotedPawn, const int TYPE)
         case -2:
         case  5:
         {
-            cout << "BEFORE CREATING NEW Queen" << endl;
             Queen* tempQ  = new Queen(_IsWhite);
-            cout << "BEFORE MOVING NEW Queen" << endl;
             tempQ->moveBoard(Vector2i(promotedPawn->getX(), promotedPawn->getY()));
-            cout << "BEFORE PUSHBACK NEW Queen" << endl;
             _Pieces.push_back(tempQ);
             break;
         }
         case -3:
         case  4:
         {
-            cout << "BEFORE CREATING NEW Rook" << endl;
             Rook* tempR  = new Rook(_IsWhite);
-            cout << "BEFORE MOVING NEW Rook" << endl;
             tempR->moveBoard(Vector2i(promotedPawn->getX(), promotedPawn->getY()));
-            cout << "BEFORE PUSHBACK NEW Rook" << endl;
             _Pieces.push_back(tempR);
             break;
         }
         case -4:
         case  3:
         {
-            cout << "BEFORE CREATING NEW Knight" << endl;
             Knight* tempK  = new Knight(_IsWhite);
-            cout << "BEFORE MOVING NEW Knight" << endl;
             tempK->moveBoard(Vector2i(promotedPawn->getX(), promotedPawn->getY()));
-            cout << "BEFORE PUSHBACK NEW Knight" << endl;
             _Pieces.push_back(tempK);
             break;
         }
         case -5:
         default:
         {
-            cout << "BEFORE CREATING NEW Bishop" << endl;
             Bishop* tempB  = new Bishop(_IsWhite);
-            cout << "BEFORE MOVING NEW Bishop" << endl;
             tempB->moveBoard(Vector2i(promotedPawn->getX(), promotedPawn->getY()));
-            cout << "BEFORE PUSHBACK NEW Bishop" << endl;
             _Pieces.push_back(tempB);
             break;
         }
