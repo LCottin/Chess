@@ -12,7 +12,7 @@ Display::Display(const string name1, const string name2, const string title)
     _White = new Player(name1, 1);
     _Black = new Player(name2, 0);
     _ActivePlayer = _Black;
-    // _WaitingPlayer = _White;
+    _WaitingPlayer = _White;
 
     _TurnCount      = 0;
     _IsWhiteTurn    = false;
@@ -150,9 +150,15 @@ void Display::playGame()
             _TurnCount++;
             _IsWhiteTurn = !_IsWhiteTurn;
             if(_IsWhiteTurn)
-                _ActivePlayer = _White;
+            {
+                _ActivePlayer   = _White;
+                _WaitingPlayer  = _Black;
+            }
             else
-                _ActivePlayer = _Black;
+            {
+                _ActivePlayer   = _Black;
+                _WaitingPlayer  = _White;
+            }   
 
             /* -------------------- */
             /* 1 : checks for check */
@@ -281,34 +287,18 @@ void Display::playGame()
                                                         _Status = ACTIVE;
                                                         _Sprites[_DraggedPiece].setPosition(5555,5555);
                                                         //If the move is valid and the tile is not empty, kills the piece at this spot
-                                                        if(_IsWhiteTurn)
+                                                        if(_WaitingPlayer->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
                                                         {
-                                                            if(_Black->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
+                                                            _WaitingPlayer->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
+                                                            for(int i = 0; i < (int)_Sprites.size(); i++)
                                                             {
-                                                                _Black->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
-                                                                for(int i = 0; i < (int)_Sprites.size(); i++)
+                                                                if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
                                                                 {
-                                                                    if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
-                                                                    {
-                                                                        _Sprites[i].setPosition(9999, 9999);
-                                                                    }
+                                                                    _Sprites[i].setPosition(9999, 9999);
                                                                 }
                                                             }
                                                         }
-                                                        else
-                                                        {
-                                                            if(_White->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
-                                                            {
-                                                                _White->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
-                                                                for(int i = 0; i < (int)_Sprites.size(); i++)
-                                                                {
-                                                                    if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
-                                                                    {
-                                                                        _Sprites[i].setPosition(9999, 9999);
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        
                                                     }
                                                     //if the move puts the player in check, moves backward
                                                     else
@@ -329,36 +319,18 @@ void Display::playGame()
                                                     {
                                                         _Status = ACTIVE;
                                                         _Sprites[_DraggedPiece].setPosition(5555,5555);
-                                                        if(_IsWhiteTurn)
+                                                        if(_WaitingPlayer->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
                                                         {
-                                                            if(_Black->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
+                                                            _WaitingPlayer->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
+                                                            for(int i = 0; i < (int)_Sprites.size(); i++)
                                                             {
-                                                                _Black->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
-                                                                for(int i = 0; i < (int)_Sprites.size(); i++)
+                                                                if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
                                                                 {
-                                                                    if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
-                                                                    {
-                                                                        _Sprites[i].setPosition(9999, 9999);
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            if(_White->getPiece(_newPos_Board.x, _newPos_Board.y) != NULL)
-                                                            {
-                                                                _White->getPiece(_newPos_Board.x, _newPos_Board.y)->kill();
-                                                                for(int i = 0; i < (int)_Sprites.size(); i++)
-                                                                {
-                                                                    if(_Sprites[i].getGlobalBounds().contains(_newPos_Window.x, _newPos_Window.y))
-                                                                    {
-                                                                        _Sprites[i].setPosition(9999, 9999);
-                                                                    }
+                                                                    _Sprites[i].setPosition(9999, 9999);
                                                                 }
                                                             }
                                                         }
                                                     }
-
                                                     //if he is still checked after his move, backwards the move
                                                     else
                                                     {        
@@ -685,7 +657,6 @@ void Display::isCheckMate()
         return;
     }
 
-    cout << endl << endl;
     //checks if white king is checkmated
     for (int i = -1; i < 2; i++)
     {
