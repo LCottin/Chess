@@ -5,19 +5,17 @@ Display::Display(const string name1, const string name2, const string title)
 {
     //Variables initialisation
     _Title = title;
-    _Size = 55;
+    _Size  = 55;
     _Window.create(VideoMode(_Size*10, _Size*10), _Title, Style::Close);
 
     //Game initialisation
-    _White = new Player(name1, 1);
-    _Black = new Player(name2, 0);
-    _ActivePlayer = _Black;
-    _WaitingPlayer = _White;
+    _White          = new Player(name1, 1);
+    _Black          = new Player(name2, 0);
 
     _TurnCount      = 0;
     _IsWhiteTurn    = false;
     _Status         = INIT;
-
+    /*
     //textures initialisation
     _TextureBp.loadFromFile("Textures/bp.png");
     _TextureBb.loadFromFile("Textures/bb.png");
@@ -30,7 +28,7 @@ Display::Display(const string name1, const string name2, const string title)
     _TextureWkn.loadFromFile("Textures/wkn.png");
     _TextureWr.loadFromFile("Textures/wr.png");
     _TextureWq.loadFromFile("Textures/wq.png");
-    _TextureWk.loadFromFile("Textures/wk.png");
+    _TextureWk.loadFromFile("Textures/wk.png");*/
     _TextureBoard.loadFromFile("Textures/board.jpg");
     _TextureWhitePlays.loadFromFile("Textures/white_plays.png");
     _TextureBlackPlays.loadFromFile("Textures/black_plays.png");
@@ -42,7 +40,7 @@ Display::Display(const string name1, const string name2, const string title)
     _SpriteWhitePlays.setTexture(_TextureWhitePlays);
     _SpriteBlackPlays.setTexture(_TextureBlackPlays);
     _SpriteWhiteWins.setTexture(_TextureWhiteWins);
-    _SpriteBlackWins.setTexture(_TextureBlackWins);
+    _SpriteBlackWins.setTexture(_TextureBlackWins);/*
     _SpriteBb.setTexture(_TextureBb);
     _SpriteBp.setTexture(_TextureBp);
     _SpriteBkn.setTexture(_TextureBkn);
@@ -111,7 +109,7 @@ Display::Display(const string name1, const string name2, const string title)
             _Sprites[k].setPosition(_Size*(i+1),_Size*(j+1));
             k++;
         }
-    }
+    }*/
 }
 
 /**

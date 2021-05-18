@@ -2,8 +2,16 @@
 
 Queen::Queen(const bool white) : Piece(white)
 {
-    if(_IsWhite) _Type = W_QUEEN;
-    else         _Type = B_QUEEN;
+    if(_IsWhite) 
+    {
+        _Type = W_QUEEN;
+        _PieceTexture.loadFromFile("Textures/wq.png");
+    }
+    else
+    {   _Type = B_QUEEN;
+        _PieceTexture.loadFromFile("Textures/bq.png");
+    }
+    _PieceSprite.setTexture(_PieceTexture);
 }
 
 /**

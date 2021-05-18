@@ -28,11 +28,11 @@ class Display
 
         //Textures initialization
         Texture _TextureBoard, _TextureWhitePlays, _TextureBlackPlays, _TextureWhiteWins, _TextureBlackWins;
-        Texture _TextureBp, _TextureBb, _TextureBkn, _TextureBr, _TextureBk, _TextureBq, _TextureWp, _TextureWb, _TextureWkn, _TextureWr, _TextureWq, _TextureWk;
+        //Texture _TextureBp, _TextureBb, _TextureBkn, _TextureBr, _TextureBk, _TextureBq, _TextureWp, _TextureWb, _TextureWkn, _TextureWr, _TextureWq, _TextureWk;
     
         //Sprites initializations
         Sprite _SpriteBoard, _SpriteWhitePlays, _SpriteBlackPlays, _SpriteWhiteWins, _SpriteBlackWins; 
-        Sprite _SpriteBb, _SpriteBp, _SpriteBkn, _SpriteBr, _SpriteBq, _SpriteBk, _SpriteWp, _SpriteWb, _SpriteWkn, _SpriteWr, _SpriteWq, _SpriteWk;
+        //Sprite _SpriteBb, _SpriteBp, _SpriteBkn, _SpriteBr, _SpriteBq, _SpriteBk, _SpriteWp, _SpriteWb, _SpriteWkn, _SpriteWr, _SpriteWq, _SpriteWk;
         
         int _Size;
 

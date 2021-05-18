@@ -2,8 +2,17 @@
 
 Rook::Rook(const bool white) : Piece(white)
 {
-    if(_IsWhite) _Type = W_ROOK;
-    else         _Type = B_ROOK;
+    if(_IsWhite) 
+    {
+        _Type = W_ROOK;
+        _PieceTexture.loadFromFile("Textures/wr.png");
+    }
+    else
+    {         
+        _Type = B_ROOK;
+        _PieceTexture.loadFromFile("Textures/br.png");
+    }
+    _PieceSprite.setTexture(_PieceTexture);
 }
 
 /**

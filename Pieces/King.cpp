@@ -2,9 +2,18 @@
 
 King::King(const bool white) : Piece(white)
 {
-    if(_IsWhite) _Type = W_KING;
-    else         _Type = B_KING;
+    if(_IsWhite)
+    {
+        _Type = W_KING;
+        _PieceTexture.loadFromFile("Textures/wk.png");
+    } 
+    else
+    {
+        _Type = B_KING;
+        _PieceTexture.loadFromFile("Textures/bk.png");
+    }        
 
+    _PieceSprite.setTexture(_PieceTexture);
     _IsCheck     = false;
     _IsCheckmate = false;
 }

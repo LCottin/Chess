@@ -2,8 +2,17 @@
 
 Knight::Knight(const bool white) : Piece(white)
 {
-    if(_IsWhite) _Type = W_KNIGHT;
-    else         _Type = B_KNIGHT;
+    if(_IsWhite)
+    {
+        _Type = W_KNIGHT;
+        _PieceTexture.loadFromFile("Textures/wkn.png");
+    } 
+    else
+    {
+        _Type = B_KNIGHT;
+        _PieceTexture.loadFromFile("Textures/bkn.png");
+    }  
+    _PieceSprite.setTexture(_PieceTexture)       
 } 
 
 /**

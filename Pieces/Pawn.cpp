@@ -5,9 +5,17 @@ using namespace std;
 
 Pawn::Pawn(const bool white) : Piece(white)
 {
-    if(_IsWhite) _Type = W_PAWN;
-    else         _Type = B_PAWN;
-
+    if(_IsWhite) 
+    {
+        _Type = W_PAWN;
+        _PieceTexture.loadFromFile("Textures/wp.png");
+    }
+    else         
+    {
+        _Type = B_PAWN;
+        _PieceTexture.loadFromFile("Textures/bp.png");
+    }
+    _PieceSprite.setTexture(_PieceTexture);
     _FirstMove = true;
 }
 

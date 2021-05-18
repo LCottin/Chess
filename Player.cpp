@@ -13,12 +13,12 @@ Player::Player(const string name, const bool white)
 
     //creates and positions king
     King* king = new King(white);
-    king->move(4, white?7:0);
+    king->moveBoard(4, white?7:0);
     _Pieces.push_back(king);
 
     //creates and positions queen
     Queen* queen  = new Queen(white);
-    queen->move(3, white?7:0);
+    queen->moveBoard(3, white?7:0);
     _Pieces.push_back(queen);
 
     /*  Did not initiate pawns this way beacause we were not sure how this behaves.
@@ -33,55 +33,54 @@ Player::Player(const string name, const bool white)
 
     //creates and positions pawns
     Pawn* pawn1 = new Pawn(white);
-    pawn1->move(0, white?6:1);
+    pawn1->moveBoard(0, white ? 6 : 1);
     _Pieces.push_back(pawn1);
     Pawn* pawn2 = new Pawn(white);
-    pawn2->move(1, white?6:1);
+    pawn2->moveBoard(1, white ? 6 : 1);
     _Pieces.push_back(pawn2);
     Pawn* pawn3 = new Pawn(white);
-    pawn3->move(2, white?6:1);
+    pawn3->moveBoard(2, white ? 6 : 1);
     _Pieces.push_back(pawn3);
     Pawn* pawn4 = new Pawn(white);
-    pawn4->move(3, white?6:1);
+    pawn4->moveBoard(3, white ? 6 : 1);
     _Pieces.push_back(pawn4);
     Pawn* pawn5 = new Pawn(white);
-    pawn5->move(4, white?6:1);
+    pawn5->moveBoard(4, white ? 6 : 1);
     _Pieces.push_back(pawn5);
     Pawn* pawn6 = new Pawn(white);
-    pawn6->move(5, white?6:1);
+    pawn6->moveBoard(5, white ? 6 : 1);
     _Pieces.push_back(pawn6);
     Pawn* pawn7 = new Pawn(white);
-    pawn7->move(6, white?6:1);
+    pawn7->moveBoard(6, white ? 6 : 1);
     _Pieces.push_back(pawn7);
     Pawn* pawn8 = new Pawn(white);
-    pawn8->move(7, white?6:1);
+    pawn8->moveBoard(7, white ? 6 : 1);
     _Pieces.push_back(pawn8);
 
     //creates and positions rooks
     Rook* rook1 = new Rook(white);
-    rook1->move(0, white?7:0);
+    rook1->moveBoard(0, white ? 7 : 0);
     _Pieces.push_back(rook1);
     Rook* rook2 = new Rook(white);
-    rook2->move(7, white?7:0);
+    rook2->moveBoard(7, white ? 7 : 0);
     _Pieces.push_back(rook2);
 
     //creates and positions knights
     Knight* knight1 = new Knight(white);
-    knight1->move(1, white?7:0);
+    knight1->moveBoard(1, white ? 7 : 0);
     _Pieces.push_back(knight1);
     Knight* knight2 = new Knight(white);
-    knight2->move(6, white?7:0);
+    knight2->moveBoard(6, white ? 7 : 0);
     _Pieces.push_back(knight2);
 
     //creates and positions bishops
     Bishop* bishop = new Bishop(white);
-    bishop->move(2, white?7:0);
+    bishop->moveBoard(2, white ? 7 : 0);
     _Pieces.push_back(bishop);
     Bishop* temp = new Bishop(white);
-    temp->move(5, white?7:0);
+    temp->moveBoard(5, white ? 7 : 0);
     _Pieces.push_back(temp);
 
-    cout << "Init player " << _Pseudo << endl;
 }
 
 /**
@@ -92,7 +91,7 @@ Player::Player(const string name, const bool white)
 void Player::play(const int oldX, const int oldY, const int newX, const int newY)
 {
     _Board.updateBoard(oldX, oldY, newX, newY, _IsWhite);
-    getPiece(oldX, oldY)->move(newX, newY);
+    getPiece(oldX, oldY)->moveBoard(newX, newY);
     _IsCheck = false;
 }
 

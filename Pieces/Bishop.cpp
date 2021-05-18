@@ -1,9 +1,20 @@
 #include "Bishop.hpp"
 
+
 Bishop::Bishop(const bool white) : Piece(white)
 {
-    if(_IsWhite) _Type = W_BISHOP;
-    else         _Type = B_BISHOP;
+    if(_IsWhite)
+    {
+        _Type = W_BISHOP;
+        _PieceTexture.loadFromFile("Textures/wb.png");
+    } 
+    else
+    {
+        _Type = B_BISHOP;
+        _PieceTexture.loadFromFile("Textures/bb.png");
+        
+    }
+    _PieceSprite.setTexture(_PieceTexture);       
 }
 
 /**
