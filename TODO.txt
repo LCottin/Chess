@@ -5,9 +5,7 @@ Fonctionnel :
     Faire en passant
 
 Optimisation :
-    Epurer code : ajouter WaitingPlayer
 
 Esthétique :
-    Texture white_plays.png et white_wins.png à modifier
     Menu ?
     Stats des joueurs ?
