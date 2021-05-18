@@ -12,8 +12,8 @@ class Piece
     protected:
         int         _X;
         int         _Y;
-        int         _XWindow;
-        int         _YWindow;
+        float       _XWindow;
+        float       _YWindow;
         enum TYPES  _Type;
         bool        _IsDragged;
         bool        _IsAlive;
@@ -24,7 +24,7 @@ class Piece
     public:
         Piece(const bool white);
         void            moveBoard(const Vector2i to);
-        void            moveWindow(const Vector2i to);
+        void            moveWindow(const Vector2f to);
         int             getX() const;
         int             getY() const;
         int             getXWindow() const;

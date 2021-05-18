@@ -42,14 +42,14 @@ void Piece::moveBoard(const Vector2i to)
     _Y = to.y;
     Vector2i toWindow = (to + Vector2i(1, 1));
     toWindow = toWindow * 55;
-    moveWindow(toWindow);
+    moveWindow(Vector2f(toWindow));
 }
 
 /**
  * Changes the position of the piece on the window 
  * @param to Vector of new coordinate on the window (in pixels)
  */
-void Piece::moveWindow(const Vector2i to)
+void Piece::moveWindow(const Vector2f to)
 {
     _XWindow = to.x;
     _YWindow = to.y;
@@ -73,7 +73,7 @@ void Piece::kill()
 {
     _IsAlive = false;
     _Type = EMPTY;
-    moveWindow(Vector2i(9999,9999));
+    moveWindow(Vector2f(9999,9999));
 }
 
 /**
@@ -92,6 +92,24 @@ int Piece::getX() const
 int Piece::getY() const 
 {
     return _Y;
+}
+
+/**
+ * Gets X
+ * @returns X coordinate
+ */
+int Piece::getXWindow() const 
+{
+    return _XWindow;
+}
+
+/**
+ * Gets Y
+ * @returns Y coordinate
+ */
+int Piece::getYWindow() const 
+{
+    return _YWindow;
 }
 
 /**

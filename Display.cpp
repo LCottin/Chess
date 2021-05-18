@@ -129,26 +129,6 @@ void Display::playGame()
                     {
                         if(event.mouseButton.button == Mouse::Left)
                         {
-                            // for (k = 0; k < 32; k++)
-                            // {
-                            //     if(_Sprites[k].getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
-                            //     {
-                            //         _DraggedPiece = k;
-                            //         _oldPos_Window = _Sprites[_DraggedPiece].getPosition();
-                            //         _oldPos_Board = Vector2i(_oldPos_Window);
-                            //         _oldPos_Board.x = _oldPos_Board.x / _Size - 1;
-                            //         _oldPos_Board.y = _oldPos_Board.y / _Size - 1;
-                            //         _DxDy = Vector2f(mouse_pos) - _oldPos_Window;
-                            //         if(_ActivePlayer->getPiece(_oldPos_Board.x, _oldPos_Board.y) != NULL)
-                            //         {
-                            //             if(_ActivePlayer->getPiece(_oldPos_Board.x, _oldPos_Board.y)->isAlive())
-                            //             {
-                            //                 _IsDragged = true;
-                            //             }
-                            //         }
-                            //     }
-                            // }
-
                             for(int i = 0; i < _ActivePlayer->getSize(); i++)
                             {
                                 PieceDragged = _ActivePlayer->getPiece(mouse_pos, true);
@@ -156,7 +136,7 @@ void Display::playGame()
                                 {
                                     if(PieceDragged->isAlive())
                                     {
-                                        _oldPos_Window  = Vector2f(PieceDragged->getX(), PieceDragged->getY());
+                                        _oldPos_Window  = Vector2f(PieceDragged->getXWindow(), PieceDragged->getYWindow());
                                         _oldPos_Board   = Vector2i(PieceDragged->getX(), PieceDragged->getY());
                                         _DxDy = Vector2f(mouse_pos) - _oldPos_Window;
                                         _IsDragged = true;
@@ -210,7 +190,7 @@ void Display::playGame()
                                                 if (!_ActivePlayer->isCheck())
                                                 {
                                                     _Status = ACTIVE;
-                                                    PieceDragged->moveWindow(Vector2i(5555,5555));
+                                                    PieceDragged->moveWindow(Vector2f(5555,5555));
                                                     //If the move is valid and the tile is not empty, kills the piece at this spot
                                                     if(_WaitingPlayer->getPiece(_newPos_Board) != NULL)
                                                         _WaitingPlayer->getPiece(_newPos_Board)->kill();
@@ -233,7 +213,7 @@ void Display::playGame()
                                                 if (_ActivePlayer->isCheck() == false) 
                                                 {
                                                     _Status = ACTIVE;
-                                                    PieceDragged->moveWindow(Vector2i(5555,5555));
+                                                    PieceDragged->moveWindow(Vector2f(5555,5555));
                                                     //If the move is valid and the tile is not empty, kills the piece at this spot
                                                     if(_WaitingPlayer->getPiece(_newPos_Board) != NULL)
                                                         _WaitingPlayer->getPiece(_newPos_Board)->kill();
@@ -265,10 +245,10 @@ void Display::playGame()
                                     _newPos_Window = _oldPos_Window;
                                 }
                             }
-                            PieceDragged->getSprite()->setPosition(_newPos_Window);
+                            PieceDragged->moveWindow(_newPos_Window);
                             _IsDragged = false;
                             PieceDragged->setIsDragged(_IsDragged);
-                            //debug();
+                            debug();
                         }
                     }
                 }
@@ -277,7 +257,7 @@ void Display::playGame()
                 // It'll move the position of the sprite in real-time during the mouse movement.
                 if(_IsDragged)
                 {
-                    PieceDragged->getSprite()->setPosition(Vector2f(mouse_pos) - _DxDy);
+                    PieceDragged->moveWindow(Vector2f(mouse_pos) - _DxDy);
                 }
                 show(PieceDragged->getSprite(), _IsDragged, false);
             }
