@@ -15,7 +15,18 @@ Display::Display(const string name1, const string name2, const string title)
     _TurnCount      = 0;
     _IsWhiteTurn    = false;
     _Status         = INIT;
+
     _TextureBoard.loadFromFile("Textures/board.jpg");
+    _TexturePromotion.loadFromFile("Textures/promotion.jpg");
+    _TexturePromWQ.loadFromFile("Textures/BIG_wq.png");
+    _TexturePromWR.loadFromFile("Textures/BIG_wr.png");
+    _TexturePromWB.loadFromFile("Textures/BIG_wb.png");
+    _TexturePromWKN.loadFromFile("Textures/BIG_wkn.png");
+    _TexturePromBQ.loadFromFile("Textures/BIG_bq.png");
+    _TexturePromBR.loadFromFile("Textures/BIG_br.png");
+    _TexturePromBB.loadFromFile("Textures/BIG_bb.png");
+    _TexturePromBKN.loadFromFile("Textures/BIG_bkn.png");
+
     _TextureWhitePlays.loadFromFile("Textures/white_plays.png");
     _TextureBlackPlays.loadFromFile("Textures/black_plays.png");
     _TextureWhiteWins.loadFromFile("Textures/white_wins.png");
@@ -23,6 +34,15 @@ Display::Display(const string name1, const string name2, const string title)
 
     //Sprites init
     _SpriteBoard.setTexture(_TextureBoard);
+    _SpritePromotion.setTexture(_TexturePromotion);
+    _SpritePromWQ.setTexture(_TexturePromWQ);
+    _SpritePromWR.setTexture(_TexturePromWR);
+    _SpritePromWB.setTexture(_TexturePromWB);
+    _SpritePromWKN.setTexture(_TexturePromWKN);
+    _SpritePromBQ.setTexture(_TexturePromBQ);
+    _SpritePromBR.setTexture(_TexturePromBR);
+    _SpritePromBB.setTexture(_TexturePromBB);
+    _SpritePromBKN.setTexture(_TexturePromBKN);
     _SpriteWhitePlays.setTexture(_TextureWhitePlays);
     _SpriteBlackPlays.setTexture(_TextureBlackPlays);
     _SpriteWhiteWins.setTexture(_TextureWhiteWins);
@@ -52,6 +72,25 @@ void Display::playGame()
 
     Piece* PieceDragged;
     Event event;
+
+    Color _Alpha(0,0,0,100);
+    Color _Full(0,0,0,255);
+    _SpritePromWQ.setPosition(65,65);
+    _SpritePromWQ.setColor(_Alpha);
+    _SpritePromWR.setPosition(285,65);
+    _SpritePromWR.setColor(_Alpha);
+    _SpritePromWB.setPosition(65,285);
+    _SpritePromWB.setColor(_Alpha);
+    _SpritePromWKN.setPosition(285,285);
+    _SpritePromWKN.setColor(_Alpha);
+    _SpritePromBQ.setPosition(65,65);
+    _SpritePromBQ.setColor(_Alpha);
+    _SpritePromBR.setPosition(285,65);
+    _SpritePromBR.setColor(_Alpha);
+    _SpritePromBB.setPosition(65,285);
+    _SpritePromBB.setColor(_Alpha);
+    _SpritePromBKN.setPosition(285,285);
+    _SpritePromBKN.setColor(_Alpha);
 
     _Status = ACTIVE; 
 
@@ -92,13 +131,14 @@ void Display::playGame()
             {
                 show(PieceDragged->getSprite(), false, true);
                 while(_Window.pollEvent(event))
-                
+                {
                     if(event.type == Event::Closed)
                     {
                         _Status = STOP;
                         _Window.close();
-                    }                   
-                }
+                    }
+                }                   
+            }
             
 
             if (_Window.isOpen())
@@ -196,8 +236,8 @@ void Display::playGame()
                                                         _WaitingPlayer->getPiece(_newPos_Board)->kill();
                                                     if((PieceDragged->getType() == (_IsWhiteTurn ? 1 : -6)) && _newPos_Board.y == (_IsWhiteTurn ? 0 : 7))
                                                     {
-                                                        _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 3 : -4));
-                                                        cout << "ASKING FOR PROMOTION" << endl;
+                                                        _Status = PROMOTION;
+                                                        //_ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 3 : -4));
                                                     }
                                                 }
                                                 //if the move puts the player in check, moves backward
@@ -222,9 +262,8 @@ void Display::playGame()
                                                     if(_WaitingPlayer->getPiece(_newPos_Board) != NULL)
                                                         _WaitingPlayer->getPiece(_newPos_Board)->kill();
                                                     if((PieceDragged->getType() == (_IsWhiteTurn ? 1 : -6)) && _newPos_Board.y == (_IsWhiteTurn ? 0 : 7))
-                                                    {
+                                                    {                                                       
                                                         _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 3 : -4));
-                                                        cout << "ASKING FOR PROMOTION" << endl;
                                                     }
                                                 }
                                                 //if he is still checked after his move, backwards the move
@@ -255,10 +294,13 @@ void Display::playGame()
                                 }
                             }
                             if(PieceDragged->isAlive())
+                            {
                                 PieceDragged->moveWindow(_newPos_Window);
+                            }
+
                             _IsDragged = false;
                             PieceDragged->setIsDragged(_IsDragged);
-                            debug();
+                            //debug();
                         }
                     }
                 }
@@ -271,6 +313,95 @@ void Display::playGame()
                 }
                 show(PieceDragged->getSprite(), _IsDragged, false);
             }
+        }
+        while(_Status == PROMOTION)
+        {
+            promotion(_IsWhiteTurn);
+            while(_Window.pollEvent(event))
+            {
+                Vector2i mouse_pos = Mouse::getPosition(_Window);
+                if(mouse_pos.x>=65 && mouse_pos.x<265 && mouse_pos.y>=65 && mouse_pos.y<=265)
+                {
+                    if(_IsWhiteTurn)
+                        _SpritePromWQ.setColor(_Full);
+                    else
+                        _SpritePromBQ.setColor(_Full);
+                }
+                else
+                {
+                    _SpritePromWQ.setColor(_Alpha);
+                    _SpritePromBQ.setColor(_Alpha);
+                }
+                
+                if(mouse_pos.x>=285 && mouse_pos.x<485 && mouse_pos.y>=65 && mouse_pos.y<=265)
+                {
+                    if(_IsWhiteTurn)
+                        _SpritePromWR.setColor(_Full);
+                    else
+                        _SpritePromBR.setColor(_Full);
+                }
+                else
+                {
+                    _SpritePromWR.setColor(_Alpha);
+                    _SpritePromBR.setColor(_Alpha);
+                }
+
+                if(mouse_pos.x>=65 && mouse_pos.x<265 && mouse_pos.y>=285 && mouse_pos.y<=485)
+                {
+                    if(_IsWhiteTurn)
+                        _SpritePromWB.setColor(_Full);
+                    else
+                        _SpritePromBB.setColor(_Full);
+                }
+                else
+                {
+                    _SpritePromWB.setColor(_Alpha);
+                    _SpritePromBB.setColor(_Alpha);
+                }
+
+                if(mouse_pos.x>=285 && mouse_pos.x<485 && mouse_pos.y>=285 && mouse_pos.y<=485)
+                {
+                    if(_IsWhiteTurn)
+                        _SpritePromWKN.setColor(_Full);
+                    else
+                        _SpritePromBKN.setColor(_Full);
+                }
+                else
+                {
+                    _SpritePromWKN.setColor(_Alpha);
+                    _SpritePromBKN.setColor(_Alpha);
+                }
+                
+                if(event.type == Event::Closed)
+                {
+                    _Status = STOP;
+                    _Window.close();
+                }
+
+                if(event.type == Event::MouseButtonReleased)
+                {
+                    if(mouse_pos.x>=65 && mouse_pos.x<265 && mouse_pos.y>=65 && mouse_pos.y<=265)
+                    {
+                        _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 5 : -2));
+                        _Status = ACTIVE;
+                    }
+                    else if(mouse_pos.x>=285 && mouse_pos.x<485 && mouse_pos.y>=65 && mouse_pos.y<=265)
+                    {
+                        _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 4 : -3));
+                        _Status = ACTIVE;     
+                    }
+                    else if(mouse_pos.x>=65 && mouse_pos.x<265 && mouse_pos.y>=285 && mouse_pos.y<=485)
+                    {
+                        _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 2 : -5));
+                        _Status = ACTIVE;   
+                    }
+                    else if(mouse_pos.x>=285 && mouse_pos.x<485 && mouse_pos.y>=285 && mouse_pos.y<=485)
+                    {
+                        _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 3 : -4));
+                        _Status = ACTIVE; 
+                    }
+                }
+            }              
         }
     }
 }
@@ -341,6 +472,36 @@ void Display::show(const Sprite* PieceDraggedSprite, const bool _IsDragged, cons
         {
             _Window.draw(_SpriteBlackPlays);
         }
+    }
+
+    // Displays on screen what has been rendered to the window
+    _Window.display();
+}
+
+/**
+ * Displays promotion screen
+ */
+void Display::promotion(const bool _IsWhiteTurn)
+{
+    // Clears the window
+    _Window.clear();
+
+    // Draws the promotion background
+    _Window.draw(_SpritePromotion);
+    
+    if(_IsWhiteTurn)
+    {
+        _Window.draw(_SpritePromWQ);
+        _Window.draw(_SpritePromWR);
+        _Window.draw(_SpritePromWB);
+        _Window.draw(_SpritePromWKN);
+    }
+    else
+    {
+        _Window.draw(_SpritePromBQ);
+        _Window.draw(_SpritePromBR);
+        _Window.draw(_SpritePromBB);
+        _Window.draw(_SpritePromBKN);
     }
 
     // Displays on screen what has been rendered to the window
