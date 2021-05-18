@@ -74,12 +74,12 @@ Player::Player(const string name, const bool white)
     _Pieces.push_back(knight2);
 
     //creates and positions bishops
-    Bishop* bishop = new Bishop(white);
-    bishop->moveBoard(Vector2i(2, white ? 7 : 0));
-    _Pieces.push_back(bishop);
-    Bishop* temp = new Bishop(white);
-    temp->moveBoard(Vector2i(5, white ? 7 : 0));
-    _Pieces.push_back(temp);
+    Bishop* bishop1 = new Bishop(white);
+    bishop1->moveBoard(Vector2i(2, white ? 7 : 0));
+    _Pieces.push_back(bishop1);
+    Bishop* bishop2 = new Bishop(white);
+    bishop2->moveBoard(Vector2i(5, white ? 7 : 0));
+    _Pieces.push_back(bishop2);
 }
 
 /**
@@ -154,6 +154,63 @@ int Player::getSize() const
 void Player::setCheck(const bool isCheck)
 {
     _IsCheck = isCheck;
+}
+
+/**
+ * Changes the player's status
+ * @param pawn pawn's adress
+ * @param TYPE pawn gets promoted into TYPE
+ */
+void Player::promotion(Piece* promotedPawn, const int TYPE)
+{
+    switch (TYPE)
+    {
+        case -2:
+        case  5:
+        {
+            cout << "BEFORE CREATING NEW Queen" << endl;
+            Queen* tempQ  = new Queen(_IsWhite);
+            cout << "BEFORE MOVING NEW Queen" << endl;
+            tempQ->moveBoard(Vector2i(promotedPawn->getX(), promotedPawn->getY()));
+            cout << "BEFORE PUSHBACK NEW Queen" << endl;
+            _Pieces.push_back(tempQ);
+            break;
+        }
+        case -3:
+        case  4:
+        {
+            cout << "BEFORE CREATING NEW Rook" << endl;
+            Rook* tempR  = new Rook(_IsWhite);
+            cout << "BEFORE MOVING NEW Rook" << endl;
+            tempR->moveBoard(Vector2i(promotedPawn->getX(), promotedPawn->getY()));
+            cout << "BEFORE PUSHBACK NEW Rook" << endl;
+            _Pieces.push_back(tempR);
+            break;
+        }
+        case -4:
+        case  3:
+        {
+            cout << "BEFORE CREATING NEW Knight" << endl;
+            Knight* tempK  = new Knight(_IsWhite);
+            cout << "BEFORE MOVING NEW Knight" << endl;
+            tempK->moveBoard(Vector2i(promotedPawn->getX(), promotedPawn->getY()));
+            cout << "BEFORE PUSHBACK NEW Knight" << endl;
+            _Pieces.push_back(tempK);
+            break;
+        }
+        case -5:
+        default:
+        {
+            cout << "BEFORE CREATING NEW Bishop" << endl;
+            Bishop* tempB  = new Bishop(_IsWhite);
+            cout << "BEFORE MOVING NEW Bishop" << endl;
+            tempB->moveBoard(Vector2i(promotedPawn->getX(), promotedPawn->getY()));
+            cout << "BEFORE PUSHBACK NEW Bishop" << endl;
+            _Pieces.push_back(tempB);
+            break;
+        }
+    }
+    promotedPawn->kill();
 }
 
 Player::~Player()

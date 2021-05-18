@@ -194,7 +194,11 @@ void Display::playGame()
                                                     //If the move is valid and the tile is not empty, kills the piece at this spot
                                                     if(_WaitingPlayer->getPiece(_newPos_Board) != NULL)
                                                         _WaitingPlayer->getPiece(_newPos_Board)->kill();
-
+                                                    if((PieceDragged->getType() == (_IsWhiteTurn ? 1 : -6)) && _newPos_Board.y == (_IsWhiteTurn ? 0 : 7))
+                                                    {
+                                                        _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 3 : -4));
+                                                        cout << "ASKING FOR PROMOTION" << endl;
+                                                    }
                                                 }
                                                 //if the move puts the player in check, moves backward
                                                 else
@@ -217,6 +221,11 @@ void Display::playGame()
                                                     //If the move is valid and the tile is not empty, kills the piece at this spot
                                                     if(_WaitingPlayer->getPiece(_newPos_Board) != NULL)
                                                         _WaitingPlayer->getPiece(_newPos_Board)->kill();
+                                                    if((PieceDragged->getType() == (_IsWhiteTurn ? 1 : -6)) && _newPos_Board.y == (_IsWhiteTurn ? 0 : 7))
+                                                    {
+                                                        _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 3 : -4));
+                                                        cout << "ASKING FOR PROMOTION" << endl;
+                                                    }
                                                 }
                                                 //if he is still checked after his move, backwards the move
                                                 else
@@ -245,7 +254,8 @@ void Display::playGame()
                                     _newPos_Window = _oldPos_Window;
                                 }
                             }
-                            PieceDragged->moveWindow(_newPos_Window);
+                            if(PieceDragged->isAlive())
+                                PieceDragged->moveWindow(_newPos_Window);
                             _IsDragged = false;
                             PieceDragged->setIsDragged(_IsDragged);
                             debug();
@@ -384,7 +394,7 @@ void Display::debug() const
         }
         cout << endl;
     }
-    cout << "           COLLISIONS                            PIECES"<< endl;
+    cout << "           COLLISIONS                            PIECES"<< endl << endl;
 }
 
 /**

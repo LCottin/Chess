@@ -23,6 +23,7 @@ class Piece
 
     public:
         Piece(const bool white);
+        //Piece(const int x, const int y, const bool white);
         void            moveBoard(const Vector2i to);
         void            moveWindow(const Vector2f to);
         int             getX() const;
