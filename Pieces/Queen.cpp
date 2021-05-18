@@ -14,6 +14,7 @@ Queen::Queen(const bool white) : Piece(white)
     _PieceSprite.setTexture(_PieceTexture);
 }
 
+
 /**
  * Indicates if moving to the given position is possible
  * @param x,y possible position

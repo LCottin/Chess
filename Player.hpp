@@ -31,6 +31,7 @@ class Player
         Player(const string name, const bool white);
         bool    isCheck() const;
         int     getSize() const;
+        void    promotion(Piece* promotedPawn, const int TYPE);
         void    setCheck(const bool isCheck);
         Piece*  getPiece(const double i) const;
         Piece*  getPiece(const Vector2i temp, const bool window = false) const;
