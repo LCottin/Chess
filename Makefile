@@ -1,10 +1,10 @@
 CC = g++
-FLAGS = -std=c++17 -Wall
+FLAGS = -std=c++14 -Wall
 SFML = -lsfml-graphics -lsfml-system -lsfml-window
 EXEC = main
 
 SOURCES = 	main.cpp 			\
-			Player.cpp 			\
+			Display.cpp			\
 			Piece.cpp 			\
 			Board.cpp 			\
 			Pieces/Pawn.cpp 	\
@@ -13,7 +13,7 @@ SOURCES = 	main.cpp 			\
 			Pieces/Queen.cpp 	\
 			Pieces/Bishop.cpp 	\
 			Pieces/Knight.cpp   \
-			Display.cpp
+			Player.cpp 			
 
 
 OBJECTS = $(SOURCES:.cpp=.o)

@@ -14,7 +14,10 @@
 #include "Pieces/Rook.hpp"
 #include "Pieces/Pawn.hpp"
 
+#include <SFML/Graphics.hpp>
+
 using namespace std;
+using namespace sf;
 
 class Player
 {
@@ -29,8 +32,9 @@ class Player
         bool    isCheck() const;
         int     getSize() const;
         void    setCheck(const bool isCheck);
-        Piece*  getPiece(const int x, const int y) const;
-        void    play(const int oldX, const int oldY, const int newX, const int newY);
+        Piece*  getPiece(const double i) const;
+        Piece*  getPiece(const Vector2i temp, const bool window = false) const;
+        void    play(const Vector2i from, const Vector2i to);
         ~Player();
 };
 

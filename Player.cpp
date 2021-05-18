@@ -13,12 +13,12 @@ Player::Player(const string name, const bool white)
 
     //creates and positions king
     King* king = new King(white);
-    king->moveBoard(4, white?7:0);
+    king->moveBoard(Vector2i(4, white ? 7 : 0));
     _Pieces.push_back(king);
 
     //creates and positions queen
     Queen* queen  = new Queen(white);
-    queen->moveBoard(3, white?7:0);
+    queen->moveBoard(Vector2i(3, white?7:0));
     _Pieces.push_back(queen);
 
     /*  Did not initiate pawns this way beacause we were not sure how this behaves.
@@ -33,81 +33,100 @@ Player::Player(const string name, const bool white)
 
     //creates and positions pawns
     Pawn* pawn1 = new Pawn(white);
-    pawn1->moveBoard(0, white ? 6 : 1);
+    pawn1->moveBoard(Vector2i(0, white ? 6 : 1));
     _Pieces.push_back(pawn1);
     Pawn* pawn2 = new Pawn(white);
-    pawn2->moveBoard(1, white ? 6 : 1);
+    pawn2->moveBoard(Vector2i(1, white ? 6 : 1));
     _Pieces.push_back(pawn2);
     Pawn* pawn3 = new Pawn(white);
-    pawn3->moveBoard(2, white ? 6 : 1);
+    pawn3->moveBoard(Vector2i(2, white ? 6 : 1));
     _Pieces.push_back(pawn3);
     Pawn* pawn4 = new Pawn(white);
-    pawn4->moveBoard(3, white ? 6 : 1);
+    pawn4->moveBoard(Vector2i(3, white ? 6 : 1));
     _Pieces.push_back(pawn4);
     Pawn* pawn5 = new Pawn(white);
-    pawn5->moveBoard(4, white ? 6 : 1);
+    pawn5->moveBoard(Vector2i(4, white ? 6 : 1));
     _Pieces.push_back(pawn5);
     Pawn* pawn6 = new Pawn(white);
-    pawn6->moveBoard(5, white ? 6 : 1);
+    pawn6->moveBoard(Vector2i(5, white ? 6 : 1));
     _Pieces.push_back(pawn6);
     Pawn* pawn7 = new Pawn(white);
-    pawn7->moveBoard(6, white ? 6 : 1);
+    pawn7->moveBoard(Vector2i(6, white ? 6 : 1));
     _Pieces.push_back(pawn7);
     Pawn* pawn8 = new Pawn(white);
-    pawn8->moveBoard(7, white ? 6 : 1);
+    pawn8->moveBoard(Vector2i(7, white ? 6 : 1));
     _Pieces.push_back(pawn8);
 
     //creates and positions rooks
     Rook* rook1 = new Rook(white);
-    rook1->moveBoard(0, white ? 7 : 0);
+    rook1->moveBoard(Vector2i(0, white ? 7 : 0));
     _Pieces.push_back(rook1);
     Rook* rook2 = new Rook(white);
-    rook2->moveBoard(7, white ? 7 : 0);
+    rook2->moveBoard(Vector2i(7, white ? 7 : 0));
     _Pieces.push_back(rook2);
 
     //creates and positions knights
     Knight* knight1 = new Knight(white);
-    knight1->moveBoard(1, white ? 7 : 0);
+    knight1->moveBoard(Vector2i(1, white ? 7 : 0));
     _Pieces.push_back(knight1);
     Knight* knight2 = new Knight(white);
-    knight2->moveBoard(6, white ? 7 : 0);
+    knight2->moveBoard(Vector2i(6, white ? 7 : 0));
     _Pieces.push_back(knight2);
 
     //creates and positions bishops
     Bishop* bishop = new Bishop(white);
-    bishop->moveBoard(2, white ? 7 : 0);
+    bishop->moveBoard(Vector2i(2, white ? 7 : 0));
     _Pieces.push_back(bishop);
     Bishop* temp = new Bishop(white);
-    temp->moveBoard(5, white ? 7 : 0);
+    temp->moveBoard(Vector2i(5, white ? 7 : 0));
     _Pieces.push_back(temp);
-
 }
 
 /**
  * Makes the player plays : update Board and moves the piece
- * @param oldX,oldY current position
- * @param newX,newY future position
+ * @param from Vector of current position
+ * @param to Vector of future position
  */
-void Player::play(const int oldX, const int oldY, const int newX, const int newY)
+void Player::play(const Vector2i from, const Vector2i to)
 {
-    _Board.updateBoard(oldX, oldY, newX, newY, _IsWhite);
-    getPiece(oldX, oldY)->moveBoard(newX, newY);
+    _Board.updateBoard(from, to, _IsWhite);
+    getPiece(from)->moveBoard(to);
     _IsCheck = false;
 }
 
 /**
- * Return the piece loacted at the given postion
- * @param x,y current position
+ * Return the piece loacted at the given postion on the board
+ * @param temp Vector of current position
+ * @param window set to true if you give coordinates in pixels, else false
  * @returns The piece at this position
  */
-Piece* Player::getPiece(const int x, const int y) const
+Piece* Player::getPiece(const Vector2i temp, const bool window) const
 {
+    Vector2i boardCoord(temp);
+
+    if(window)
+    {
+        boardCoord = temp / 55 - Vector2i(1, 1);
+    } 
+
     for (int i = 0; i < (int)_Pieces.size(); i++)
     {
-        if((_Pieces[i]->getX() == x && _Pieces[i]->getY() == y) && (_Pieces[i]->isAlive()))
+        if((_Pieces[i]->getX() == boardCoord.x && _Pieces[i]->getY() == boardCoord.y) && (_Pieces[i]->isAlive()))
             return _Pieces[i];
     }
     return NULL;
+}
+
+/**
+ * Return the piece at index i in the player's piece vector
+ * @param i index of the Player's Piece Vector
+ * @returns The piece at index i
+ */
+Piece* Player::getPiece(const double i) const
+{
+    if (i > (int)_Pieces.size() || (i < 0)) 
+        return NULL;
+    return _Pieces[i];
 }
 
 /**

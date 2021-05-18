@@ -20,10 +20,10 @@ Rook::Rook(const bool white) : Piece(white)
  * @param x,y possible position
  * @returns true if the move is possible, else false
  */
-bool Rook::isMoveValid(const int x, const int y, const bool attacking)
+bool Rook::isMoveValid(const Vector2i destination, const bool attacking)
 {
-    int dx = abs(x - _X);
-    int dy = abs(y - _Y);
+    int dx = abs(destination.x - _X);
+    int dy = abs(destination.y - _Y);
 
     //if the piece doesn't move
     if(dx == 0 && dy == 0) return false;

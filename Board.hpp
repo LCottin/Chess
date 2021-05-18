@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include <string>
+#include <SFML/Graphics.hpp>
 #include "Piece.hpp"
 
 using namespace std;
+using namespace sf;
 
 class Board
 {
@@ -18,9 +20,9 @@ class Board
     public:
         Board();
         void printBoard() const;
-        void updateBoard(const int oldX, const int oldY, const int newX, const int newY, const bool whiteTurn);
-        bool collisionCheck(const int oldX, const int oldY, const int newX, const int newY, const int type, const bool whiteTurn) const;
-        int  getPiece(const int x, const int y) const;
+        void updateBoard(const Vector2i from, const Vector2i to, const bool whiteTurn);
+        bool collisionCheck(const Vector2i from, const Vector2i to, const int type, const bool whiteTurn) const;
+        int  getPiece(const Vector2i pos) const;
         ~Board();
 };
 

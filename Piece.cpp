@@ -8,29 +8,52 @@ Piece::Piece(const bool white)
     _YWindow    = 0; 
     _IsAlive    = true;
     _IsWhite    = white;
+    _IsDragged  = false;
 } 
 
 /**
- * Changes the position of the piece on the board
- * @param x New X on the board
- * @param y New Y on the board
+ * Changes the state of a piece if it's dragged or not
+ * @param isDragged is the piece dragged or no
  */
-void Piece::moveBoard(const int x, const int y)
+void Piece::setIsDragged(const bool dragged)
 {
-    _X = x;
-    _Y = y;
-    moveWindow( (x*55) + 1, (y*55) + 1);
+    if(dragged)
+        _IsDragged = true;
+    else
+        _IsDragged = false;
+}
+
+/**
+ * Get the state of a piece if it's dragged or not
+ * @return isDragged is the piece dragged or no
+ */
+bool Piece::getIsDragged() const
+{
+    return _IsDragged;
+}
+
+/**
+ * Changes the position of the piece on the board
+ * @param to Vector of new coordinate on the board
+ */
+void Piece::moveBoard(const Vector2i to)
+{
+    _X = to.x;
+    _Y = to.y;
+    Vector2i toWindow = (to + Vector2i(1, 1));
+    toWindow = toWindow * 55;
+    moveWindow(toWindow);
 }
 
 /**
  * Changes the position of the piece on the window 
- * @param x New X on the window (in pixels)
- * @param y New Y on the window (in pixels)
+ * @param to Vector of new coordinate on the window (in pixels)
  */
-void Piece::moveWindow(const int x, const int y)
+void Piece::moveWindow(const Vector2i to)
 {
-    _XWindow = x;
-    _YWindow = y;
+    _XWindow = to.x;
+    _YWindow = to.y;
+    _PieceSprite.setPosition(_XWindow, _YWindow);
 }
 
 /**
@@ -50,6 +73,7 @@ void Piece::kill()
 {
     _IsAlive = false;
     _Type = EMPTY;
+    moveWindow(Vector2i(9999,9999));
 }
 
 /**
@@ -70,6 +94,14 @@ int Piece::getY() const
     return _Y;
 }
 
+/**
+ * Returns a pointer to the sprite
+ * @returns A pointer to the Piece's sprite
+ */ 
+Sprite* Piece::getSprite()
+{
+    return &_PieceSprite;
+}
 
 Piece::~Piece()
 {

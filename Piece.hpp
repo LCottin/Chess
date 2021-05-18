@@ -5,6 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+using namespace sf;
+
 class Piece
 {
     protected:
@@ -13,6 +15,7 @@ class Piece
         int         _XWindow;
         int         _YWindow;
         enum TYPES  _Type;
+        bool        _IsDragged;
         bool        _IsAlive;
         bool        _IsWhite;   //Color (True = White, False = black)
         Sprite      _PieceSprite;
@@ -20,16 +23,19 @@ class Piece
 
     public:
         Piece(const bool white);
-        void            moveBoard(const int x, const int y);
-        void            moveWindow(const int x, const int y);
+        void            moveBoard(const Vector2i to);
+        void            moveWindow(const Vector2i to);
         int             getX() const;
         int             getY() const;
         int             getXWindow() const;
         int             getYWindow() const;
-        virtual int     getType() const = 0;
         bool            isAlive() const;
         void            kill();
-        virtual bool    isMoveValid(const int x, const int y, const bool attacking = 0) = 0;
+        void            setIsDragged(const bool dragged);
+        bool            getIsDragged() const;
+        Sprite*         getSprite();
+        virtual int     getType() const = 0;
+        virtual bool    isMoveValid(const Vector2i destination, const bool attacking = 0) = 0;
         virtual ~Piece() = 0;
 };
 

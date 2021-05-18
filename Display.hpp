@@ -24,7 +24,7 @@ class Display
         RenderWindow _Window;
 
         //vector of pieces of each player
-        vector <Sprite> _Sprites;
+        //vector <Sprite> _Sprites;
 
         //Textures initialization
         Texture _TextureBoard, _TextureWhitePlays, _TextureBlackPlays, _TextureWhiteWins, _TextureBlackWins;
@@ -51,7 +51,7 @@ class Display
         void isCheck();
         void isCheckMate();
         void debug() const;
-        void show(const int draggedPiece, const bool _IsDragged, const bool endGame);
+        void show(const Sprite* PieceDragged, const bool _IsDragged, const bool endGame);
         ~Display();
 };
 

@@ -24,10 +24,10 @@ Pawn::Pawn(const bool white) : Piece(white)
  * @param x,y possible position
  * @returns true if the move is possible, else false
  */
-bool Pawn::isMoveValid(const int x, const int y, const bool attacking)
+bool Pawn::isMoveValid(const Vector2i destination, const bool attacking)
 {
-    int dx = x - _X;
-    int dy = y - _Y;
+    int dx = destination.x - _X;
+    int dy = destination.y - _Y;
 
     //if the piece doesn't move
     if(dx == 0 && dy == 0) return false;
