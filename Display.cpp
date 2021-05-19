@@ -223,54 +223,42 @@ void Display::playGame()
                                             //if there is no check currently ....
                                             if (_ActivePlayer->isCheck() == false)
                                             {
-                                                _ActivePlayer->play(_oldPos_Board, _newPos_Board);
+                                                _ActivePlayer->play(_oldPos_Board, _newPos_Board, _WaitingPlayer);
                                                 isCheck();
 
                                                 // and if the move doesn't but the player in check, moves normally
                                                 if (!_ActivePlayer->isCheck())
                                                 {
                                                     _Status = ACTIVE;
-                                                    PieceDragged->moveWindow(Vector2f(5555,5555));
-                                                    //If the move is valid and the tile is not empty, kills the piece at this spot
-                                                    if(_WaitingPlayer->getPiece(_newPos_Board) != NULL)
-                                                        _WaitingPlayer->getPiece(_newPos_Board)->kill();
                                                     if((PieceDragged->getType() == (_IsWhiteTurn ? 1 : -6)) && _newPos_Board.y == (_IsWhiteTurn ? 0 : 7))
-                                                    {
                                                         _Status = PROMOTION;
-                                                        //_ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 3 : -4));
-                                                    }
                                                 }
                                                 //if the move puts the player in check, moves backward
                                                 else
                                                 {
-                                                    _ActivePlayer->play(_newPos_Board, _oldPos_Board);
+                                                    _Status = MOVE;
+                                                    _ActivePlayer->play(_newPos_Board, _oldPos_Board, _WaitingPlayer);
                                                     _newPos_Window = _oldPos_Window;
                                                 }
                                             }
                                             //else if active player is check
                                             else
                                             {
-                                                _ActivePlayer->play(_oldPos_Board, _newPos_Board);
+                                                _ActivePlayer->play(_oldPos_Board, _newPos_Board, _WaitingPlayer);
                                                 isCheck();
 
                                                 //if after his move he is no longer checked, moves normally
                                                 if (_ActivePlayer->isCheck() == false) 
                                                 {
                                                     _Status = ACTIVE;
-                                                    PieceDragged->moveWindow(Vector2f(5555,5555));
-                                                    //If the move is valid and the tile is not empty, kills the piece at this spot
-                                                    if(_WaitingPlayer->getPiece(_newPos_Board) != NULL)
-                                                        _WaitingPlayer->getPiece(_newPos_Board)->kill();
                                                     if((PieceDragged->getType() == (_IsWhiteTurn ? 1 : -6)) && _newPos_Board.y == (_IsWhiteTurn ? 0 : 7))
-                                                    {                                                       
-                                                        _ActivePlayer->promotion(PieceDragged, (_IsWhiteTurn ? 3 : -4));
-                                                    }
+                                                        _Status = PROMOTION;
                                                 }
                                                 //if he is still checked after his move, backwards the move
                                                 else
                                                 {        
                                                     _Status = MOVE;
-                                                    _ActivePlayer->play(_newPos_Board, _oldPos_Board);
+                                                    _ActivePlayer->play(_newPos_Board, _oldPos_Board, _WaitingPlayer);
                                                     _newPos_Window = _oldPos_Window;
                                                 }
                                             }
@@ -645,6 +633,9 @@ void Display::isCheckMate()
     Vector2i blackKing;
     Vector2i whiteKing;
 
+    vector <Piece*> Wattackers;
+    vector <Piece*> Battackers;
+
     //stores current position of the king
     Vector2i curPos;
 
@@ -710,8 +701,17 @@ void Display::isCheckMate()
                             //...and if it can reach the king
                             if (_Board.collisionCheck(Vector2i(whitePiece->getX(), whitePiece->getY()), curPos, whitePiece->getType(), true))
                             {
+                                if(curPos == blackKing)
+                                {
+                                    if(Wattackers.size() == 0)
+                                        Wattackers.push_back(whitePiece);
+                                    else if(Wattackers.size() > 0)
+                                            if(whitePiece != Wattackers.back())
+                                                Wattackers.push_back(whitePiece);
+                                }
                                 //tile is not safe and this move is not good
                                 blackPossibleMoves--;
+                                cout << blackPossibleMoves << endl;
                             }
                         }
                     }
@@ -722,8 +722,68 @@ void Display::isCheckMate()
     //if the king can't move then it's checkmate
     if (blackPossibleMoves <= 0)
     {
-        _Status = W_WINS;
-        return;
+        cout << "Nombre d'attaquants = " << Wattackers.size() << endl;
+        if (Wattackers.size() > 1)
+        {
+            cout << "plus d'un attaquant" << endl;
+            _Status = W_WINS;
+            return;
+        }
+        else
+        {
+            for(int k = 0; k < _Black->getSize(); k++)
+            {
+                Piece* temp = _Black->getPiece(k);
+                cout << "La piece " << temp->getType() << " est testee aux coord x = " << temp->getX() << " y = " << temp->getY() << endl;
+                if (temp->isMoveValid(Vector2i(Wattackers[0]->getX(), Wattackers[0]->getY()), true))
+                {
+                    if (_Board.collisionCheck(Vector2i(temp->getX(), temp->getY()), Vector2i(Wattackers[0]->getX(), Wattackers[0]->getY()), temp->getType(), false))
+                    {
+                        break;
+                    }
+                }
+
+                int dx = Wattackers[0]->getX() - blackKing.x;
+                int dy = Wattackers[0]->getY() - blackKing.y;
+
+                cout << "dx = " << dx << endl;
+                cout << "dy = " << dy << endl;
+
+                if((abs(dx) == 1) && (abs(dy) == 1))
+                {
+                    cout << "plus d'un attaquant" << endl;
+                    _Status = W_WINS;
+                    return;
+                }
+                else
+                {
+                    int i = 0;
+                    int j = 0;
+                    bool safeMoveFound = false;
+                    while(i != dx && j!= dy && !safeMoveFound)
+                    {
+                        if (temp->isMoveValid(Vector2i(Wattackers[0]->getX() + i, Wattackers[0]->getY() + j), false))
+                        {
+                            if (_Board.collisionCheck(Vector2i(temp->getX(), temp->getY()), Vector2i(Wattackers[0]->getX() + i, Wattackers[0]->getY() + j), temp->getType(), false))
+                            {
+                                safeMoveFound = true;
+                            }
+                        }
+                        if(dx > 0)
+                            i++;
+                        else if(dx < 0)
+                            i--;
+                        if(dy > 0)
+                            j++;
+                        else if (dy < 0)
+                            j--;
+                                
+                        cout << "j = " << j << endl;
+                        cout << "i = " << i << endl;
+                    }
+                }
+            }
+        }
     }
 
     //checks if white king is checkmated
@@ -760,6 +820,11 @@ void Display::isCheckMate()
                             if (_Board.collisionCheck(Vector2i(blackPiece->getX(), blackPiece->getY()), curPos, blackPiece->getType(), false))
                             {
                                 //tile is not safe and this move is not good
+                                if(Battackers.size() == 0)
+                                        Battackers.push_back(blackPiece);
+                                    else if(Battackers.size() > 0)
+                                            if(blackPiece != Battackers.back())
+                                                Battackers.push_back(blackPiece);
                                 whitePossibleMoves--;
                             }
                         }
@@ -771,8 +836,67 @@ void Display::isCheckMate()
     //if the king can't move then it's checkmate
     if (whitePossibleMoves <= 0)
     {
-        _Status = B_WINS;
-        return;
+        cout << "Nombre d'attaquants = " << Battackers.size() << endl;
+        if (Battackers.size() > 1)
+        {
+            cout << "plus d'un attaquant" << endl;
+            _Status = B_WINS;
+            return;
+        }
+        else
+        {
+            for(int k = 0; k < _Black->getSize(); k++)
+            {
+                Piece* temp = _Black->getPiece(k);
+                cout << "La piece " << temp->getType() << " est testee aux coord x = " << temp->getX() << " y = " << temp->getY() << endl;
+                if (temp->isMoveValid(Vector2i(Battackers[0]->getX(), Battackers[0]->getY()), true))
+                {
+                    if (_Board.collisionCheck(Vector2i(temp->getX(), temp->getY()), Vector2i(Battackers[0]->getX(), Battackers[0]->getY()), temp->getType(), true))
+                    {
+                        break;
+                    }
+                }
+
+                int dx = Battackers[0]->getX() - whiteKing.x;
+                int dy = Battackers[0]->getY() - whiteKing.y;
+
+                cout << "dx = " << dx << endl;
+                cout << "dy = " << dy << endl;
+
+                if((abs(dx) == 1) && (abs(dy) == 1))
+                {
+                    _Status = B_WINS;
+                    return;
+                }
+                else
+                {
+                    int i = 0;
+                    int j = 0;
+                    bool safeMoveFound = false;
+                    while(i != dx && j!= dy && !safeMoveFound)
+                    {
+                        if (temp->isMoveValid(Vector2i(Battackers[0]->getX() + i, Battackers[0]->getY() + j), false))
+                        {
+                            if (_Board.collisionCheck(Vector2i(temp->getX(), temp->getY()), Vector2i(Battackers[0]->getX() + i, Battackers[0]->getY() + j), temp->getType(), true))
+                            {
+                                safeMoveFound = true;
+                            }
+                        }
+                        if(dx > 0)
+                            i++;
+                        else if(dx < 0)
+                            i--;
+                        if(dy > 0)
+                            j++;
+                        else if (dy < 0)
+                            j--;
+                                
+                        cout << "j = " << j << endl;
+                        cout << "i = " << i << endl;
+                    }
+                }
+            }
+        }
     }
 }
 

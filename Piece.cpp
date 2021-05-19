@@ -69,11 +69,21 @@ bool Piece::isAlive() const
 /**
  * Kills the piece
  */
-void Piece::kill()
+void Piece::kill(const bool unKill, const int xWindow, const int yWindow, const int TYPE)
 {
-    _IsAlive = false;
-    _Type = EMPTY;
-    moveWindow(Vector2f(9999,9999));
+    if(unKill)
+    {
+        _IsAlive = true;
+        _Type = (TYPES)TYPE;
+        moveWindow(Vector2f(xWindow,yWindow));
+    }
+    else
+    {
+        _IsAlive = false;
+        _Type = EMPTY;
+        moveWindow(Vector2f(9999,9999));
+    }
+
 }
 
 /**

@@ -49,7 +49,7 @@ void Board::updateBoard(const Vector2i from, const Vector2i to, const bool white
  * @param from Vector of old piece position
  * @param to Vector of new piece position
  * @param type Type of the piece that moves
- * @param IsAttacking Tells if player is targetting an enemy
+ * @param whiteTurn Tells if white is playing
  * @return false if there is collision, else true
  */
 bool Board::collisionCheck(const Vector2i from, const Vector2i to, const int type, const bool whiteTurn) const

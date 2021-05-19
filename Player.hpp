@@ -35,7 +35,7 @@ class Player
         void    setCheck(const bool isCheck);
         Piece*  getPiece(const double i) const;
         Piece*  getPiece(const Vector2i temp, const bool window = false) const;
-        void    play(const Vector2i from, const Vector2i to);
+        void    play(const Vector2i from, const Vector2i to, const Player* Opposite = NULL);
         ~Player();
 };
 
