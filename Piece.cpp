@@ -82,7 +82,7 @@ void Piece::kill()
 void Piece::revive()
 {
     _IsAlive = true;
-    moveWindow(Vector2f((_X + 1)*55,(_Y + 1)*55));
+    moveWindow(Vector2f((_X + 1)*55, (_Y + 1)*55));
 }
 
 /**
