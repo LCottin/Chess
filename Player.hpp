@@ -33,9 +33,9 @@ class Player
         int     getSize() const;
         void    promotion(Piece* promotedPawn, const int TYPE);
         void    setCheck(const bool isCheck);
-        Piece*  getPiece(const double i) const;
+        Piece*  getPiece(const int i) const;
         Piece*  getPiece(const Vector2i temp, const bool window = false) const;
-        void    play(const Vector2i from, const Vector2i to, const Player* Opposite = NULL);
+        void    play(const Vector2i from, const Vector2i to, const bool undo, const Player* opponent);
         ~Player();
 };
 

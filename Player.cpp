@@ -21,16 +21,6 @@ Player::Player(const string name, const bool white)
     queen->moveBoard(Vector2i(3, white?7:0));
     _Pieces.push_back(queen);
 
-    /*  Did not initiate pawns this way beacause we were not sure how this behaves.
-        //create and position pawns
-        for (int i = 2; i < 10; i++)
-        {
-            Pawn* pawn = new Pawn(white);
-            pawn->move(i-2, white?6:1);
-            _Pieces.push_back(pawn);
-        }
-    */
-
     //creates and positions pawns
     Pawn* pawn1 = new Pawn(white);
     pawn1->moveBoard(Vector2i(0, white ? 6 : 1));
@@ -87,18 +77,49 @@ Player::Player(const string name, const bool white)
  * @param from Vector of current position
  * @param to Vector of future position
  */
-void Player::play(const Vector2i from, const Vector2i to, const Player* Opposite)
+void Player::play(const Vector2i from, const Vector2i to, const bool undo, const Player* opponent)
 {
-    getPiece(from)->moveWindow(Vector2f(5555,5555));
-    if(_Board.getPiece(to) == -(_Board.getPiece(from)))
+    Piece* PieceDragged = getPiece(from);
+    bool moveIsValid = false;
+
+    if (undo)
     {
-        cout << "trying to kill" << endl;
-        Opposite->getPiece(to)->kill();
+        PieceDragged->moveWindow(Vector2f(5555,5555));
+        opponent->getPiece(to)->revive();
+        return;
     }
-    cout << "killed" << endl;
-    _Board.updateBoard(from, to, _IsWhite);
-    getPiece(from)->moveBoard(to);
-    _IsCheck = false;
+
+    //checks if the move is valid
+    if((PieceDragged->getType() == (_IsWhite ? 1 : -6)) && (_Board.getPiece(to) == -(_Board.getPiece(from))))
+    {
+
+        moveIsValid = PieceDragged->isMoveValid(to, true);
+    }
+    else
+    {
+        moveIsValid = PieceDragged->isMoveValid(to);
+    }
+
+    //if it is a valid move
+    if (moveIsValid)
+    {
+        //and the piece can reach the destination
+        if (_Board.collisionCheck(from, to, PieceDragged->getType(), _IsWhite))
+        {
+            //and I am not checked
+            if (_IsCheck == false)
+            {
+                //plays
+                PieceDragged->moveWindow(Vector2f(5555,5555));
+                if(_Board.getPiece(to) == -(_Board.getPiece(from)))
+                {
+                    opponent->getPiece(to)->kill();
+                }
+                _Board.updateBoard(from, to, _IsWhite);
+                PieceDragged->moveBoard(to);
+            }
+        }
+    }
 }
 
 /**
@@ -129,7 +150,7 @@ Piece* Player::getPiece(const Vector2i temp, const bool window) const
  * @param i index of the Player's Piece Vector
  * @returns The piece at index i
  */
-Piece* Player::getPiece(const double i) const
+Piece* Player::getPiece(const int i) const
 {
     if (i > (int)_Pieces.size() || (i < 0)) 
         return NULL;
@@ -165,7 +186,7 @@ void Player::setCheck(const bool isCheck)
 
 /**
  * Changes the player's status
- * @param pawn pawn's adress
+ * @param promotedPawn pointer to the pawn that is promoted
  * @param TYPE pawn gets promoted into TYPE
  */
 void Player::promotion(Piece* promotedPawn, const int TYPE)
