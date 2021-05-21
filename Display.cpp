@@ -140,10 +140,8 @@ void Display::playGame()
                 }                   
             }
             
-
             if (_Window.isOpen())
                 _Status = MOVE;
-
 
             /* ------------------------ */
             /* 3 : White/Black playing  */
@@ -304,7 +302,7 @@ void Display::playGame()
         }
         while(_Status == PROMOTION)
         {
-            promotion(_IsWhiteTurn);
+            promotion();
             while(_Window.pollEvent(event))
             {
                 Vector2i mouse_pos = Mouse::getPosition(_Window);
@@ -469,7 +467,7 @@ void Display::show(const Sprite* PieceDraggedSprite, const bool _IsDragged, cons
 /**
  * Displays promotion screen
  */
-void Display::promotion(const bool _IsWhiteTurn)
+void Display::promotion()
 {
     // Clears the window
     _Window.clear();
