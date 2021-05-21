@@ -31,7 +31,8 @@ class Piece
         int             getXWindow() const;
         int             getYWindow() const;
         bool            isAlive() const;
-        void            kill(const bool unKill = false, const int xWindow = 0, const int yWindow = 0, const int TYPE = 0);
+        void            kill();
+        void            revive();
         void            setIsDragged(const bool dragged);
         bool            getIsDragged() const;
         Sprite*         getSprite();
