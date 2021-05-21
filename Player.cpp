@@ -82,6 +82,7 @@ void Player::play(const Vector2i from, const Vector2i to, const bool undo, const
     Piece* PieceDragged = getPiece(from);
     bool moveIsValid = false;
 
+    //moves the sprite back to its previous position
     if (undo)
     {
         PieceDragged->moveWindow(Vector2f(5555,5555));
@@ -113,6 +114,7 @@ void Player::play(const Vector2i from, const Vector2i to, const bool undo, const
                 PieceDragged->moveWindow(Vector2f(5555,5555));
                 if(_Board.getPiece(to) == -(_Board.getPiece(from)))
                 {
+                    //kills the piece if there is one at the position
                     opponent->getPiece(to)->kill();
                 }
                 _Board.updateBoard(from, to, _IsWhite);
