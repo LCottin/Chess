@@ -237,5 +237,4 @@ Player::~Player()
     {
         delete _Pieces[i];
     }
-    cout << "Destroy player " << _Pseudo << endl;
 }
