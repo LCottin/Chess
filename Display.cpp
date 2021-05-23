@@ -31,6 +31,7 @@ Display::Display(const string name1, const string name2, const string title)
     _TextureBlackPlays.loadFromFile("Textures/black_plays.png");
     _TextureWhiteWins.loadFromFile("Textures/white_wins.png");
     _TextureBlackWins.loadFromFile("Textures/black_wins.png");
+    _TextureDraw.loadFromFile("Textures/draw.png");
 
     //Sprites init
     _SpriteBoard.setTexture(_TextureBoard);
@@ -47,6 +48,7 @@ Display::Display(const string name1, const string name2, const string title)
     _SpriteBlackPlays.setTexture(_TextureBlackPlays);
     _SpriteWhiteWins.setTexture(_TextureWhiteWins);
     _SpriteBlackWins.setTexture(_TextureBlackWins);
+    _SpriteDraw.setTexture(_TextureDraw);
 }
 
 /**
@@ -129,7 +131,7 @@ void Display::playGame()
             isCheckMate();
             while(_Status == B_WINS || _Status == W_WINS)
             {
-                show(PieceDragged->getSprite(), false, true);
+                show(PieceDragged->getSprite(), false);
                 while(_Window.pollEvent(event))
                 {
                     if(event.type == Event::Closed)
@@ -140,14 +142,29 @@ void Display::playGame()
                 }                   
             }
             
+            /* ------------------------ */
+            /* 3 : checks for stalemate */
+            /* ------------------------ */
+            isStalemate();
+            while (_Status == DRAW)
+            {
+                show(PieceDragged->getSprite(), false);
+                while(_Window.pollEvent(event))
+                {
+                    if(event.type == Event::Closed)
+                    {
+                        _Status = STOP;
+                        _Window.close();
+                    }
+                }                   
+            }
 
+            /* ------------------------ */
+            /* 4 : White/Black playing  */
+            /* ------------------------ */
             if (_Window.isOpen())
                 _Status = MOVE;
 
-
-            /* ------------------------ */
-            /* 3 : White/Black playing  */
-            /* ------------------------ */
             while(_Status == MOVE)
             {
                 // Stores the position of the mouse at any time in mouse_pos
@@ -299,7 +316,7 @@ void Display::playGame()
                 {
                     PieceDragged->moveWindow(Vector2f(mouse_pos) - _DxDy);
                 }
-                show(PieceDragged->getSprite(), _IsDragged, false);
+                show(PieceDragged->getSprite(), _IsDragged);
             }
         }
         while(_Status == PROMOTION)
@@ -395,9 +412,151 @@ void Display::playGame()
 }
 
 /**
+ * Checks if someone is stalemated and update _Status
+ */
+void Display::isStalemate()
+{
+    Piece* whitePiece;
+    Piece* blackPiece;
+
+    King* blackKing;
+    King* whiteKing;
+
+    //Stores kings' position
+    Vector2i bKing, oldBKing;
+    Vector2i wKing, oldWKing;
+
+    Vector2i oldPos, newPos;
+
+    bool stalemate = true;
+
+    //first, looks for both kings and stores their position
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            whitePiece = _White->getPiece(Vector2i(i, j));
+            blackPiece = _Black->getPiece(Vector2i(i, j));
+            if ((blackPiece != NULL) && (blackPiece->getType() == B_KING))
+            {
+                blackKing = (King*)blackPiece;
+                oldBKing.x = blackKing->getX();
+                oldBKing.y = blackKing->getY();
+            }
+            if ((whitePiece != NULL) && (whitePiece->getType() == W_KING))
+            {
+                whiteKing = (King*)whitePiece;
+                oldWKing.x = whiteKing->getX();
+                oldWKing.y = whiteKing->getY();
+            }
+        }
+    }
+
+    //virtually moves the king around and tells if any of this position is safe
+
+    //checks if black king is stalemated
+    oldPos.x = blackKing->getX();
+    oldPos.y = blackKing->getY();
+
+    for (int i = -1; i < 2; i++)
+    {
+        for (int j = -1; j < 2; j++)
+        {
+            //no need to check the same spot
+            if (i == 0 && j == 0) continue;
+            
+            //next position of the king : moves virtually but stays on the board
+            if(((blackKing->getX() + i) >= 0) && ((blackKing->getX() + i) <= 7) && (_Board.getPiece(Vector2i((blackKing->getX() + i), blackKing->getY())) == 0))
+                newPos.x = blackKing->getX() + i;
+            else
+                newPos.x = blackKing->getX();
+
+            if(((blackKing->getY() + j) >= 0) && ((blackKing->getY() + j) <= 7) && (_Board.getPiece(Vector2i(blackKing->getX(), (blackKing->getY() + j))) == 0))
+                newPos.y = blackKing->getY() + j;
+            else
+                newPos.y = blackKing->getY();
+
+            //moves the king
+            blackKing->moveBoard(newPos);
+
+            //moves the king on the board only
+            _Board.updateBoard(oldPos, newPos, false);
+
+            oldPos = newPos;
+
+            isCheck();
+            //once it's moved, looks for check
+            if (_Black->isCheck() == false)
+            {
+                stalemate = false;
+                cout << "black not stalemated" << endl;
+                break;
+            }
+        }
+    }
+    //restores the game
+    blackKing->moveBoard(oldBKing);
+    _Board.updateBoard(oldPos, oldBKing, false);
+
+    //if there is stalemate, returns and updates _Status
+    if (stalemate)
+    {
+        _Status = DRAW;
+        return;
+    }
+
+    //else does the same with white player
+    oldPos.x = blackKing->getX();
+    oldPos.y = blackKing->getY();
+
+    for (int i = -1; i < 2; i++)
+    {
+        for (int j = -1; j < 2; j++)
+        {
+            //no need to check the same spot
+            if (i == 0 && j == 0) continue;
+            
+            //next position of the king : moves virtually but stays on the board
+            if(((whiteKing->getX() + i) >= 0) && ((whiteKing->getX() + i) <= 7) && (_Board.getPiece(Vector2i((whiteKing->getX() + i), whiteKing->getY())) == 0))
+                newPos.x = whiteKing->getX() + i;
+            else
+                newPos.x = whiteKing->getX();
+
+            if(((whiteKing->getY() + j) >= 0) && ((whiteKing->getY() + j) <= 7) && (_Board.getPiece(Vector2i(whiteKing->getX(), (whiteKing->getY() + j))) == 0))
+                newPos.y = whiteKing->getY() + j;
+            else
+                newPos.y = whiteKing->getY();
+
+            //moves the king
+            whiteKing->moveBoard(newPos);
+
+            //moves the king on the board only
+            _Board.updateBoard(oldPos, newPos, false);
+
+            oldPos = newPos;
+            isCheck();
+            //once it's moved, looks for check
+            if (_White->isCheck() == false)
+            {
+                stalemate = false;
+                cout << "white not stalemated" << endl;
+                break;
+            }
+        }
+    }
+
+    //if there is stalemate, returns and updates _Status
+    if (stalemate)
+    {
+        _Status = DRAW;
+        return;
+    }
+}
+
+/**
  * Displays all the sprites
  */
-void Display::show(const Sprite* PieceDraggedSprite, const bool _IsDragged, const bool endGame)
+void Display::show(const Sprite* PieceDraggedSprite, const bool _IsDragged)
 {
     // Clears the window
     _Window.clear();
@@ -443,24 +602,21 @@ void Display::show(const Sprite* PieceDraggedSprite, const bool _IsDragged, cons
         _Window.draw(*PieceDraggedSprite);
     }
 
-    if(endGame)
-    {                 
-        if(_Status == B_WINS)
-            _Window.draw(_SpriteBlackWins);
-        else
-            _Window.draw(_SpriteWhiteWins);
-    }
+    //defines which message should be printed
+    if (_Status == B_WINS)
+        _Window.draw(_SpriteBlackWins);
+
+    else if (_Status == W_WINS)
+        _Window.draw(_SpriteWhiteWins);
+
+    else if (_Status == DRAW)
+        _Window.draw(_SpriteDraw);
+
+    else if (_IsWhiteTurn)
+        _Window.draw(_SpriteWhitePlays);
+
     else
-    {
-        if(_IsWhiteTurn)
-        {
-            _Window.draw(_SpriteWhitePlays);
-        }
-        else
-        {
-            _Window.draw(_SpriteBlackPlays);
-        }
-    }
+        _Window.draw(_SpriteBlackPlays);
 
     // Displays on screen what has been rendered to the window
     _Window.display();

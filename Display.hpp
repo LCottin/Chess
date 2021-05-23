@@ -27,14 +27,12 @@ class Display
         //vector <Sprite> _Sprites;
 
         //Textures initialization
-        Texture _TextureBoard, _TextureWhitePlays, _TextureBlackPlays, _TextureWhiteWins, _TextureBlackWins;
+        Texture _TextureBoard, _TextureWhitePlays, _TextureBlackPlays, _TextureWhiteWins, _TextureBlackWins, _TextureDraw;
         Texture _TexturePromotion, _TexturePromWQ, _TexturePromWR, _TexturePromWB, _TexturePromWKN, _TexturePromBQ, _TexturePromBR, _TexturePromBB, _TexturePromBKN;
-        //Texture _TextureBp, _TextureBb, _TextureBkn, _TextureBr, _TextureBk, _TextureBq, _TextureWp, _TextureWb, _TextureWkn, _TextureWr, _TextureWq, _TextureWk;
     
         //Sprites initializations
-        Sprite _SpriteBoard, _SpriteWhitePlays, _SpriteBlackPlays, _SpriteWhiteWins, _SpriteBlackWins; 
+        Sprite _SpriteBoard, _SpriteWhitePlays, _SpriteBlackPlays, _SpriteWhiteWins, _SpriteBlackWins, _SpriteDraw;
         Sprite _SpritePromotion, _SpritePromWQ, _SpritePromWR, _SpritePromWB, _SpritePromWKN, _SpritePromBQ, _SpritePromBR, _SpritePromBB, _SpritePromBKN;
-        //Sprite _SpriteBb, _SpriteBp, _SpriteBkn, _SpriteBr, _SpriteBq, _SpriteBk, _SpriteWp, _SpriteWb, _SpriteWkn, _SpriteWr, _SpriteWq, _SpriteWk;
         
         int _Size;
 
@@ -52,8 +50,9 @@ class Display
         void playGame();
         void isCheck();
         void isCheckMate();
+        void isStalemate();
         void debug() const;
-        void show(const Sprite* PieceDragged, const bool _IsDragged, const bool endGame);
+        void show(const Sprite* PieceDragged, const bool _IsDragged);
         void promotion(const bool white);
         ~Display();
 };
