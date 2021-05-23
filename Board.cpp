@@ -4,8 +4,7 @@ Board _Board;
 
 Board::Board()
 {
-    cout << "Creation of board " << this << " ...";
-    _Board = new int* [_SizeX];
+        _Board = new int* [_SizeX];
 
     //fills board with 0
     for (int i = 0; i < _SizeX; i++)
@@ -16,7 +15,7 @@ Board::Board()
             _Board[i][j] = 0;
         }   
     }
-
+    /*
     //Init both sides
     for (int i = 0; i < _SizeX; i++)
     {
@@ -25,7 +24,7 @@ Board::Board()
         _Board[i][6] =  1;
         _Board[i][7] =  1;
     }
-    cout << "Board " << this << " created ! " << endl;
+    cout << "Board " << this << " created ! " << endl;*/
 }
 
 /**
@@ -39,6 +38,17 @@ void Board::updateBoard(const Vector2i from, const Vector2i to, const bool white
     //puts a 0 at the old position
     _Board[from.x][from.y] = 0;
 
+    //puts the type of the piece at the given new position according to whiteTurn status
+    _Board[to.x][to.y] = (whiteTurn ? 1 : -1);
+}
+
+/**
+ * Updates the board when board is initialised
+ * @param to Vector of new piece position
+ * @param whiteTurn Tells who's player it is
+ */
+void Board::setBoard(const Vector2i to, const bool whiteTurn)
+{
     //puts the type of the piece at the given new position according to whiteTurn status
     _Board[to.x][to.y] = (whiteTurn ? 1 : -1);
 }

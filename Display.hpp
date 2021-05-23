@@ -48,7 +48,7 @@ class Display
         GAMESTATUS  _Status;        //stores current status of the game     
 
     public:
-        Display(const string name1, const string name2, const string title = "ChessGame");
+        Display(const string name1, const string name2, const MODES mode, const string title = "ChessGame");
         void playGame();
         void isCheck();
         void isCheckMate();

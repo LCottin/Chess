@@ -1,7 +1,7 @@
 #include "Display.hpp"
 
 
-Display::Display(const string name1, const string name2, const string title)
+Display::Display(const string name1, const string name2, const MODES mode, const string title)
 {
     //Variables initialisation
     _Title = title;
@@ -9,8 +9,8 @@ Display::Display(const string name1, const string name2, const string title)
     _Window.create(VideoMode(_Size*10, _Size*10), _Title, Style::Close);
 
     //Game initialisation
-    _White          = new Player(name1, 1);
-    _Black          = new Player(name2, 0);
+    _White          = new Player(name1, mode, 1);
+    _Black          = new Player(name2, mode ,0);
 
     _TurnCount      = 0;
     _IsWhiteTurn    = false;
@@ -144,7 +144,7 @@ void Display::playGame()
             if (_Window.isOpen())
                 _Status = MOVE;
 
-
+            debug();
             /* ------------------------ */
             /* 3 : White/Black playing  */
             /* ------------------------ */
@@ -288,7 +288,7 @@ void Display::playGame()
 
                             _IsDragged = false;
                             PieceDragged->setIsDragged(_IsDragged);
-                            //debug();
+                            // debug();
                         }
                     }
                 }

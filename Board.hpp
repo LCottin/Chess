@@ -20,6 +20,7 @@ class Board
     public:
         Board();
         void printBoard() const;
+        void setBoard(const Vector2i to, const bool whiteTurn);
         void updateBoard(const Vector2i from, const Vector2i to, const bool whiteTurn);
         bool collisionCheck(const Vector2i from, const Vector2i to, const int type, const bool whiteTurn) const;
         int  getPiece(const Vector2i pos) const;

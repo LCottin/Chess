@@ -13,6 +13,7 @@
 #include "Pieces/Knight.hpp"
 #include "Pieces/Rook.hpp"
 #include "Pieces/Pawn.hpp"
+#include "MODES.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -26,9 +27,10 @@ class Player
         bool    _IsWhite;
         bool    _IsCheck;
         vector  <Piece*> _Pieces;
+        void    spawnPieces(const MODES mode);
 
     public:
-        Player(const string name, const bool white);
+        Player(const string name, const MODES mode, const bool white);
         bool    isCheck() const;
         int     getSize() const;
         void    promotion(Piece* promotedPawn, const int TYPE);

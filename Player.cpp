@@ -5,81 +5,158 @@
  * @param name Name of the player
  * @param white white = 1, black = 0
  */
-Player::Player(const string name, const bool white)
+Player::Player(const string name, const MODES mode, const bool white)
 {
     _Pseudo     = name;
     _IsWhite    = white;
     _IsCheck    = false;
 
+    spawnPieces(mode);
+}
+
+/**
+ * Inits a player with a name and a color
+ * @param mode Chose the mode (only for demo)
+ */
+void Player::spawnPieces(const MODES mode)
+{
     //creates and positions king
-    King* king = new King(white);
-    king->moveBoard(Vector2i(4, white ? 7 : 0));
+    King* king = new King(_IsWhite);
+    king->moveBoard(Vector2i(4, _IsWhite ? 7 : 0));
+    _Board.setBoard(Vector2i(4, _IsWhite ? 7 : 0), _IsWhite);
     _Pieces.push_back(king);
 
-    //creates and positions queen
-    Queen* queen  = new Queen(white);
-    queen->moveBoard(Vector2i(3, white?7:0));
-    _Pieces.push_back(queen);
-
-    /*  Did not initiate pawns this way beacause we were not sure how this behaves.
-        //create and position pawns
-        for (int i = 2; i < 10; i++)
+    switch(mode)
+    {
+        // NORMAL GAME
+        case 0 :
         {
-            Pawn* pawn = new Pawn(white);
-            pawn->move(i-2, white?6:1);
-            _Pieces.push_back(pawn);
+            //creates and positions queen
+            Queen* queen  = new Queen(_IsWhite);
+            queen->moveBoard(Vector2i(3, _IsWhite?7:0));
+            _Pieces.push_back(queen);
+
+            //creates and positions pawns
+            Pawn* pawn1 = new Pawn(_IsWhite);
+            pawn1->moveBoard(Vector2i(0, _IsWhite ? 6 : 1));
+            _Pieces.push_back(pawn1);
+            Pawn* pawn2 = new Pawn(_IsWhite);
+            pawn2->moveBoard(Vector2i(1, _IsWhite ? 6 : 1));
+            _Pieces.push_back(pawn2);
+            Pawn* pawn3 = new Pawn(_IsWhite);
+            pawn3->moveBoard(Vector2i(2, _IsWhite ? 6 : 1));
+            _Pieces.push_back(pawn3);
+            Pawn* pawn4 = new Pawn(_IsWhite);
+            pawn4->moveBoard(Vector2i(3, _IsWhite ? 6 : 1));
+            _Pieces.push_back(pawn4);
+            Pawn* pawn5 = new Pawn(_IsWhite);
+            pawn5->moveBoard(Vector2i(4, _IsWhite ? 6 : 1));
+            _Pieces.push_back(pawn5);
+            Pawn* pawn6 = new Pawn(_IsWhite);
+            pawn6->moveBoard(Vector2i(5, _IsWhite ? 6 : 1));
+            _Pieces.push_back(pawn6);
+            Pawn* pawn7 = new Pawn(_IsWhite);
+            pawn7->moveBoard(Vector2i(6, _IsWhite ? 6 : 1));
+            _Pieces.push_back(pawn7);
+            Pawn* pawn8 = new Pawn(_IsWhite);
+            pawn8->moveBoard(Vector2i(7, _IsWhite ? 6 : 1));
+            _Pieces.push_back(pawn8);
+
+            //creates and positions rooks
+            Rook* rook1 = new Rook(_IsWhite);
+            rook1->moveBoard(Vector2i(0, _IsWhite ? 7 : 0));
+            _Pieces.push_back(rook1);
+            Rook* rook2 = new Rook(_IsWhite);
+            rook2->moveBoard(Vector2i(7, _IsWhite ? 7 : 0));
+            _Pieces.push_back(rook2);
+
+            //creates and positions knights
+            Knight* knight1 = new Knight(_IsWhite);
+            knight1->moveBoard(Vector2i(1, _IsWhite ? 7 : 0));
+            _Pieces.push_back(knight1);
+            Knight* knight2 = new Knight(_IsWhite);
+            knight2->moveBoard(Vector2i(6, _IsWhite ? 7 : 0));
+            _Pieces.push_back(knight2);
+
+            //creates and positions bishops
+            Bishop* bishop1 = new Bishop(_IsWhite);
+            bishop1->moveBoard(Vector2i(2, _IsWhite ? 7 : 0));
+            _Pieces.push_back(bishop1);
+            Bishop* bishop2 = new Bishop(_IsWhite);
+            bishop2->moveBoard(Vector2i(5, _IsWhite ? 7 : 0));
+            _Pieces.push_back(bishop2);
+            
+            break;
         }
-    */
+        // PROMOTION DEMONSTRATION
+        case 1 :
+        {
+            //creates and positions pawns
+            Pawn* pawn1 = new Pawn(_IsWhite);
+            pawn1->moveBoard(Vector2i(0, _IsWhite ? 1 : 6));
+            _Pieces.push_back(pawn1);
 
-    //creates and positions pawns
-    Pawn* pawn1 = new Pawn(white);
-    pawn1->moveBoard(Vector2i(0, white ? 6 : 1));
-    _Pieces.push_back(pawn1);
-    Pawn* pawn2 = new Pawn(white);
-    pawn2->moveBoard(Vector2i(1, white ? 6 : 1));
-    _Pieces.push_back(pawn2);
-    Pawn* pawn3 = new Pawn(white);
-    pawn3->moveBoard(Vector2i(2, white ? 6 : 1));
-    _Pieces.push_back(pawn3);
-    Pawn* pawn4 = new Pawn(white);
-    pawn4->moveBoard(Vector2i(3, white ? 6 : 1));
-    _Pieces.push_back(pawn4);
-    Pawn* pawn5 = new Pawn(white);
-    pawn5->moveBoard(Vector2i(4, white ? 6 : 1));
-    _Pieces.push_back(pawn5);
-    Pawn* pawn6 = new Pawn(white);
-    pawn6->moveBoard(Vector2i(5, white ? 6 : 1));
-    _Pieces.push_back(pawn6);
-    Pawn* pawn7 = new Pawn(white);
-    pawn7->moveBoard(Vector2i(6, white ? 6 : 1));
-    _Pieces.push_back(pawn7);
-    Pawn* pawn8 = new Pawn(white);
-    pawn8->moveBoard(Vector2i(7, white ? 6 : 1));
-    _Pieces.push_back(pawn8);
+            break;
+        }
+        // EN PASSANT DEMONSTRATION
+        case 2 :
+        {
+            //creates and positions pawns
+            Pawn* pawn1 = new Pawn(_IsWhite);
+            pawn1->moveBoard(Vector2i(_IsWhite ? 4 : 3, _IsWhite ? 4 : 4));
+            _Pieces.push_back(pawn1);
 
-    //creates and positions rooks
-    Rook* rook1 = new Rook(white);
-    rook1->moveBoard(Vector2i(0, white ? 7 : 0));
-    _Pieces.push_back(rook1);
-    Rook* rook2 = new Rook(white);
-    rook2->moveBoard(Vector2i(7, white ? 7 : 0));
-    _Pieces.push_back(rook2);
+            if(_IsWhite)
+            {
+                Pawn* pawn2 = new Pawn(_IsWhite);
+                pawn2->moveBoard(Vector2i(2, 6));
+                _Pieces.push_back(pawn2);     
+            }
 
-    //creates and positions knights
-    Knight* knight1 = new Knight(white);
-    knight1->moveBoard(Vector2i(1, white ? 7 : 0));
-    _Pieces.push_back(knight1);
-    Knight* knight2 = new Knight(white);
-    knight2->moveBoard(Vector2i(6, white ? 7 : 0));
-    _Pieces.push_back(knight2);
+            break;
+        }
+        // CASTLING DEMONSTRATION
+        case 3 :
+        {
+            if(_IsWhite)
+            {
+                Rook* rook1 = new Rook(_IsWhite);
+                rook1->moveBoard(Vector2i(0, _IsWhite ? 7 : 0));
+                _Board.setBoard(Vector2i(0, _IsWhite ? 7 : 0), _IsWhite);
+                _Pieces.push_back(rook1);
+                Rook* rook2 = new Rook(_IsWhite);
+                rook2->moveBoard(Vector2i(7, _IsWhite ? 7 : 0));
+                _Board.setBoard(Vector2i(7, _IsWhite ? 7 : 0), _IsWhite);
+                _Pieces.push_back(rook2);
+            }
+            else
+            {
+                Queen* queen  = new Queen(_IsWhite);
+                queen->moveBoard(Vector2i(3, _IsWhite ? 7 : 0));
+                _Board.setBoard(Vector2i(3, _IsWhite ? 7 : 0), _IsWhite);
+                _Pieces.push_back(queen);
+            }
+            
+            break;
+        }
+        // STALEMATE DEMONSTRATION
+        case 4 :
+        {
+            if(_IsWhite)
+            {
+                Queen* queen  = new Queen(_IsWhite);
+                queen->moveBoard(Vector2i(1, 3));
+                _Pieces.push_back(queen);
+            }
+            else
+            {
+                king->moveBoard(Vector2i(0, 0));
+            }
+            break;
+        }
+    }
 
-    //creates and positions bishops
-    Bishop* bishop1 = new Bishop(white);
-    bishop1->moveBoard(Vector2i(2, white ? 7 : 0));
-    _Pieces.push_back(bishop1);
-    Bishop* bishop2 = new Bishop(white);
-    bishop2->moveBoard(Vector2i(5, white ? 7 : 0));
-    _Pieces.push_back(bishop2);
+    
 }
 
 /**
@@ -91,11 +168,8 @@ void Player::play(const Vector2i from, const Vector2i to, const Player* Opposite
 {
     getPiece(from)->moveWindow(Vector2f(5555,5555));
     if(_Board.getPiece(to) == -(_Board.getPiece(from)))
-    {
-        cout << "trying to kill" << endl;
         Opposite->getPiece(to)->kill();
-    }
-    cout << "killed" << endl;
+        
     _Board.updateBoard(from, to, _IsWhite);
     getPiece(from)->moveBoard(to);
     _IsCheck = false;

@@ -2,6 +2,7 @@ Fonctionnel :
     Faire la fonction pat
     Faire le castle move
     Faire en passant
+    Utiliser _Status pour la méthode show (pour l'implantation du stalemate)
 
 Optimisation :
 
