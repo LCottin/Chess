@@ -85,8 +85,13 @@ void Player::play(const Vector2i from, const Vector2i to, const bool undo, const
     //moves the sprite back to its previous position
     if (undo)
     {
-        PieceDragged->moveWindow(Vector2f(5555,5555));
+        //moves the sprite back
+        PieceDragged->moveWindow(Vector2f((PieceDragged->getX() + 1 * 55), (PieceDragged->getY() + 1 * 55)));
+        PieceDragged->moveBoard(to);
+        //revives the piece
         opponent->getPiece(to)->revive();
+        //updates the board
+        _Board.updateBoard(from, to, _IsWhite);
         return;
     }
 
