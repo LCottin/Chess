@@ -14,7 +14,7 @@ class King : public Piece
     public:
         King(const bool white);
         
-        bool isMoveValid(const Vector2i destination, const bool attacking);
+        bool isMoveValid(const Vector2i destination, const bool attacking = 0);
         int  getType() const;
 
         void setCheck(const bool check);

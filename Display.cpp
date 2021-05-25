@@ -207,12 +207,10 @@ void Display::playGame()
                                     //Tells if the pawn is attacking or not and checks is a white piece is moved over a black one or the other way around
                                     if((PieceDragged->getType() == (_IsWhiteTurn ? 1 : -6)) && (_Board.getPiece(_newPos_Board) == -(_Board.getPiece(_oldPos_Board))))
                                     {
-                                        //cout << "This is an attacking pawn" << endl;
                                         moveIsValid = PieceDragged->isMoveValid(_newPos_Board, true);
                                     }
                                     else
                                     {
-                                        //cout << "This is not an attacking pawn" << endl;
                                         moveIsValid = PieceDragged->isMoveValid(_newPos_Board);
                                     }
 
@@ -256,7 +254,7 @@ void Display::playGame()
                                                 }
                                                 //if he is still checked after his move, backwards the move
                                                 else
-                                                {        
+                                                {       
                                                     _Status = MOVE;
                                                     _ActivePlayer->play(_newPos_Board, _oldPos_Board, _WaitingPlayer);
                                                     _newPos_Window = _oldPos_Window;
@@ -711,7 +709,6 @@ void Display::isCheckMate()
                                 }
                                 //tile is not safe and this move is not good
                                 blackPossibleMoves--;
-                                cout << blackPossibleMoves << endl;
                             }
                         }
                     }
@@ -722,10 +719,8 @@ void Display::isCheckMate()
     //if the king can't move then it's checkmate
     if (blackPossibleMoves <= 0)
     {
-        cout << "Nombre d'attaquants = " << Wattackers.size() << endl;
         if (Wattackers.size() > 1)
         {
-            cout << "plus d'un attaquant" << endl;
             _Status = W_WINS;
             return;
         }
@@ -734,24 +729,31 @@ void Display::isCheckMate()
             for(int k = 0; k < _Black->getSize(); k++)
             {
                 Piece* temp = _Black->getPiece(k);
-                cout << "La piece " << temp->getType() << " est testee aux coord x = " << temp->getX() << " y = " << temp->getY() << endl;
+                if(temp->getType() == B_KING)
+                    continue;
                 if (temp->isMoveValid(Vector2i(Wattackers[0]->getX(), Wattackers[0]->getY()), true))
                 {
                     if (_Board.collisionCheck(Vector2i(temp->getX(), temp->getY()), Vector2i(Wattackers[0]->getX(), Wattackers[0]->getY()), temp->getType(), false))
                     {
-                        break;
+                        Vector2i oldPosDefender = Vector2i(temp->getX(), temp->getY());
+                        _Black->play(oldPosDefender, Vector2i(Wattackers[0]->getX(), Wattackers[0]->getY()), _White);
+                        isCheck();
+                        bool legalDefensiveMove = !_Black->isCheck();
+                        _Black->play(Vector2i(temp->getX(), temp->getY()), oldPosDefender, _White);
+                        Wattackers[0]->revive();
+                        _Board.updateBoard((Vector2i(Wattackers[0]->getX(), Wattackers[0]->getY())), (Vector2i(Wattackers[0]->getX(), Wattackers[0]->getY())), true);
+                        isCheck();
+                        if(legalDefensiveMove)
+                            break;
                     }
                 }
 
                 int dx = Wattackers[0]->getX() - blackKing.x;
                 int dy = Wattackers[0]->getY() - blackKing.y;
 
-                cout << "dx = " << dx << endl;
-                cout << "dy = " << dy << endl;
 
                 if((abs(dx) == 1) && (abs(dy) == 1))
                 {
-                    cout << "plus d'un attaquant" << endl;
                     _Status = W_WINS;
                     return;
                 }
@@ -777,9 +779,6 @@ void Display::isCheckMate()
                             j++;
                         else if (dy < 0)
                             j--;
-                                
-                        cout << "j = " << j << endl;
-                        cout << "i = " << i << endl;
                     }
                 }
             }
@@ -836,32 +835,37 @@ void Display::isCheckMate()
     //if the king can't move then it's checkmate
     if (whitePossibleMoves <= 0)
     {
-        cout << "Nombre d'attaquants = " << Battackers.size() << endl;
         if (Battackers.size() > 1)
         {
-            cout << "plus d'un attaquant" << endl;
             _Status = B_WINS;
             return;
         }
         else
         {
-            for(int k = 0; k < _Black->getSize(); k++)
+            for(int k = 0; k < _White->getSize(); k++)
             {
-                Piece* temp = _Black->getPiece(k);
-                cout << "La piece " << temp->getType() << " est testee aux coord x = " << temp->getX() << " y = " << temp->getY() << endl;
+                Piece* temp = _White->getPiece(k);
+                if(temp->getType() == W_KING)
+                    continue;
                 if (temp->isMoveValid(Vector2i(Battackers[0]->getX(), Battackers[0]->getY()), true))
                 {
                     if (_Board.collisionCheck(Vector2i(temp->getX(), temp->getY()), Vector2i(Battackers[0]->getX(), Battackers[0]->getY()), temp->getType(), true))
                     {
-                        break;
+                        Vector2i oldPosDefender = Vector2i(temp->getX(), temp->getY());
+                        _White->play(oldPosDefender, Vector2i(Battackers[0]->getX(), Battackers[0]->getY()), _Black);
+                        isCheck();
+                        bool legalDefensiveMove = !_White->isCheck();
+                        _White->play(Vector2i(temp->getX(), temp->getY()), oldPosDefender, _Black);
+                        Battackers[0]->revive();
+                        _Board.updateBoard((Vector2i(Battackers[0]->getX(), Battackers[0]->getY())), (Vector2i(Battackers[0]->getX(), Battackers[0]->getY())), false);
+                        isCheck();
+                        if(legalDefensiveMove)
+                            break;
                     }
                 }
 
                 int dx = Battackers[0]->getX() - whiteKing.x;
                 int dy = Battackers[0]->getY() - whiteKing.y;
-
-                cout << "dx = " << dx << endl;
-                cout << "dy = " << dy << endl;
 
                 if((abs(dx) == 1) && (abs(dy) == 1))
                 {
@@ -890,9 +894,7 @@ void Display::isCheckMate()
                             j++;
                         else if (dy < 0)
                             j--;
-                                
-                        cout << "j = " << j << endl;
-                        cout << "i = " << i << endl;
+
                     }
                 }
             }

@@ -91,11 +91,7 @@ void Player::play(const Vector2i from, const Vector2i to, const Player* Opposite
 {
     getPiece(from)->moveWindow(Vector2f(5555,5555));
     if(_Board.getPiece(to) == -(_Board.getPiece(from)))
-    {
-        cout << "trying to kill" << endl;
         Opposite->getPiece(to)->kill();
-    }
-    cout << "killed" << endl;
     _Board.updateBoard(from, to, _IsWhite);
     getPiece(from)->moveBoard(to);
     _IsCheck = false;
